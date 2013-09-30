@@ -6,10 +6,12 @@
 	<property name="javadocDirectory" value="javadoc" />
 
 	<property name="junitJar" value="lib/junit-4.11.jar" />
+	<property name="hamcrestJar" value="lib/hamcrest-core-1.3.jar" />
 
 	<path id="classPath">
 		<pathelement location="${buildDirectory}" />
 		<pathelement location="${junitJar}" />
+		<pathelement location="${hamcrestJar}" />
 	</path>
 
 	<target name="help">
@@ -32,13 +34,13 @@
 	</target>
 
 	<target name="buildSrc" depends="prepare">
-		<javac srcdir="${sourceDirectory}" destdir="${buildDirectory}">
+		<javac srcdir="${sourceDirectory}" destdir="${buildDirectory}" includeantruntime="false">
 			<classpath refid="classPath" />
 		</javac>
 	</target>
 
 	<target name="buildTest" depends="buildSrc">
-		<javac srcdir="${testSourceDirectory}" destdir="${buildDirectory}">
+		<javac srcdir="${testSourceDirectory}" destdir="${buildDirectory}" includeantruntime="false">
 			<classpath refid="classPath" />
 		</javac>
 	</target>
