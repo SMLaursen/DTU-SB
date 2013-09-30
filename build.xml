@@ -1,0 +1,73 @@
+<project name="DTU-SB" default="help" basedir=".">
+
+	<property name="sourceDirectory" value="src" />
+	<property name="testSourceDirectory" value="test" />
+	<property name="buildDirectory" value="build" />
+	<property name="javadocDirectory" value="javadoc" />
+
+	<property name="junitJar" value="lib/junit-4.11.jar" />
+
+	<path id="classPath">
+		<pathelement location="${buildDirectory}" />
+		<pathelement location="${junitJar}" />
+	</path>
+
+	<target name="help">
+		<echo>Build management
+  Targets:
+    buildSrc:       Builds production code.
+    clean:          Removes all bytecode.
+    javadoc:        Generate JavaDoc.		
+    </echo>
+	</target>
+
+	<target name="clean">
+		<delete dir="${buildDirectory}" />
+		<delete dir="${javadocDirectory}" />
+	</target>
+
+	<target name="prepare">
+		<mkdir dir="${buildDirectory}" />
+		<mkdir dir="${javadocDirectory}" />
+	</target>
+
+	<target name="buildSrc" depends="prepare">
+		<javac srcdir="${sourceDirectory}" destdir="${buildDirectory}">
+			<classpath refid="classPath" />
+		</javac>
+	</target>
+
+	<target name="buildTest" depends="buildSrc">
+		<javac srcdir="${testSourceDirectory}" destdir="${buildDirectory}">
+			<classpath refid="classPath" />
+		</javac>
+	</target>
+
+	<target name="buildAll" depends="buildSrc,buildTest" />
+
+	<!-- generate javadoc -->
+	<target name="javadoc" depends="prepare">
+		<javadoc packagenames="dk.dtu.sb.*" destdir="${javadocDirectory}" sourcepath="${sourceDirectory}" windowtitle="DTU-SB">
+			<classpath refid="classPath" />
+		</javadoc>
+		<echo>
+JavaDoc available in directory ${javadocDirectory}/index.html.
+    </echo>
+	</target>
+
+	<target name="test" depends="buildAll">
+		<java classname="org.junit.runner.JUnitCore">
+			<!-- <arg value="hotciv.standard.TestAlphaCiv" />
+			<arg value="hotciv.standard.TestBetaCiv" />
+			<arg value="hotciv.standard.TestGammaCiv" />
+			<arg value="hotciv.standard.TestDeltaCiv" />
+			<arg value="hotciv.standard.TestEpsilonCiv" />
+			<arg value="hotciv.standard.TestZetaCiv" />
+			<arg value="hotciv.standard.TestGameLog" />
+			<arg value="hotciv.standard.TestEtaCiv" />
+			<arg value="hotciv.standard.TestGameObserver" />-->
+			<classpath refid="classPath" />
+		</java>
+	</target>
+
+</project>
