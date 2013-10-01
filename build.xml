@@ -10,20 +10,23 @@
 
 	<path id="classPath">
 		<pathelement location="${buildDirectory}" />
+	</path>
+
+	<path id="classPathTest">
+		<path refid="classPath" />
 		<pathelement location="${junitJar}" />
 		<pathelement location="${hamcrestJar}" />
 	</path>
 
 	<target name="help">
-		<echo>Build management
-  Targets:
-    buildSrc:       Builds production code.
-    clean:          Removes all bytecode.
-    javadoc:        Generate JavaDoc.		
-    </echo>
+		<java classname="org.apache.tools.ant.Main">
+			<arg value="-projecthelp" />
+			<arg value="-buildfile" />
+			<arg value="${ant.file}" />
+		</java>
 	</target>
 
-	<target name="clean">
+	<target name="clean" description="Remove /build and /javadoc">
 		<delete dir="${buildDirectory}" />
 		<delete dir="${javadocDirectory}" />
 	</target>
@@ -33,22 +36,22 @@
 		<mkdir dir="${javadocDirectory}" />
 	</target>
 
-	<target name="buildSrc" depends="prepare">
+	<target name="build" depends="prepare" description="Compile all classes">
 		<javac srcdir="${sourceDirectory}" destdir="${buildDirectory}" includeantruntime="false">
 			<classpath refid="classPath" />
 		</javac>
 	</target>
 
-	<target name="buildTest" depends="buildSrc">
+	<target name="buildTest" depends="build" description="Compile all test classes">
 		<javac srcdir="${testSourceDirectory}" destdir="${buildDirectory}" includeantruntime="false">
-			<classpath refid="classPath" />
+			<classpath refid="classPathTest" />
 		</javac>
 	</target>
 
-	<target name="buildAll" depends="buildSrc,buildTest" />
+	<target name="buildAll" depends="build,buildTest" />
 
 	<!-- generate javadoc -->
-	<target name="javadoc" depends="prepare">
+	<target name="javadoc" depends="prepare" description="Generate javadoc from files">
 		<javadoc packagenames="dk.dtu.sb.*" destdir="${javadocDirectory}" sourcepath="${sourceDirectory}" windowtitle="DTU-SB">
 			<classpath refid="classPath" />
 		</javadoc>
@@ -57,7 +60,7 @@ JavaDoc available in directory ${javadocDirectory}/index.html.
     </echo>
 	</target>
 
-	<target name="test" depends="buildAll">
+	<target name="test" depends="buildAll" description="Run all tests">
 		<java classname="org.junit.runner.JUnitCore">
 			<!-- <arg value="hotciv.standard.TestAlphaCiv" />
 			<arg value="hotciv.standard.TestBetaCiv" />
@@ -68,7 +71,7 @@ JavaDoc available in directory ${javadocDirectory}/index.html.
 			<arg value="hotciv.standard.TestGameLog" />
 			<arg value="hotciv.standard.TestEtaCiv" />
 			<arg value="hotciv.standard.TestGameObserver" />-->
-			<classpath refid="classPath" />
+			<classpath refid="classPathTest" />
 		</java>
 	</target>
 
