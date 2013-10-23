@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model id="unnamed1">
+    <listOfCompartments>
+      <compartment id="compartment" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="R" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="P" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="_trans_0" reversible="false">
+        <listOfReactants>
+          <speciesReference species="R"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="P"/>
+        </listOfProducts>
+        <kineticLaw/>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

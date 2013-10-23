@@ -1,5 +1,10 @@
 package dk.dtu.sb.parser;
 
-public interface Parser {
+import dk.dtu.sb.data.StochasticPetriNet;
 
+public abstract class Parser {
+
+    protected StochasticPetriNet spn = new StochasticPetriNet();
+    
+    public abstract StochasticPetriNet parseToSPN();
 }
