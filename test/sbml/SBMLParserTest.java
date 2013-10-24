@@ -24,9 +24,11 @@ public class SBMLParserTest {
         
         parser.readFile("test/sbml/simple.xml");
         
-        StochasticPetriNet spn = parser.parseToSPN();
+        StochasticPetriNet spn = parser.parse();
         
-        assertNotNull(spn);
+        assertNotNull(spn.getReaction("reaction"));
+        assertTrue(spn.getReaction("reaction").getProducts().containsKey("P"));
+        assertTrue(spn.getReaction("reaction").getReactants().containsKey("R"));
     }
 
 }

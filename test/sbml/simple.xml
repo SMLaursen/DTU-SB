@@ -9,7 +9,7 @@
       <species id="P" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
     </listOfSpecies>
     <listOfReactions>
-      <reaction id="_trans_0" reversible="false">
+      <reaction id="reaction" reversible="false">
         <listOfReactants>
           <speciesReference species="R"/>
         </listOfReactants>

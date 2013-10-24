@@ -7,7 +7,10 @@ import javax.xml.stream.XMLStreamException;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
+import org.sbml.jsbml.Species;
+import org.sbml.jsbml.SpeciesReference;
 
+import dk.dtu.sb.data.Reaction;
 import dk.dtu.sb.data.StochasticPetriNet;
 
 public class SBMLParser extends Parser {
@@ -20,9 +23,23 @@ public class SBMLParser extends Parser {
         model = document.getModel();
     }
     
-    public StochasticPetriNet parseToSPN() {
+    public StochasticPetriNet parse() {
+        for (org.sbml.jsbml.Reaction r : model.getListOfReactions()) {
+            // r.getKineticLaw();
+            Reaction newReaction = new Reaction(r.getId(), 0);
+            for (SpeciesReference sr : r.getListOfReactants()) {
+                newReaction.addReactant(sr.getSpecies());
+            }
+            for (SpeciesReference sr : r.getListOfProducts()) {
+                newReaction.addProduct(sr.getSpecies());
+            }
+            spn.addReaction(newReaction);
+        }
         
-                
+        for (Species s : model.getListOfSpecies()) {
+            spn.setInitialMarkings(s.getId(), (int)s.getInitialAmount());
+        }
+        
         return this.spn;
     }
 
