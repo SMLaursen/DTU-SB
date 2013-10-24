@@ -30,5 +30,28 @@ public class SBMLParserTest {
         assertTrue(spn.getReaction("reaction").getProducts().containsKey("P"));
         assertTrue(spn.getReaction("reaction").getReactants().containsKey("R"));
     }
+    
+    @Test
+    public void testNegFeed() throws XMLStreamException, IOException {
+        SBMLParser parser = new SBMLParser();
+        
+        parser.readFile("test/sbml/neg_feedback.xml");
+        
+        StochasticPetriNet spn = parser.parse();
+        
+        
+    }
+    
+    @Test
+    public void testNegFeedWORead() throws XMLStreamException, IOException {
+        SBMLParser parser = new SBMLParser();
+        
+        parser.readFile("test/sbml/neg_feedback_wo_read.xml");
+        
+        StochasticPetriNet spn = parser.parse();
+        
+        System.out.println(spn.getGraphviz());
+        
+    }
 
 }
