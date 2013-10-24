@@ -14,7 +14,7 @@ public class SPNtest {
 		StochasticPetriNet spn = new StochasticPetriNet();
 		//Reaction 1
 		Reaction r1 = new Reaction("Composition",0.9);
-		r1.addReactant("A");
+		r1.addReactant("A",2);
 		r1.addReactant("B");
 		r1.addProduct("AB");
 		spn.addReaction(r1);
@@ -39,6 +39,8 @@ public class SPNtest {
 		assertTrue(spn.getReaction("Decomposition").getProducts().containsKey("A"));
 		assertTrue(spn.getReaction("Decomposition").getProducts().containsKey("B"));
 		
+		System.out.println(spn.getGraphviz());
+		
 		r1.removeReactant("B");
 		assertFalse(spn.getReaction("Composition").getReactants().containsKey("B"));
 		
@@ -46,7 +48,9 @@ public class SPNtest {
 		assertFalse(spn.getReaction("Decomposition").getProducts().containsKey("A"));
 		
 		spn.removeReaction("Composition");
-		assertNull(spn.getReaction("Composition"));		
+		assertNull(spn.getReaction("Composition"));
+		
+		
 	}
 
 }

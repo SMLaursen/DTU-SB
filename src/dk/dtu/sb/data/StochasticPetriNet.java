@@ -2,6 +2,7 @@ package dk.dtu.sb.data;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class StochasticPetriNet {
@@ -44,9 +45,37 @@ public class StochasticPetriNet {
 	
 	
 	/** Returns a file with the visual dot representation*/
-	public File getGraphviz(){
-		//TODO
-		return null;
+	public String getGraphviz(){
+		//Use http://sandbox.kidstrythisathome.com/erdos/ 
+		HashSet<String> transitions = new HashSet<String>();
+		String s = "digraph G {\n";
+		for(Reaction r : reactions.values()){
+			//Process the reactants
+			for(String k : r.getReactants().keySet()){
+				//Add transitions only once
+				if(!transitions.contains(r.getName())){
+					s+= "\""+r.getName()+" ["+r.getRate()+"]\""+" [shape=box];\n";
+					transitions.add(r.getName());
+				}
+				s+= k+" -> "+ "\""+r.getName()+" ["+r.getRate()+"]\"";
+				//Set multiplicity on edges
+				if(r.getReactants().get(k) > 1){
+					s+=" [label = "+r.getReactants().get(k)+"]";
+				}
+				s+= ";\n";
+			}
+			//Process the products
+			for(String k : r.getProducts().keySet()){
+				s+= "\""+r.getName()+" ["+r.getRate()+"]\""+" -> "+k;
+				//Set multiplicity on edges
+				if(r.getProducts().get(k) > 1){
+					s+=" [label = "+r.getProducts().get(k)+"]";
+				}
+				s+= ";\n";
+			}
+		}
+		s+= "}";
+		return s;
 	}
 	
 	/** Returns a file with the PNML encoding*/
