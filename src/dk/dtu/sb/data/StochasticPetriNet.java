@@ -1,75 +1,47 @@
 package dk.dtu.sb.data;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StochasticPetriNet {
-	//Maps reaction and reactant names to indexes.
-	private Map<String, Integer> transitions;
-	private Map<String, Integer> places;
-	private int transitionIndex;
-	private int placeIndex;
-	
-	private int[][] reactionMatrix;
-	
-	private int[] initialMarkings;
-	
-	private double[] rates;
-	
-	/** Constructor */
-	public StochasticPetriNet(int noOfReactions, int noOfReactants){
-		transitions = new HashMap<String,Integer>(noOfReactions);
-		transitionIndex = 0;
-		
-		places = new HashMap<String,Integer>(noOfReactants);
-		placeIndex = 0;
-		
-		reactionMatrix = new int[noOfReactions][noOfReactants];
-		
-		rates = new double[noOfReactions];
-		
-		initialMarkings = new int[noOfReactants];
+	private Map<String, Reaction> reactions;
+	private Map<String, Integer> initialMarkings;
+
+	public StochasticPetriNet(){
+		reactions = new HashMap<String, Reaction>();
+		initialMarkings = new HashMap<String,Integer>();
 	}
 	
-	/** Sets the given reaction*/
-	public void setReaction(String reaction,Map<String,Integer> reactants, double rate){
-		//Map reaction to index and update rate vector
-		if(!transitions.containsKey(reaction)){
-			transitions.put(reaction, transitionIndex);
-			rates[transitionIndex] = rate;
-		}else{
-			throw new RuntimeException("Duplicate reaction name");
+	/** Adds a reaction to the SPN.*/
+	public void addReaction(Reaction r){
+		if(reactions.containsKey(r.getName())){
+			throw new RuntimeException("Reaction "+r+" already defined.");
 		}
-		//Map each unseen reactant to an index an update the reactionmatrix.
-		for(String s : reactants.keySet()){
-			if(!places.containsKey(s)){
-				places.put(s, placeIndex++);
-			}
-			reactionMatrix[transitionIndex][places.get(s)] = reactants.get(s);
+		reactions.put(r.getName(), r);
+	}
+	
+	/** Removes and returns the reaction with the given name*/
+	public Reaction removeReaction(String r){
+		return reactions.remove(r);
+	}
+	
+	public Reaction getReaction(String r){
+		return reactions.get(r);
+	}
+	
+	/**Sets the initial markings. Replaces old values*/
+	public void setInitialMarkings(String reactant, Integer value){
+		initialMarkings.put(reactant, value);
+	}
+	
+	public int getInitialMarkings(String reactant){
+		if(!initialMarkings.containsKey(reactant)){
+			throw new RuntimeException("Initial marking not set for "+reactant);
 		}
-		transitionIndex++;
+		return initialMarkings.get(reactant);
 	}
 	
-	/**Sets the initial markings*/
-	public void setInitialMarkings(Map<String,Integer> markings){
-		for(String place : markings.keySet()){
-			initialMarkings[places.get(place)] = markings.get(place);
-		}
-	}
-	
-	public int[][] getReactionMatrix(){
-		return reactionMatrix;
-	}
-	
-	public int[] getInitialMarkings(){
-		return initialMarkings;
-	}
- 	
-	public double[] getRates(){
-		return rates;
-	}
 	
 	/** Returns a file with the visual dot representation*/
 	public File getGraphviz(){
@@ -85,12 +57,12 @@ public class StochasticPetriNet {
 	
 	/**Prints a formatted representation of the SPN*/
 	public String toString(){
-		String s = "reaction matrix :\n";
-		s += Arrays.deepToString(reactionMatrix).replace("], ", "]\n");
-		s += "\n\n initial markings :\n\n"+initialMarkings.toString();
-		s += "\n\n rates :\n\n"+rates.toString();
-		s += "\n\n place mappings :\n\n"+places.toString();
-		s += "\n\n transition mappings :\n\n"+transitions.toString();
+		String s = "Reactions :\n";
+		for(Reaction r : reactions.values()){
+			s+=r.toString()+"\n";
+		}
+		s+="\n initial markings :";
+		s+= initialMarkings;
 		return s;
 	}
 }
