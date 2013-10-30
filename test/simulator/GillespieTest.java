@@ -14,14 +14,14 @@ public class GillespieTest {
 	public void test1(){
 		try {
 	        SBMLParser parser = new SBMLParser();
-	        parser.readFile("test/simulator/simple.xml");
+	        parser.readFile("test/simulator/neg_feedback_wo_read.xml");
 	
 	        Compiler compiler = new Compiler(parser.parse());
 	        System.out.println(compiler.compile());
 	        
 	        GillespieAlgorithm algorithm = new GillespieAlgorithm();
 	        Simulator simulator = new Simulator(compiler.compile(), algorithm);
-	        simulator.simulate(1, 20);    
+	        simulator.simulate(1, 100);    
 	    } catch (Exception e) {
 	    	System.out.println(e);
 	    	assertTrue(false);
