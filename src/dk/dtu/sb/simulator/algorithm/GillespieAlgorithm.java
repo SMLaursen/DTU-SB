@@ -29,10 +29,12 @@ public class GillespieAlgorithm extends Algorithm {
 		while(time < stoptime){
 			//Step 1
 			a_0 = calculate_a0();
+			
 			if(a_0 == 0.0){
 				//Nothing more to be done
 				break;
 			}
+			
 			//Step 2
 			r_1 = rand.nextDouble();
 			r_2 = rand.nextDouble();
