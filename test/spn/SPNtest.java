@@ -39,7 +39,7 @@ public class SPNtest {
 		assertTrue(spn.getReaction("Decomposition").getProducts().containsKey("A"));
 		assertTrue(spn.getReaction("Decomposition").getProducts().containsKey("B"));
 		
-		System.out.println(spn.getGraphviz());
+		System.out.println(spn.toGraphviz());
 		
 		r1.removeReactant("B");
 		assertFalse(spn.getReaction("Composition").getReactants().containsKey("B"));

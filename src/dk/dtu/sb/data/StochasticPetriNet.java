@@ -31,21 +31,25 @@ public class StochasticPetriNet {
 		return reactions.get(r);
 	}
 	
+	public Map<String,Reaction> getReactions(){
+		return reactions;
+	}
+	
 	/**Sets the initial markings. Replaces old values*/
 	public void setInitialMarkings(String reactant, Integer value){
 		initialMarkings.put(reactant, value);
 	}
 	
 	public int getInitialMarkings(String reactant){
-		if(!initialMarkings.containsKey(reactant)){
-			throw new RuntimeException("Initial marking not set for "+reactant);
-		}
 		return initialMarkings.get(reactant);
 	}
 	
+	public Map<String,Integer> getInitialMarkings(){
+		return initialMarkings;
+	}
 	
 	/** Returns a file with the visual dot representation*/
-	public String getGraphviz(){
+	public String toGraphviz(){
 		//Use http://sandbox.kidstrythisathome.com/erdos/ 
 		HashSet<String> transitions = new HashSet<String>();
 		String s = "digraph G {\n";
@@ -79,7 +83,7 @@ public class StochasticPetriNet {
 	}
 	
 	/** Returns a file with the PNML encoding*/
-	public File getPNML(){
+	public File toPNML(){
 		//TODO
 		return null;
 	}

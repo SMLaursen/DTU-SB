@@ -146,7 +146,7 @@ public class Main {
 
             GillespieAlgorithm algorithm = new GillespieAlgorithm();
             Simulator simulator = new Simulator(compiler.compile(), algorithm);
-            simulator.run();
+            simulator.simulate(1, 20);
         } catch (Exception e) {
         }        
     }

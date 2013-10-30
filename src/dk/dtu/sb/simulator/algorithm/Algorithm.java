@@ -1,5 +1,10 @@
 package dk.dtu.sb.simulator.algorithm;
 
-public interface Algorithm {
+import dk.dtu.sb.data.StochasticPetriNet;
 
+public abstract class Algorithm {
+	
+	public StochasticPetriNet spn;
+	
+	public abstract void run(double stoptime);
 }

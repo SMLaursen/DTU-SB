@@ -26,7 +26,7 @@ public class SBMLParser extends Parser {
     public StochasticPetriNet parse() {
         for (org.sbml.jsbml.Reaction r : model.getListOfReactions()) {
             // r.getKineticLaw();
-            Reaction newReaction = new Reaction(r.getId(), 0);
+            Reaction newReaction = new Reaction(r.getId(), 1.0);
             for (SpeciesReference sr : r.getListOfReactants()) {
                 newReaction.addReactant(sr.getSpecies());
             }

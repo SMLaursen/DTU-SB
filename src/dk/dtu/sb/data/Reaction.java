@@ -8,6 +8,7 @@ public class Reaction {
 	private Map<String, Integer> reactants;
 	private Map<String, Integer> products;
 	private double rate;
+	private double propensity;
 	
 	public Reaction(String name, double rate){
 		this.name = name;
@@ -47,6 +48,14 @@ public class Reaction {
 	}
 	public double getRate(){
 		return rate;
+	}
+	
+	public void setPropensity(double propensity){
+		this.propensity = propensity;
+	}
+	
+	public double getPropensity(){
+		return propensity;
 	}
 	
 	public String toString(){

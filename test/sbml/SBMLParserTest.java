@@ -50,7 +50,7 @@ public class SBMLParserTest {
         
         StochasticPetriNet spn = parser.parse();
         
-        System.out.println(spn.getGraphviz());
+        System.out.println(spn.toGraphviz());
         
     }
 
