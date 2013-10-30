@@ -21,7 +21,7 @@ public class Simulator {
     		algorithm.run(stoptime);
     	}
     	long endTime = System.currentTimeMillis();
-    	System.out.println("Execution time : "+(endTime-startTime));
+    	System.out.println("Simulation ended in : "+(endTime-startTime)+"ms");
     }
     
     public Output getOutput() {

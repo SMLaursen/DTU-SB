@@ -34,7 +34,6 @@ public class GillespieAlgorithm extends Algorithm {
 				//Nothing more to be done
 				break;
 			}
-			
 			//Step 2
 			r_1 = rand.nextDouble();
 			r_2 = rand.nextDouble();

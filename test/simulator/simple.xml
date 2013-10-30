@@ -5,16 +5,27 @@
       <compartment id="compartment" size="1"/>
     </listOfCompartments>
     <listOfSpecies>
-      <species id="R" compartment="compartment" initialAmount="4" hasOnlySubstanceUnits="true"/>
-      <species id="P" compartment="compartment" initialAmount="2" hasOnlySubstanceUnits="true"/>
+      <species id="A" compartment="compartment" initialAmount="14" hasOnlySubstanceUnits="true"/>
+      <species id="B" compartment="compartment" initialAmount="2" hasOnlySubstanceUnits="true"/>
+   	  <species id="C" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
     </listOfSpecies>
     <listOfReactions>
-      <reaction id="reaction" reversible="false">
+      <reaction id="reaction1" reversible="false">
         <listOfReactants>
-          <speciesReference species="R"/>
+          <speciesReference species="A"/>
         </listOfReactants>
         <listOfProducts>
-          <speciesReference species="P"/>
+          <speciesReference species="B"/>
+        </listOfProducts>
+        <kineticLaw/>
+      </reaction>
+      <reaction id="reaction2" reversible="false">
+        <listOfReactants>
+          <speciesReference species="A"/>
+          <speciesReference species="B"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="C"/>
         </listOfProducts>
         <kineticLaw/>
       </reaction>
