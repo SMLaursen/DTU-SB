@@ -7,9 +7,13 @@
 
 	<property name="junitJar" value="lib/junit-4.11.jar" />
 	<property name="hamcrestJar" value="lib/hamcrest-core-1.3.jar" />
+	<property name="apacheCommonsJar" value="lib/commons-cli-1.2.jar" />
+	<property name="jbsmlJar" value="lib/jsbml-0.8-with-dependencies.jar" />
 
 	<path id="classPath">
 		<pathelement location="${buildDirectory}" />
+		<pathelement location="${apacheCommonsJar}" />
+		<pathelement location="${jbsmlJar}" />
 	</path>
 
 	<path id="classPathTest">
@@ -62,6 +66,7 @@ JavaDoc available in directory ${javadocDirectory}/index.html.
 
 	<target name="test" depends="buildAll" description="Run all tests">
 		<java classname="org.junit.runner.JUnitCore">
+			<arg value="main.MainTest" />
 			<!-- <arg value="hotciv.standard.TestAlphaCiv" />
 			<arg value="hotciv.standard.TestBetaCiv" />
 			<arg value="hotciv.standard.TestGammaCiv" />
