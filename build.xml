@@ -65,19 +65,13 @@ JavaDoc available in directory ${javadocDirectory}/index.html.
 	</target>
 
 	<target name="test" depends="buildAll" description="Run all tests">
-		<java classname="org.junit.runner.JUnitCore">
-			<arg value="main.MainTest" />
-			<!-- <arg value="hotciv.standard.TestAlphaCiv" />
-			<arg value="hotciv.standard.TestBetaCiv" />
-			<arg value="hotciv.standard.TestGammaCiv" />
-			<arg value="hotciv.standard.TestDeltaCiv" />
-			<arg value="hotciv.standard.TestEpsilonCiv" />
-			<arg value="hotciv.standard.TestZetaCiv" />
-			<arg value="hotciv.standard.TestGameLog" />
-			<arg value="hotciv.standard.TestEtaCiv" />
-			<arg value="hotciv.standard.TestGameObserver" />-->
+		<junit>
 			<classpath refid="classPathTest" />
-		</java>
+		      <formatter type="brief" usefile="false" />
+		      <test name="test.main.MainTest" />
+		    </junit>
+		
+		
 	</target>
 
 </project>

@@ -1,4 +1,4 @@
-package spn;
+package test.spn;
 
 import static org.junit.Assert.*;
 

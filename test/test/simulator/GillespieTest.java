@@ -1,4 +1,4 @@
-package simulator;
+package test.simulator;
 
 import org.junit.Test;
 
