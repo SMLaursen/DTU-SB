@@ -3,6 +3,7 @@ package dk.dtu.sb.simulator.algorithm;
 import java.util.HashMap;
 import java.util.Random;
 
+import dk.dtu.sb.Util;
 import dk.dtu.sb.data.Reaction;
 
 public class GillespieAlgorithm extends Algorithm {
@@ -38,14 +39,14 @@ public class GillespieAlgorithm extends Algorithm {
 			r_1 = rand.nextDouble();
 			r_2 = rand.nextDouble();
 			tau = ((1.0 / a_0)*Math.log(1.0 /r_1));
-			System.out.println("a_0 : "+a_0+"    r_1 :"+r_1+"     tau :"+tau);
+			Util.log.info("a_0 : "+a_0+"    r_1 :"+r_1+"     tau :"+tau);
 			R_mu = findReaction(a_0*r_2); 
 					
 			//Step 3
 			time += tau;
 			updateMarkings(R_mu);
-			step ++;
-			System.out.println(time +" :" +currentMarkings);
+			step++;
+			Util.log.info(time +" :" +currentMarkings);
 		}
 	}
 	

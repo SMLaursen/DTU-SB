@@ -4,7 +4,11 @@ import dk.dtu.sb.data.StochasticPetriNet;
 
 public abstract class Algorithm {
 	
-	public StochasticPetriNet spn;
+	protected StochasticPetriNet spn;
+	
+	public void setSPN(StochasticPetriNet spn) {
+	    this.spn = spn;
+	}
 	
 	public abstract void run(double stoptime);
 }

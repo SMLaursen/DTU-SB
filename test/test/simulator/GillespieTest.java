@@ -1,5 +1,9 @@
 package test.simulator;
 
+import java.io.IOException;
+
+import javax.xml.stream.XMLStreamException;
+
 import org.junit.Test;
 
 import dk.dtu.sb.compiler.Compiler;
@@ -12,20 +16,23 @@ public class GillespieTest {
 	
 	@Test
 	public void test1(){
-		try {
-	        SBMLParser parser = new SBMLParser();
-	        parser.readFile("test/simulator/neg_feedback_wo_read.xml");
-	
-	        Compiler compiler = new Compiler(parser.parse());
-	        System.out.println(compiler.compile());
-	        
-	        GillespieAlgorithm algorithm = new GillespieAlgorithm();
-	        Simulator simulator = new Simulator(compiler.compile(), algorithm);
-	        simulator.simulate(1, 100);    
-	    } catch (Exception e) {
-	    	System.out.println(e);
-	    	assertTrue(false);
-	    }       
+        SBMLParser parser = new SBMLParser();
+        try {
+            parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
+        } catch (XMLStreamException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        Compiler compiler = new Compiler(parser.parse());
+        System.out.println(compiler.compile());
+        
+        GillespieAlgorithm algorithm = new GillespieAlgorithm();
+        Simulator simulator = new Simulator(compiler.compile(), algorithm);
+        simulator.simulate();
 	}
 
 }
