@@ -233,6 +233,7 @@ public class Simulator {
 	private CheckableItem[] createData(Set<String> strs) {
 		int n = 0;
 		CheckableItem[] items = new CheckableItem[strs.size()];
+		//TODO Sort strings here
 		for (String s : strs) {
 			items[n] = new CheckableItem(s);
 			n++;
