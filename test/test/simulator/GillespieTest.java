@@ -6,10 +6,10 @@ import javax.xml.stream.XMLStreamException;
 
 import org.junit.Test;
 
+import dk.dtu.sb.algorithm.GillespieAlgorithm;
 import dk.dtu.sb.compiler.Compiler;
 import dk.dtu.sb.parser.SBMLParser;
 import dk.dtu.sb.simulator.Simulator;
-import dk.dtu.sb.simulator.algorithm.GillespieAlgorithm;
 import static org.junit.Assert.*;
 
 public class GillespieTest {
@@ -19,12 +19,8 @@ public class GillespieTest {
         SBMLParser parser = new SBMLParser();
         try {
             parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
-        } catch (XMLStreamException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception e) {
+
         }
 
         Compiler compiler = new Compiler(parser.parse());

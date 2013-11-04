@@ -1,13 +1,11 @@
 package dk.dtu.sb.simulator;
 
-import java.util.Properties;
-
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
+import dk.dtu.sb.algorithm.Algorithm;
+import dk.dtu.sb.algorithm.GillespieAlgorithm;
 import dk.dtu.sb.data.StochasticPetriNet;
 import dk.dtu.sb.output.Output;
-import dk.dtu.sb.simulator.algorithm.Algorithm;
-import dk.dtu.sb.simulator.algorithm.GillespieAlgorithm;
 
 public class Simulator {
     
@@ -50,34 +48,20 @@ public class Simulator {
         this.params = params;
     }
     
+    /**
+     * 
+     * @param spn
+     */
     public void setSPN(StochasticPetriNet spn) {
         this.spn = spn;
     }
     
+    /**
+     * 
+     * @param params
+     */
     public void setParams(Parameters params) {
         this.params = params;
-    }
-    
-    private int getIterations() {
-        int iterations;
-        try {
-            iterations = Integer.parseInt(this.params.getProperty(Parameters.PARAM_SIM_ITERATIONS, ""+Parameters.PARAM_SIM_ITERATIONS_DEFAULT));
-        } catch (NumberFormatException e) {
-            iterations = Parameters.PARAM_SIM_ITERATIONS_DEFAULT;
-            Util.log.warn("ITERATION specified in the properties file was not a number.");
-        }
-        return iterations;
-    }
-    
-    private double getStoptime() {
-        double stoptime;
-        try {
-            stoptime = Double.parseDouble(this.params.getProperty(Parameters.PARAM_SIM_STOPTIME, ""+Parameters.PARAM_SIM_STOPTIME_DEFAULT));
-        } catch (NumberFormatException e) {
-            stoptime = Parameters.PARAM_SIM_STOPTIME_DEFAULT;
-            Util.log.warn("STOPTIME specified in the properties file was not a number.");
-        }
-        return stoptime;
     }
     
     /**
@@ -89,8 +73,8 @@ public class Simulator {
                 
         long startTime = System.currentTimeMillis();
         
-    	for (int i = 0; i < getIterations(); i++) {
-    		algorithm.run(getStoptime());
+    	for (int i = 0; i < params.getIterations(); i++) {
+    		algorithm.run(params.getStoptime());
     	}
     	
     	long endTime = System.currentTimeMillis();
@@ -98,6 +82,10 @@ public class Simulator {
     	Util.log.debug("Simulation ended in : "+(endTime-startTime)+"ms");
     }
     
+    /**
+     * 
+     * @return
+     */
     public Output getOutput() {
         return null;
     }

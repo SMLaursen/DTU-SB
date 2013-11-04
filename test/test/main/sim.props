@@ -1,0 +1,6 @@
+#Mon Nov 04 13:02:51 CET 2013
+SIM_ALGORITHM=dk.dtu.sb.algorithm.GillespieAlgorithm
+SIM_STOPTIME=20.0
+SIM_ITERATIONS=10
+INPUT_FILE=input.xml
+PARSER=dk.dtu.sb.parser.SBMLParser
