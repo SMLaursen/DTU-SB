@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.algorithm.GillespieAlgorithm;
 import dk.dtu.sb.compiler.Compiler;
+import dk.dtu.sb.output.GraphGUI;
 import dk.dtu.sb.parser.Parser;
 import dk.dtu.sb.parser.SBMLParser;
 import dk.dtu.sb.simulator.Simulator;
@@ -180,7 +181,9 @@ public class Main {
             
             // show graph
             if (params.getResultGUI()) {
-                simulator.displayResultGUI();
+                GraphGUI gui = new GraphGUI();
+                gui.setData(simulator.getOutputData());
+                gui.process();
             }
         } catch (FileNotFoundException e) {
             Util.log.fatal("Input file: " + filename + " was not found.");

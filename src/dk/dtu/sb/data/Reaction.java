@@ -3,6 +3,9 @@ package dk.dtu.sb.data;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ */
 public class Reaction {
 	private String name;
 	private Map<String, Integer> reactants;
