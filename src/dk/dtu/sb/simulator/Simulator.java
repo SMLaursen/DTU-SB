@@ -70,7 +70,6 @@ public class Simulator {
 		this.params = params;
 	}
 
-
 	/**
 	 * Simulates using the given stoptime and no of iterations
 	 * @param iterations
@@ -83,53 +82,56 @@ public class Simulator {
 		long startTime = System.currentTimeMillis();
 
 		for (int i = 0; i < params.getIterations(); i++) {
+		    Util.log.info("Simulation iteration " + i);
 			algorithm.run(params.getStoptime());
 		}
 
 		long endTime = System.currentTimeMillis();
 
-		Util.log.info("Simulation ended in : "+(endTime-startTime)+"ms");
-		displayResults(algorithm.getPlotData());
+		Util.log.info("Simulation ended in: "+(endTime-startTime)+"ms");
 	}
 	
-	public void displayResults (LinkedList<Plot> p){
-		XYSeriesCollection dataset = new XYSeriesCollection();
-		
-		for(String s : p.peekFirst().markings.keySet()){
-			XYSeries series = new XYSeries(s);
-			for(Plot d : p){
-				series.add(d.time,d.markings.get(s));
-			}
-			dataset.addSeries(series);
-		}
-        JFreeChart chart = ChartFactory.createXYLineChart("DTU-SB", "time [s]", "Concentration [molecules]", 
-        												   dataset, PlotOrientation.VERTICAL, true, true, true);
- 
-        //Draw smooth lines :
-//        chart.getXYPlot().setRenderer(new XYSplineRenderer());
-        
-        ChartPanel chartpanel = new ChartPanel(chart);
-        chartpanel.setDomainZoomable(true);
+	public void displayResultGUI() {
+	    LinkedList<Plot> p = algorithm.getPlotData();
+	    
+	    if (!p.isEmpty()) {
+	        XYSeriesCollection dataset = new XYSeriesCollection();
+	        
+	        for(String s : p.peekFirst().markings.keySet()){
+	            XYSeries series = new XYSeries(s);
+	            for(Plot d : p){
+	                series.add(d.time,d.markings.get(s));
+	            }
+	            dataset.addSeries(series);
+	        }
+	        JFreeChart chart = ChartFactory.createXYLineChart("DTU-SB", "time [s]", "Concentration [molecules]", 
+	                                                           dataset, PlotOrientation.VERTICAL, true, true, true);
+	 
+	        //Draw smooth lines :
+//	        chart.getXYPlot().setRenderer(new XYSplineRenderer());
+	        
+	        ChartPanel chartpanel = new ChartPanel(chart);
+	        chartpanel.setDomainZoomable(true);
 
-        JPanel jPanel4 = new JPanel();
-        jPanel4.setLayout(new BorderLayout());
-        jPanel4.add(chartpanel, BorderLayout.CENTER);
+	        JPanel jPanel4 = new JPanel();
+	        jPanel4.setLayout(new BorderLayout());
+	        jPanel4.add(chartpanel, BorderLayout.CENTER);
 
-        JFrame frame = new JFrame();
-        frame.add(jPanel4);
-        frame.pack();
-        frame.setVisible(true);
-        
-		//TODO FIX / Add action listener
-        while(frame.isVisible()){
-        	try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
-
+	        JFrame frame = new JFrame();
+	        frame.add(jPanel4);
+	        frame.pack();
+	        frame.setVisible(true);
+	        
+	        //TODO FIX / Add action listener
+	        while(frame.isVisible()){
+	            try {
+	                Thread.sleep(500);
+	            } catch (InterruptedException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            }
+	        }
+	    }
 	}
 	
 	public Output getOutput() {

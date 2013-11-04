@@ -27,6 +27,9 @@ public class Parameters extends Properties {
     private static final String PARAM_SIM_STOPTIME = "SIM_STOPTIME";
     public static final double PARAM_SIM_STOPTIME_DEFAULT = 20;
     
+    private static final String PARAM_SIM_RESULT_GUI = "SIM_RESULT_GUI";
+    public static final boolean PARAM_SIM_RESULT_GUI_DEFAULT = false;
+    
     /**
      * Instantiates a Parameter object with default values.
      */
@@ -155,5 +158,26 @@ public class Parameters extends Properties {
      */
     public void setStoptime(double stoptime) {
         this.setProperty(PARAM_SIM_STOPTIME, ""+stoptime);
+    }
+    
+    /**
+     * @return Whether to show a graph after simulation
+     */
+    public boolean getResultGUI() {
+        boolean result;
+        try {
+            result = Boolean.parseBoolean(this.getProperty(PARAM_SIM_RESULT_GUI, ""+PARAM_SIM_RESULT_GUI_DEFAULT));
+        } catch (NumberFormatException e) {
+            Util.log.warn(PARAM_SIM_RESULT_GUI + " is not a valid integer.");
+            result = PARAM_SIM_RESULT_GUI_DEFAULT;
+        }
+        return result;
+    }
+    
+    /**
+     * @param result Whether to show a graph after simulation
+     */
+    public void setResultGUI(boolean result) {
+        this.setProperty(PARAM_SIM_RESULT_GUI, ""+result);
     }
 }
