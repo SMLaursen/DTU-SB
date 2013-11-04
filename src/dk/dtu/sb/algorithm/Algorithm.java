@@ -8,11 +8,10 @@ import dk.dtu.sb.data.StochasticPetriNet;
 public abstract class Algorithm {
 	
 	protected StochasticPetriNet spn;
-	protected LinkedList<Plot> resultData;
+	protected LinkedList<Plot> resultData = new LinkedList<Plot>();
 	
 	public void setSPN(StochasticPetriNet spn) {
 	    this.spn = spn;
-	    resultData = new LinkedList<Plot>();
 	}
 	
 	public abstract void run(double stoptime);

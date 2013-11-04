@@ -18,12 +18,18 @@ public class Main {
 
     private static final String OPT_CPROP = "cprop";
     private static final String OPT_RPROP = "rprop";
+    
     private static final String OPT_DEBUG_LONG = "debug";
     private static final String OPT_DEBUG_SHORT = "d";
+    
     private static final String OPT_FILE_LONG = "file";
     private static final String OPT_FILE_SHORT = "f";
+    
     private static final String OPT_VERBOSITY_LONG = "verbosity";
     private static final String OPT_VERBOSITY_SHORT = "v";
+    
+    private static final String OPT_GRAPH_LONG = "graph";
+    private static final String OPT_GRAPH_SHORT = "g";
     
     private static final String DESCRIPTION = "DTU-SB v0.1";
     
@@ -55,7 +61,11 @@ public class Main {
         options.addOption(OptionBuilder
                 .withDescription("Enable debug logging")
                 .withLongOpt(OPT_DEBUG_LONG)
-                .create(OPT_DEBUG_SHORT));
+                .create(OPT_DEBUG_SHORT));        
+        options.addOption(OptionBuilder
+                .withDescription("Show graph GUI after simulation")
+                .withLongOpt(OPT_GRAPH_LONG)
+                .create(OPT_GRAPH_SHORT));
         
         if (args.length == 0) {
             HelpFormatter formatter = new HelpFormatter();
@@ -90,14 +100,21 @@ public class Main {
     private static void parseLine(CommandLine line) {
         if (line.hasOption(OPT_CPROP)) {
             createPropertiesFile();
-        } else if (line.hasOption(OPT_RPROP)) {
-            simulate(new Parameters(line.getOptionValue(OPT_RPROP)));            
-        } else if (line.hasOption(OPT_FILE_SHORT)) {
-            Parameters params = new Parameters();
-            params.setFilename(line.getOptionValue(OPT_FILE_SHORT));
-            simulate(params);
         } else {
-            Util.log.info("You have to provide either a properties file as input or specify a file as input.");
+            if (line.hasOption(OPT_RPROP)) {
+                simulate(new Parameters(line.getOptionValue(OPT_RPROP)));            
+            } else if (line.hasOption(OPT_FILE_SHORT)) {
+                Parameters params = new Parameters();
+                params.setFilename(line.getOptionValue(OPT_FILE_SHORT));
+                
+                if (line.hasOption(OPT_GRAPH_SHORT)) {
+                    params.setResultGUI(true);
+                }
+                
+                simulate(params);
+            } else {
+                Util.log.info("You have to provide either a properties file as input or specify a file as input.");
+            }
         }
     }
     
@@ -126,6 +143,12 @@ public class Main {
             }
             params.setStoptime(stoptime);
             
+            boolean resultGUI = Parameters.PARAM_SIM_RESULT_GUI_DEFAULT;
+            if (prompt("Show graph after simulation?", "no").equals("yes")) {
+                resultGUI = true;
+            }
+            params.setResultGUI(resultGUI);
+            
             String filename = prompt("Save as", "sim.props");
             
             params.toFile(filename);
@@ -150,6 +173,11 @@ public class Main {
             // input result of compilation and algorithm to the simulator and run
             Simulator simulator = new Simulator(compiler.compile(), algorithm);
             simulator.simulate();
+            
+            // show graph
+            if (params.getResultGUI()) {
+                simulator.displayResultGUI();
+            }
         } catch (FileNotFoundException e) {
             Util.log.fatal("Input file: " + filename + " was not found.");
         } catch (Exception e) {
