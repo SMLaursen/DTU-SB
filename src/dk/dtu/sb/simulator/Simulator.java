@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -110,8 +111,10 @@ public class Simulator {
 		if (!p.isEmpty()) {
 			XYSeriesCollection dataset = new XYSeriesCollection();
 
+			//For each species
 			for(String s : p.peekFirst().markings.keySet()){
 				XYSeries series = new XYSeries(s);
+				// Run through all plots and add their value
 				for(Plot d : p){
 					series.add(d.time,d.markings.get(s));
 				}
@@ -119,7 +122,7 @@ public class Simulator {
 			}
 			final JFreeChart chart = ChartFactory.createXYLineChart("DTU-SB", "time [s]", "Concentration [molecules]", 
 					dataset, PlotOrientation.VERTICAL, true, true, true);
-
+		
 
 			//Draw smooth lines :
 			//        chart.getXYPlot().setRenderer(new XYSplineRenderer());
@@ -155,8 +158,11 @@ public class Simulator {
 				}
 			});
 			JScrollPane sp = new JScrollPane(list);
-
-			jPanel.add(sp, BorderLayout.EAST);
+			JPanel checkListPanel = new JPanel();
+			checkListPanel.setLayout(new BorderLayout());
+			checkListPanel.add(sp, BorderLayout.CENTER);
+			checkListPanel.add(new JLabel("Show species :  "),BorderLayout.NORTH);
+			jPanel.add(checkListPanel, BorderLayout.EAST);
 
 			JFrame frame = new JFrame();
 			frame.add(jPanel);
@@ -164,17 +170,18 @@ public class Simulator {
 			frame.setVisible(true);
 
 			//TODO FIX?
-					while(frame.isVisible()){
-						try {
-							Thread.sleep(500);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
+			while(frame.isVisible()){
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
-
+	/** Converts strs to an array of CheckAbleItem
+	 * @param strs */
 	private CheckableItem[] createData(Set<String> strs) {
 		int n = 0;
 		CheckableItem[] items = new CheckableItem[strs.size()];
@@ -208,7 +215,7 @@ class CheckListRenderer extends JCheckBox implements ListCellRenderer {
 	}
 }
 
-
+/** Represents a checkbox with text*/
 class CheckableItem {
 	private String str;
 
