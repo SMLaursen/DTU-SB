@@ -1,6 +1,7 @@
 /build
 /javadoc
 /bin
+sim.properties
 jsbml.log
 DTU-SB*jar
 /test/test/simulator/test_simulator.csv

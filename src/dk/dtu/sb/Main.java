@@ -45,7 +45,11 @@ public class Main {
 
         Options options = new Options();
         options.addOption(OPT_CPROP, false, "Create properties file");
-        options.addOption(OPT_RPROP, false, "Read properties file");
+        options.addOption(OptionBuilder
+                .hasArg()
+                .withArgName("file")
+                .withDescription("Read properties file")
+                .create(OPT_RPROP));
         options.addOption(OptionBuilder
                 .hasArg()
                 .withArgName("file")
@@ -125,8 +129,8 @@ public class Main {
         Parameters params = new Parameters();
         
         try {            
-            params.setFilename(prompt("Input filename", Parameters.PARAM_FILENAME_DEFAULT));
-            params.setParserClassName(prompt("Parser class", Parameters.PARAM_PARSER_DEFAULT));
+            params.setFilename(prompt("Input filename", Parameters.PARAM_INPUT_FILENAME_DEFAULT));
+            params.setParserClassName(prompt("Parser class", Parameters.PARAM_INPUT_PARSER_DEFAULT));
             params.setAlgorithmClassName(prompt("Algorithm class", Parameters.PARAM_SIM_ALGORITHM_DEFAULT));  
             
             int iterations = Parameters.PARAM_SIM_ITERATIONS_DEFAULT;
@@ -149,7 +153,7 @@ public class Main {
             }
             params.setResultGUI(resultGUI);
             
-            String filename = prompt("Save as", "sim.props");
+            String filename = prompt("Save as", "sim.properties");
             
             params.toFile(filename);
         } catch (IOException e) {

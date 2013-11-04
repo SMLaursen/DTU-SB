@@ -64,4 +64,11 @@ public class MainTest extends StdOutTester {
         String[] args = new String[]{"-d","-f=test/test/main/simple.xml"};
         Main.main(args);     
     }
+    
+    @Test
+    public void testSimpleProperties() {
+        System.setErr(stderr);
+        String[] args = new String[]{"-d", "-rprop=test/test/main/simple.properties"};
+        Main.main(args);     
+    }
 }
