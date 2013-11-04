@@ -15,7 +15,7 @@ public class Parameters extends Properties {
     public static final String PARAM_PARSER_DEFAULT = "sbml";
     
     public static final String PARAM_SIM_ITERATIONS = "ITERATIONS";
-    public static final int PARAM_SIM_ITERATIONS_DEFAULT = 10;
+    public static final int PARAM_SIM_ITERATIONS_DEFAULT = 1;
     
     public static final String PARAM_SIM_STOPTIME = "STOPTIME";
     public static final double PARAM_SIM_STOPTIME_DEFAULT = 20;

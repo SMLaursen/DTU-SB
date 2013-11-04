@@ -1,25 +1,22 @@
 package dk.dtu.sb.simulator.algorithm;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Random;
 
 import dk.dtu.sb.Util;
+import dk.dtu.sb.data.Plot;
 import dk.dtu.sb.data.Reaction;
 
 public class GillespieAlgorithm extends Algorithm {
-	HashMap<String,Integer> currentMarkings;
+	private HashMap<String,Integer> currentMarkings;
 	
 	//Direct Method (First reaction may be faster)
 	public void run(double stoptime){
 		
 		//Initialize
-		currentMarkings = new HashMap<String,Integer>();
-		currentMarkings.putAll(spn.getInitialMarkings());
-		
-		double time = 0;
+		double time = 0.0;
 		int step = 0;
-		
-		Random rand = new Random();
 		
 		double a_0;
 		double r_1;
@@ -27,14 +24,20 @@ public class GillespieAlgorithm extends Algorithm {
 		double tau;
 		Reaction R_mu;
 		
+		Random rand = new Random();
+		
+		currentMarkings = new HashMap<String,Integer>();
+		currentMarkings.putAll(spn.getInitialMarkings());
+		resultData.add(new Plot(time,currentMarkings));
+	
 		while(time < stoptime){
 			//Step 1
 			a_0 = calculate_a0();
-			
 			if(a_0 == 0.0){
 				//Nothing more to be done
 				break;
 			}
+			
 			//Step 2
 			r_1 = rand.nextDouble();
 			r_2 = rand.nextDouble();
@@ -46,6 +49,9 @@ public class GillespieAlgorithm extends Algorithm {
 			time += tau;
 			updateMarkings(R_mu);
 			step++;
+			
+			//Record data values
+			resultData.add(new Plot(time,currentMarkings));
 			Util.log.info(time +" :" +currentMarkings);
 		}
 	}
