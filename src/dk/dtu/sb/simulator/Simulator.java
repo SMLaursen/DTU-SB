@@ -2,31 +2,24 @@ package dk.dtu.sb.simulator;
 
 import java.awt.BorderLayout;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Properties;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.xy.XYSplineRenderer;
-import org.jfree.data.xy.DefaultXYDataset;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.data.Plot;
+
+import dk.dtu.sb.algorithm.Algorithm;
+import dk.dtu.sb.algorithm.GillespieAlgorithm;
 import dk.dtu.sb.data.StochasticPetriNet;
 import dk.dtu.sb.output.Output;
-import dk.dtu.sb.simulator.algorithm.Algorithm;
-import dk.dtu.sb.simulator.algorithm.GillespieAlgorithm;
 
 public class Simulator {
 
@@ -77,27 +70,6 @@ public class Simulator {
 		this.params = params;
 	}
 
-	private int getIterations() {
-		int iterations;
-		try {
-			iterations = Integer.parseInt(this.params.getProperty(Parameters.PARAM_SIM_ITERATIONS, ""+Parameters.PARAM_SIM_ITERATIONS_DEFAULT));
-		} catch (NumberFormatException e) {
-			iterations = Parameters.PARAM_SIM_ITERATIONS_DEFAULT;
-			Util.log.warn("ITERATION specified in the properties file was not a number.");
-		}
-		return iterations;
-	}
-
-	private double getStoptime() {
-		double stoptime;
-		try {
-			stoptime = Double.parseDouble(this.params.getProperty(Parameters.PARAM_SIM_STOPTIME, ""+Parameters.PARAM_SIM_STOPTIME_DEFAULT));
-		} catch (NumberFormatException e) {
-			stoptime = Parameters.PARAM_SIM_STOPTIME_DEFAULT;
-			Util.log.warn("STOPTIME specified in the properties file was not a number.");
-		}
-		return stoptime;
-	}
 
 	/**
 	 * Simulates using the given stoptime and no of iterations
@@ -110,8 +82,8 @@ public class Simulator {
 
 		long startTime = System.currentTimeMillis();
 
-		for (int i = 0; i < getIterations(); i++) {
-			algorithm.run(getStoptime());
+		for (int i = 0; i < params.getIterations(); i++) {
+			algorithm.run(params.getStoptime());
 		}
 
 		long endTime = System.currentTimeMillis();
@@ -163,4 +135,5 @@ public class Simulator {
 	public Output getOutput() {
 		return null;
 	}
+
 }

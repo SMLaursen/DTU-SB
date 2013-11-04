@@ -1,4 +1,4 @@
-package dk.dtu.sb.simulator.algorithm;
+package dk.dtu.sb.algorithm;
 
 import java.util.LinkedList;
 
