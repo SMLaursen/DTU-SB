@@ -1,5 +1,6 @@
 /build
 /javadoc
 /bin
+sim.properties
 jsbml.log
 DTU-SB*jar
