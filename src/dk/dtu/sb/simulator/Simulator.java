@@ -5,7 +5,12 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -104,8 +109,51 @@ public class Simulator {
 
 		Util.log.info("Simulation ended in: "+(endTime-startTime)+"ms");
 	}
+	
+	/**Outputs the simulation results in CSV format to fileURL.
+	 * @param fileURL
+	 * */
+	public void writeCSVFile(String fileURL){
+		LinkedList<Plot> p = algorithm.getPlotData();
+		if(p.isEmpty()){
+			Util.log.error("No data to write");
+		}else{
+			try {
+				File f = new File(fileURL);
+				if(!f.exists()){
+					f.createNewFile();	
+				}
+				FileWriter fw = new FileWriter(f.getAbsolutePath());
+				BufferedWriter bw = new BufferedWriter(fw);
+				//Mappings between index and name
+				HashMap<Integer,String> h = new HashMap<Integer,String>();
+				int index = 0;
+				
+				//Write header
+				bw.write("time");
+				for(String i : p.peekFirst().markings.keySet()){
+					bw.write(","+i);
+					h.put(index, i);
+					index++;
+				}
+				bw.write("\n");
+				//Write Content
+				for(Plot pl : p){
+					bw.write(String.valueOf(pl.time));
+					for(int i = 0; i < h.size(); i++){
+						bw.write(","+pl.markings.get(h.get(i)));
+					}
+					bw.write("\n");
+				}
+				bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
-
+	/**Outputs the simulation results to a GUI using JFreeChart*/
 	public void displayResultGUI(){
 		LinkedList<Plot> p = algorithm.getPlotData();
 		if (!p.isEmpty()) {
@@ -122,7 +170,7 @@ public class Simulator {
 			}
 			final JFreeChart chart = ChartFactory.createXYLineChart("DTU-SB", "time [s]", "Concentration [molecules]", 
 					dataset, PlotOrientation.VERTICAL, true, true, true);
-		
+
 
 			//Draw smooth lines :
 			//        chart.getXYPlot().setRenderer(new XYSplineRenderer());
