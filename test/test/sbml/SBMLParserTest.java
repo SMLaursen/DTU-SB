@@ -2,7 +2,9 @@ package test.sbml;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 import org.junit.Test;
 
@@ -45,10 +47,26 @@ public class SBMLParserTest {
         
         parser.readFile("test/test/sbml/neg_feedback_wo_read.xml");
         
-        StochasticPetriNet spn = parser.parse();
-        
+        StochasticPetriNet spn = parser.parse();        
+    }
+    
+    // http://sandbox.kidstrythisathome.com/erdos/
+    @Test
+    public void testBioModelRepressilator() throws Exception {
+        SBMLParser parser = new SBMLParser();
+        parser.readFile("test/test/sbml/BIOMD0000000012.xml");
+        StochasticPetriNet spn = parser.parse(); 
         System.out.println(spn.toGraphviz());
+
+        /*File dot = File.createTempFile("graph", ".dot");
+        FileOutputStream out = new FileOutputStream(dot);
+        out.write(spn.toGraphviz().getBytes());
+        out.close();
         
+        Runtime rt = Runtime.getRuntime();
+        String[] args = {"/usr/local/bin/neato", "-Tpdf", dot.getAbsolutePath(), "-o", "test/test/sbml/BIOMD0000000012.pdf"};
+        Process p = rt.exec(args);
+        p.waitFor();*/                
     }
 
 }

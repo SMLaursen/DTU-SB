@@ -1,6 +1,7 @@
 package dk.dtu.sb.parser;
 
 import org.sbml.jsbml.Model;
+import org.sbml.jsbml.ModifierSpeciesReference;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.Species;
@@ -23,12 +24,19 @@ public class SBMLParser extends Parser {
         for (org.sbml.jsbml.Reaction r : model.getListOfReactions()) {
             // r.getKineticLaw();
             Reaction newReaction = new Reaction(r.getId(), 1.0);
+            
+            for (ModifierSpeciesReference sr : r.getListOfModifiers()) {
+                newReaction.addReactant(sr.getSpecies());
+            }
+            
             for (SpeciesReference sr : r.getListOfReactants()) {
                 newReaction.addReactant(sr.getSpecies());
             }
+            
             for (SpeciesReference sr : r.getListOfProducts()) {
                 newReaction.addProduct(sr.getSpecies());
             }
+                        
             spn.addReaction(newReaction);
         }
         

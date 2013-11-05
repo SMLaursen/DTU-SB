@@ -5,3 +5,4 @@ sim.properties
 jsbml.log
 DTU-SB*jar
 /test/test/simulator/test_simulator.csv
+test/test/sbml/BIOMD0000000012.pdf
