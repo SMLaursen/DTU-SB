@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.sun.corba.se.spi.orb.ParserImplTableBase;
-
 import dk.dtu.sb.data.StochasticPetriNet;
 
 /**
