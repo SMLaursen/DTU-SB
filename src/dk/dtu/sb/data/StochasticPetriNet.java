@@ -10,16 +10,15 @@ import java.util.Map;
  */
 public class StochasticPetriNet {
 
-    private Map<String, Reaction> reactions;
-    private Map<String, Integer> initialMarkings;
-
     /**
-	 * 
-	 */
-    public StochasticPetriNet() {
-        reactions = new HashMap<String, Reaction>();
-        initialMarkings = new HashMap<String, Integer>();
-    }
+     * 
+     */
+    private Map<String, Reaction> reactions = new HashMap<String, Reaction>();
+    
+    /**
+     * 
+     */
+    private Map<String, Integer> initialMarkings = new HashMap<String, Integer>();
 
     /**
      * Adds a reaction to the SPN.
@@ -27,10 +26,10 @@ public class StochasticPetriNet {
      * @param r
      */
     public void addReaction(Reaction r) {
-        if (reactions.containsKey(r.getName())) {
+        if (reactions.containsKey(r.getId())) {
             throw new RuntimeException("Reaction " + r + " already defined.");
         }
-        reactions.put(r.getName(), r);
+        reactions.put(r.getId(), r);
     }
 
     /**
@@ -63,20 +62,20 @@ public class StochasticPetriNet {
     /**
      * Sets the initial markings. Replaces old values.
      * 
-     * @param reactant
+     * @param speciesId
      * @param value
      */
-    public void setInitialMarkings(String reactant, Integer value) {
-        initialMarkings.put(reactant, value);
+    public void setInitialMarkings(String speciesId, Integer value) {
+        initialMarkings.put(speciesId, value);
     }
 
     /**
      * 
-     * @param reactant
+     * @param speciesId
      * @return
      */
-    public int getInitialMarkings(String reactant) {
-        return initialMarkings.get(reactant);
+    public int getInitialMarkings(String speciesId) {
+        return initialMarkings.get(speciesId);
     }
 
     /**
@@ -94,39 +93,32 @@ public class StochasticPetriNet {
      */
     public String toGraphviz() {
         // Use http://sandbox.kidstrythisathome.com/erdos/
-        HashSet<String> transitions = new HashSet<String>();
         String graph = "digraph G {\n";
 
         for (Reaction reaction : reactions.values()) {
 
+            graph += "\"" + reaction.getLabel() + " [" + reaction.getRate()
+                    + "]\"" + " [shape=box];\n";
+
             // Process the reactants
-            for (String reactant : reaction.getReactants().keySet()) {
-
-                // Add transitions only once
-                if (!transitions.contains(reaction.getName())) {
-                    graph += "\"" + reaction.getName() + " ["
-                            + reaction.getRate() + "]\"" + " [shape=box];\n";
-                    transitions.add(reaction.getName());
-                }
-
-                graph += reactant + " -> " + "\"" + reaction.getName() + " ["
-                        + reaction.getRate() + "]\"";
+            for (Reactant reactant : reaction.getReactants().values()) {
+                graph += "\"" + reactant.getLabel() + "\" -> " + "\""
+                        + reaction.getLabel() + " [" + reaction.getRate()
+                        + "]\"";
                 // Set multiplicity on edges
-                if (reaction.getReactants().get(reactant) > 1) {
-                    graph += " [label = "
-                            + reaction.getReactants().get(reactant) + "]";
+                if (reactant.getMultiplicity() > 1) {
+                    graph += " [label = \"" + reactant.getMultiplicity() + "\"]";
                 }
                 graph += ";\n";
             }
 
             // Process the products
-            for (String product : reaction.getProducts().keySet()) {
-                graph += "\"" + reaction.getName() + " [" + reaction.getRate()
-                        + "]\"" + " -> " + product;
+            for (Product product : reaction.getProducts().values()) {
+                graph += "\"" + reaction.getLabel() + " [" + reaction.getRate()
+                        + "]\"" + " -> \"" + product.getLabel() +"\"";
                 // Set multiplicity on edges
-                if (reaction.getProducts().get(product) > 1) {
-                    graph += " [label = " + reaction.getProducts().get(product)
-                            + "]";
+                if (product.getMultiplicity() > 1) {
+                    graph += " [label = \"" + product.getMultiplicity() + "\"]";
                 }
                 graph += ";\n";
             }

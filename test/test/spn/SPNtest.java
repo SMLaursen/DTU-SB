@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import dk.dtu.sb.data.Product;
+import dk.dtu.sb.data.Reactant;
 import dk.dtu.sb.data.Reaction;
 import dk.dtu.sb.data.StochasticPetriNet;
 
@@ -14,16 +16,16 @@ public class SPNtest {
 		StochasticPetriNet spn = new StochasticPetriNet();
 		//Reaction 1
 		Reaction r1 = new Reaction("Composition",0.9);
-		r1.addReactant("A",2);
-		r1.addReactant("B");
-		r1.addProduct("AB");
+		r1.addReactant(new Reactant("A",2));
+		r1.addReactant(new Reactant("B"));
+		r1.addProduct(new Product("AB"));
 		spn.addReaction(r1);
 		
 		//Reaction 2
 		Reaction r2 = new Reaction("Decomposition",0.6);
-		r2.addReactant("AB");
-		r2.addProduct("A");
-		r2.addProduct("B");
+		r2.addReactant(new Reactant("AB"));
+		r2.addProduct(new Product("A"));
+		r2.addProduct(new Product("B"));
 		spn.addReaction(r2);
 		
 		// Set initial markings

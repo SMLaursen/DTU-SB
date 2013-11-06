@@ -4,67 +4,125 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Represents a transition in the {@link StochasticPetriNet}.
  */
 public class Reaction {
     
+    /**
+     * The unique id of this reaction.
+     */
+    private String id;
+    
+    /**
+     * A human-readable label for this reaction.
+     */
     private String name;
-    private Map<String, Integer> reactants;
-    private Map<String, Integer> products;
+    
+    /**
+     * 
+     */
     private double rate;
+    
+    /**
+     * 
+     */
     private double propensity;
-
-    public Reaction(String name, double rate) {
+    
+    /**
+     * 
+     */
+    private Map<String, Reactant> reactants = new HashMap<String, Reactant>();
+    
+    /**
+     * 
+     */
+    private Map<String, Product> products = new HashMap<String, Product>();
+    
+    /**
+     * 
+     * @param id
+     * @param rate
+     */
+    public Reaction(String id, double rate) {
+        this(id, id, rate);
+    }
+    
+    /**
+     * 
+     * @param id
+     * @param name
+     * @param rate
+     */
+    public Reaction(String id, String name, double rate) {
+        this.id = id;
         this.name = name;
-        reactants = new HashMap<String, Integer>();
-        products = new HashMap<String, Integer>();
         this.rate = rate;
     }
 
-    public void addReactant(String reactant, int multiplicity) {
-        reactants.put(reactant, multiplicity);
+    public void addReactant(Reactant reactant) {
+        reactants.put(reactant.getId(), reactant);
     }
 
-    public void addReactant(String reactant) {
-        addReactant(reactant, 1);
+    public Reactant removeReactant(String reactantId) {
+        return reactants.remove(reactantId);
     }
 
-    public int removeReactant(String reactant) {
-        return reactants.remove(reactant);
-    }
-
-    public Map<String, Integer> getReactants() {
+    public Map<String, Reactant> getReactants() {
         return reactants;
     }
 
-    public void addProduct(String product, int multiplicity) {
-        products.put(product, multiplicity);
+    public void addProduct(Product product) {
+        products.put(product.getId(), product);
     }
 
-    public void addProduct(String product) {
-        addProduct(product, 1);
+    public Product removeProduct(String productId) {
+        return products.remove(productId);
     }
 
-    public int removeProduct(String product) {
-        return products.remove(product);
-    }
-
-    public Map<String, Integer> getProducts() {
+    public Map<String, Product> getProducts() {
         return products;
     }
 
+    /**
+     * See {@link #name}.
+     */
     public String getName() {
         return name;
     }
+    
+    /**
+     * See {@link #id}.
+     */
+    public String getId() {
+        return id;
+    }
+    
+    /**
+     * Can be used to represent the reaction in e.g. graphs.
+     * 
+     * @return {@link #name} if present, else {@link #id}. 
+     */
+    public String getLabel() {
+        return name != null ? name : id;
+    }
 
+    /**
+     * See {@link #rate}.
+     */
     public double getRate() {
         return rate;
     }
 
+    /**
+     * See {@link #propensity}.
+     */
     public void setPropensity(double propensity) {
         this.propensity = propensity;
     }
 
+    /**
+     * See {@link #propensity}.
+     */
     public double getPropensity() {
         return propensity;
     }

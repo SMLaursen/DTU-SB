@@ -12,6 +12,8 @@ import org.sbml.jsbml.SpeciesReference;
 import org.sbml.jsbml.test.gui.JSBMLvisualizer;
 
 import dk.dtu.sb.Util;
+import dk.dtu.sb.data.Product;
+import dk.dtu.sb.data.Reactant;
 import dk.dtu.sb.data.Reaction;
 import dk.dtu.sb.data.StochasticPetriNet;
 
@@ -63,19 +65,21 @@ public class SBMLParser extends Parser {
     private void parseReactions() {
         for (org.sbml.jsbml.Reaction reaction : model.getListOfReactions()) {
             
-            String reactionName = !reaction.getName().isEmpty() ? reaction.getName() : reaction.getId();
-            Reaction newReaction = new Reaction(reactionName, 1.0);
+            Reaction newReaction = new Reaction(reaction.getId(), reaction.getName(), 1.0);
             
             for (ModifierSpeciesReference sr : reaction.getListOfModifiers()) {
-                newReaction.addReactant(sr.getSpecies());
+                Species s = sr.getSpeciesInstance();
+                newReaction.addReactant(new Reactant(s.getId(), s.getName()));
             }
             
             for (SpeciesReference sr : reaction.getListOfReactants()) {
-                newReaction.addReactant(sr.getSpecies());
+                Species s = sr.getSpeciesInstance();
+                newReaction.addReactant(new Reactant(s.getId(), s.getName()));
             }
             
             for (SpeciesReference sr : reaction.getListOfProducts()) {
-                newReaction.addProduct(sr.getSpecies());
+                Species s = sr.getSpeciesInstance();
+                newReaction.addProduct(new Product(s.getId(), s.getName()));
             }
                         
             spn.addReaction(newReaction);
