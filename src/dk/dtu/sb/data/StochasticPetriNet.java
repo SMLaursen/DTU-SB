@@ -2,7 +2,6 @@ package dk.dtu.sb.data;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -23,33 +22,33 @@ public class StochasticPetriNet {
     /**
      * Adds a reaction to the SPN.
      * 
-     * @param r
+     * @param reaction
      */
-    public void addReaction(Reaction r) {
-        if (reactions.containsKey(r.getId())) {
-            throw new RuntimeException("Reaction " + r + " already defined.");
+    public void addReaction(Reaction reaction) {
+        if (reactions.containsKey(reaction.getId())) {
+            throw new RuntimeException("Reaction with ID " + reaction.getId() + " already defined.");
         }
                 
-        reactions.put(r.getId(), r);
+        reactions.put(reaction.getId(), reaction);
     }
 
     /**
      * Removes and returns the reaction with the given name
      * 
-     * @param r
+     * @param reactionId
      * @return
      */
-    public Reaction removeReaction(String r) {
-        return reactions.remove(r);
+    public Reaction removeReaction(String reactionId) {
+        return reactions.remove(reactionId);
     }
 
     /**
      * 
-     * @param r
+     * @param reactionId
      * @return
      */
-    public Reaction getReaction(String r) {
-        return reactions.get(r);
+    public Reaction getReaction(String reactionId) {
+        return reactions.get(reactionId);
     }
 
     /**
@@ -66,7 +65,7 @@ public class StochasticPetriNet {
      * @param speciesId
      * @param value
      */
-    public void setInitialMarkings(String speciesId, Integer value) {
+    public void setInitialMarking(String speciesId, Integer value) {
         initialMarkings.put(speciesId, value);
     }
 
@@ -140,12 +139,11 @@ public class StochasticPetriNet {
     }
 
     public String toString() {
-        String s = "Reactions :\n";
-        for (Reaction r : reactions.values()) {
-            s += r.toString() + "\n";
+        String output = "Reactions :\n";
+        for (Reaction reaction : reactions.values()) {
+            output += reaction.toString() + "\n";
         }
-        s += "\n initial markings :";
-        s += initialMarkings;
-        return s;
+        output += "\n initial markings :" + initialMarkings;
+        return output;
     }
 }

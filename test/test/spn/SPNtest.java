@@ -30,9 +30,9 @@ public class SPNtest {
 		spn.addReaction(r2);
 		
 		// Set initial markings
-		spn.setInitialMarkings("A", 1);
-		spn.setInitialMarkings("B", 1);
-		spn.setInitialMarkings("AB", 0);
+		spn.setInitialMarking("A", 1);
+		spn.setInitialMarking("B", 1);
+		spn.setInitialMarking("AB", 0);
 		
 		assertTrue(spn.getReaction("Composition").getProducts().containsKey("AB"));
 		assertTrue(spn.getReaction("Composition").getReactants().containsKey("A"));

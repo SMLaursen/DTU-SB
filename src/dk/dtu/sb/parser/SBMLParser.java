@@ -53,7 +53,6 @@ public class SBMLParser extends Parser {
                 model = document.getModel();
                 return true;
             } catch (XMLStreamException e) {
-                System.out.println(Util.log);
                 Util.log.fatal("An error occurred when parsing the SBML file: "
                         + e.getMessage()
                         + ". Expect the StochasticPetriNet to be incomplete.");
@@ -89,7 +88,7 @@ public class SBMLParser extends Parser {
 
     private void parseMarkings() {
         for (Species specie : model.getListOfSpecies()) {
-            spn.setInitialMarkings(specie.getId(),
+            spn.setInitialMarking(specie.getId(),
                     (int) specie.getInitialAmount());
         }
     }
