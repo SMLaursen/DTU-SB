@@ -4,9 +4,8 @@ import java.util.HashMap;
 
 import org.apache.commons.logging.impl.SimpleLog;
 
-import dk.dtu.sb.data.Product;
-import dk.dtu.sb.data.Reactant;
 import dk.dtu.sb.data.Reaction;
+import dk.dtu.sb.data.Species;
 
 public class Util {
 
@@ -24,7 +23,7 @@ public class Util {
     public static void updateMarkings(Reaction reaction,
             HashMap<String, Integer> previousMarkings) {
         // Reactants
-        for (Reactant reactant : reaction.getReactants().values()) {
+        for (Species reactant : reaction.getReactants().values()) {
             int multiplicity = reactant.getMultiplicity();
             int old = previousMarkings.get(reactant.getId());
 
@@ -37,7 +36,7 @@ public class Util {
         }
 
         // Products
-        for (Product product : reaction.getProducts().values()) {
+        for (Species product : reaction.getProducts().values()) {
             int multiplicity = product.getMultiplicity();
             int old = previousMarkings.get(product.getId());
             

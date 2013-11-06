@@ -7,51 +7,58 @@ import java.util.Map;
  * Represents a transition in the {@link StochasticPetriNet}.
  */
 public class Reaction {
-    
+
     /**
      * The unique id of this reaction.
      */
     private String id;
-    
+
     /**
      * A human-readable label for this reaction.
      */
     private String name;
-    
+
     /**
      * 
      */
     private double rate;
-    
+
     /**
      * 
      */
     private double propensity;
-    
+
     /**
-     * 
+     * The reactants in this reactions.
      */
-    private Map<String, Reactant> reactants = new HashMap<String, Reactant>();
-    
+    private Map<String, Species> reactants = new HashMap<String, Species>();
+
     /**
-     * 
+     * The products in this reaction.
      */
-    private Map<String, Product> products = new HashMap<String, Product>();
-    
+    private Map<String, Species> products = new HashMap<String, Species>();
+
     /**
+     * Constructs a reaction.
      * 
      * @param id
+     *            See {@link #id}.
      * @param rate
+     *            See {@link #rate}.
      */
     public Reaction(String id, double rate) {
         this(id, id, rate);
     }
-    
+
     /**
+     * Constructs a reaction.
      * 
      * @param id
+     *            See {@link #id}.
      * @param name
+     *            See {@link #name}.
      * @param rate
+     *            See {@link #rate}.
      */
     public Reaction(String id, String name, double rate) {
         this.id = id;
@@ -59,27 +66,63 @@ public class Reaction {
         this.rate = rate;
     }
 
-    public void addReactant(Reactant reactant) {
+    /**
+     * Add reactant to this reaction.
+     * 
+     * @param reactant
+     *            See {@link Species}.
+     */
+    public void addReactant(Species reactant) {
         reactants.put(reactant.getId(), reactant);
     }
 
-    public Reactant removeReactant(String reactantId) {
+    /**
+     * Remove the reactant from the reactants of this reaction.
+     * 
+     * @param reactantId
+     *            The unique id of the reactant.
+     * @return The removed {@link Species}.
+     */
+    public Species removeReactant(String reactantId) {
         return reactants.remove(reactantId);
     }
 
-    public Map<String, Reactant> getReactants() {
+    /**
+     * Get all reactants of this reaction.
+     * 
+     * @return
+     */
+    public Map<String, Species> getReactants() {
         return reactants;
     }
 
-    public void addProduct(Product product) {
+    /**
+     * Add product to this reaction.
+     * 
+     * @param product
+     *            See {@link Species}.
+     */
+    public void addProduct(Species product) {
         products.put(product.getId(), product);
     }
 
-    public Product removeProduct(String productId) {
+    /**
+     * Remove product from the products of this reaction.
+     * 
+     * @param productId
+     *            The unique id of the product.
+     * @return The removed {@link Species}.
+     */
+    public Species removeProduct(String productId) {
         return products.remove(productId);
     }
 
-    public Map<String, Product> getProducts() {
+    /**
+     * Get all products of this reaction.
+     * 
+     * @return
+     */
+    public Map<String, Species> getProducts() {
         return products;
     }
 
@@ -89,18 +132,18 @@ public class Reaction {
     public String getName() {
         return name;
     }
-    
+
     /**
      * See {@link #id}.
      */
     public String getId() {
         return id;
     }
-    
+
     /**
      * Can be used to represent the reaction in e.g. graphs.
      * 
-     * @return {@link #name} if present, else {@link #id}. 
+     * @return {@link #name} if present, else {@link #id}.
      */
     public String getLabel() {
         return name != null ? name : id;

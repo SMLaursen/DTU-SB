@@ -9,10 +9,11 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import test.StdOutTester;
 import dk.dtu.sb.data.StochasticPetriNet;
 import dk.dtu.sb.parser.SBMLParser;
 
-public class SBMLParserTest {
+public class SBMLParserTest extends StdOutTester {
     
     @Test
     public void testSimple() throws Exception {
@@ -68,7 +69,9 @@ public class SBMLParserTest {
     public void testMalformedInput() throws FileNotFoundException, IOException {
         SBMLParser parser = new SBMLParser();
         parser.readFile("test/test/parser/malformed.xml");
-        parser.parse(); 
+        parser.parse();
+        
+        assertTrue(err.toString().contains("An error occurred when parsing the SBML file:"));
     }
 
 }

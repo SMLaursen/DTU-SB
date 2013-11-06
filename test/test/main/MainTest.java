@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.apache.commons.logging.impl.SimpleLog;
 import org.junit.Test;
 
+import test.StdOutTester;
 import dk.dtu.sb.Main;
 import dk.dtu.sb.Util;
 
