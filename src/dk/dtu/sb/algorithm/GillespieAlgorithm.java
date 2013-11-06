@@ -45,8 +45,7 @@ public class GillespieAlgorithm extends Algorithm {
             r_1 = rand.nextDouble();
             r_2 = rand.nextDouble();
             tau = ((1.0 / a_0) * Math.log(1.0 / r_1));
-            Util.log.info("a_0 : " + a_0 + "    r_1 :" + r_1 + "     tau :"
-                    + tau);
+            Util.log.debug("a_0 : " + a_0 + "    r_1 :" + r_1 + "     tau :"+ tau);
             R_mu = findReaction(a_0 * r_2);
 
             // Step 3
@@ -56,7 +55,7 @@ public class GillespieAlgorithm extends Algorithm {
 
             // Record time and R_u
             resultData.add(new ReactionEvent(time, R_mu));
-            Util.log.info(time + " :" + currentMarkings);
+            Util.log.debug(time + " :" + currentMarkings);
         }
     }
 

@@ -23,7 +23,9 @@ public abstract class Output {
      * @param data
      */
     public void setData(OutputData o) {
-        Collections.sort(o.plotData, new Comparator<ReactionEvent>() {
+        
+    	//Sort on times
+    	Collections.sort(o.plotData, new Comparator<ReactionEvent>() {
             @Override
             public int compare(ReactionEvent r1, ReactionEvent r2) {
                 return Double.compare(r1.time, r2.time);
@@ -39,9 +41,10 @@ public abstract class Output {
     
         data.add(new Plot(0,marking));
         
+        //TODO : very inefficient
+        
         // Create PlotData from the OutputData
         for(ReactionEvent re : o.plotData){
-        	System.out.println(marking+"   "+re);
         	Util.updateMarkings(re.reaction, marking);
         	data.add(new Plot(re.time,marking));
         }

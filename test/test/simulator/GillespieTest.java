@@ -1,8 +1,10 @@
 package test.simulator;
 
+import org.apache.commons.logging.impl.SimpleLog;
 import org.junit.Test;
 
 import dk.dtu.sb.Parameters;
+import dk.dtu.sb.Util;
 import dk.dtu.sb.algorithm.GillespieAlgorithm;
 import dk.dtu.sb.output.CSV;
 import dk.dtu.sb.output.GraphGUI;
@@ -23,6 +25,8 @@ public class GillespieTest {
         GillespieAlgorithm algorithm = new GillespieAlgorithm();
         Parameters p = new Parameters();
         p.setIterations(10);
+        p.setStoptime(7);
+        Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
         Simulator simulator = new Simulator(parser.parse(), algorithm, p);
         simulator.simulate();
 
