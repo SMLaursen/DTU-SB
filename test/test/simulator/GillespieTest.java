@@ -2,6 +2,7 @@ package test.simulator;
 
 import org.junit.Test;
 
+import dk.dtu.sb.Parameters;
 import dk.dtu.sb.algorithm.GillespieAlgorithm;
 import dk.dtu.sb.output.CSV;
 import dk.dtu.sb.output.GraphGUI;
@@ -20,7 +21,9 @@ public class GillespieTest {
         }
 
         GillespieAlgorithm algorithm = new GillespieAlgorithm();
-        Simulator simulator = new Simulator(parser.parse(), algorithm);
+        Parameters p = new Parameters();
+        p.setIterations(10);
+        Simulator simulator = new Simulator(parser.parse(), algorithm, p);
         simulator.simulate();
 
         GraphGUI graph = new GraphGUI();

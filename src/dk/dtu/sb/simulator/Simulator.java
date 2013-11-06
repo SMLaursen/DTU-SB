@@ -1,13 +1,11 @@
 package dk.dtu.sb.simulator;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
-
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.algorithm.GillespieAlgorithm;
-import dk.dtu.sb.data.Plot;
+import dk.dtu.sb.data.OutputData;
 import dk.dtu.sb.data.StochasticPetriNet;
 
 public class Simulator {
@@ -85,8 +83,8 @@ public class Simulator {
 	 * 
 	 * @return
 	 */
-	public LinkedList<Plot> getOutputData() {
-		return algorithm.getPlotData();
+	public OutputData getOutputData() {
+		return new OutputData(algorithm.getPlotData(),spn.getInitialMarkings(),params.getIterations());
 	}
 
 }

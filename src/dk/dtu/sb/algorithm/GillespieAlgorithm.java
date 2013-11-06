@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 import dk.dtu.sb.Util;
-import dk.dtu.sb.data.Plot;
 import dk.dtu.sb.data.Reaction;
+import dk.dtu.sb.data.ReactionEvent;
 
 public class GillespieAlgorithm extends Algorithm {
 	private HashMap<String,Integer> currentMarkings;
@@ -27,7 +27,6 @@ public class GillespieAlgorithm extends Algorithm {
 		
 		currentMarkings = new HashMap<String,Integer>();
 		currentMarkings.putAll(spn.getInitialMarkings());
-		resultData.add(new Plot(time,currentMarkings));
 	
 		while(time < stoptime){
 			//Step 1
@@ -46,37 +45,16 @@ public class GillespieAlgorithm extends Algorithm {
 					
 			//Step 3
 			time += tau;
-			updateMarkings(R_mu);
+			Util.updateMarkings(R_mu, currentMarkings);
 			step++;
 			
-			//Record data values
-			resultData.add(new Plot(time,currentMarkings));
+			//Record time and R_u
+			resultData.add(new ReactionEvent(time,R_mu));
 			Util.log.info(time +" :" +currentMarkings);
 		}
 	}
 	
-	//TODO determine if these should go here. They are general but Gillespie specific!
-	
-	/** Executes the reaction and updates the currentMarkings*/
-	private void updateMarkings(Reaction r){
-		//Reactants
-		for(String s : r.getReactants().keySet()){
-			int multiplicity = r.getReactants().get(s);
-			int old = currentMarkings.get(s);
-			if(old < multiplicity){
-				throw new RuntimeException("ERROR : performing update with fewer tokens than required");
-			}
-			//Overwrite old value with updated
-			currentMarkings.put(s, old-multiplicity);
-		}
-		//Products
-		for(String s : r.getProducts().keySet()){
-			int multiplicity = r.getProducts().get(s);
-			int old = currentMarkings.get(s);
-			//Overwrite old value with updated
-			currentMarkings.put(s, old+multiplicity);
-		}
-	}
+	//TODO determine if these should go here. They are general but Gillespie specific!	
 	
 	/**Returns a reaction that fulfills:
 	 * \Sum_{v=1}^{mu-1} a_v < val < \Sum_{v=1}^{mu} a_v*/
