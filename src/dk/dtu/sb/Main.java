@@ -36,6 +36,10 @@ public class Main {
     
     private static BufferedReader cli = null;
 
+    /**
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
         Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
         setupCli(args);
@@ -187,8 +191,8 @@ public class Main {
             }
         } catch (FileNotFoundException e) {
             Util.log.fatal("Input file: " + filename + " was not found.");
-        } catch (Exception e) {
-            Util.log.fatal("Simulation error:", e);
+        } catch (IOException e) {
+            Util.log.fatal("An error occurred when reading the content of " + filename);
         }
     }
 
