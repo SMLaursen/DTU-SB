@@ -2,12 +2,14 @@ package dk.dtu.sb.parser;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.sbml.jsbml.KineticLaw;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.ModifierSpeciesReference;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.Species;
 import org.sbml.jsbml.SpeciesReference;
+import org.sbml.jsbml.test.gui.JSBMLvisualizer;
 
 import dk.dtu.sb.Util;
 import dk.dtu.sb.data.Reaction;
@@ -24,6 +26,7 @@ import dk.dtu.sb.data.StochasticPetriNet;
  */
 public class SBMLParser extends Parser {
     
+    SBMLDocument document;
     Model model;
     SBMLReader reader = new SBMLReader();
     
@@ -31,36 +34,47 @@ public class SBMLParser extends Parser {
      * {@inheritDoc}
      */
     public StochasticPetriNet parse() {
-        try {
-            SBMLDocument document = reader.readSBMLFromString(input);
-            model = document.getModel();
-            
+        if (parseFile()) {
             parseReactions();
-            
             parseMarkings();
-            
-        } catch (XMLStreamException e) {
-            Util.log.fatal("An error occurred when parsing the SBML file: " + e.getMessage() + ". Expect the StochasticPetriNet to be incomplete.");
         }
-                
+        
         return this.spn;
     }
     
+    /**
+     * Parse the SBML file.
+     * 
+     * @return Whether the parse was successful or not.
+     */
+    private boolean parseFile() {
+        if (document == null || model == null) {
+            try {
+                document = reader.readSBMLFromString(getInput());
+                model = document.getModel();
+                return true;
+            } catch (XMLStreamException e) {
+                Util.log.fatal("An error occurred when parsing the SBML file: " + e.getMessage() + ". Expect the StochasticPetriNet to be incomplete.");
+            }
+        }
+        return false;
+    }
+    
     private void parseReactions() {
-        for (org.sbml.jsbml.Reaction r : model.getListOfReactions()) {
-            // r.getKineticLaw();
-            String reactionName = !r.getName().isEmpty() ? r.getName() : r.getId();
+        for (org.sbml.jsbml.Reaction reaction : model.getListOfReactions()) {
+            
+            String reactionName = !reaction.getName().isEmpty() ? reaction.getName() : reaction.getId();
             Reaction newReaction = new Reaction(reactionName, 1.0);
             
-            for (ModifierSpeciesReference sr : r.getListOfModifiers()) {
+            for (ModifierSpeciesReference sr : reaction.getListOfModifiers()) {
                 newReaction.addReactant(sr.getSpecies());
             }
             
-            for (SpeciesReference sr : r.getListOfReactants()) {
+            for (SpeciesReference sr : reaction.getListOfReactants()) {
                 newReaction.addReactant(sr.getSpecies());
             }
             
-            for (SpeciesReference sr : r.getListOfProducts()) {
+            for (SpeciesReference sr : reaction.getListOfProducts()) {
                 newReaction.addProduct(sr.getSpecies());
             }
                         
@@ -69,8 +83,8 @@ public class SBMLParser extends Parser {
     }
     
     private void parseMarkings() {
-        for (Species s : model.getListOfSpecies()) {
-            spn.setInitialMarkings(s.getId(), (int)s.getInitialAmount());
+        for (Species specie : model.getListOfSpecies()) {
+            spn.setInitialMarkings(specie.getId(), (int)specie.getInitialAmount());
         }
     }
 
