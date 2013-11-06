@@ -40,7 +40,7 @@ public class SBMLParser extends Parser {
             parseMarkings();
             
         } catch (XMLStreamException e) {
-            Util.log.fatal("An error occurred when parsing the SBML file.", e);
+            Util.log.fatal("An error occurred when parsing the SBML file: " + e.getMessage() + ". Expect the StochasticPetriNet to be incomplete.");
         }
                 
         return this.spn;
