@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.sun.corba.se.spi.orb.ParserImplTableBase;
+
 import dk.dtu.sb.data.StochasticPetriNet;
 
 /**
@@ -58,5 +60,12 @@ public abstract class Parser {
      */
     public void setInput(String input) {
         this.input = input;
+    }
+    
+    /**
+     * See {@link Parser#input}.
+     */
+    public String getInput() {
+        return input;
     }
 }
