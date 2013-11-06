@@ -64,7 +64,7 @@
 
 	<!-- generate javadoc -->
 	<target name="javadoc" depends="prepare" description="Generate javadoc from files">
-		<javadoc packagenames="dk.dtu.sb.*" destdir="${javadoc.dir}" sourcepath="${source.dir}" windowtitle="DTU-SB">
+		<javadoc packagenames="dk.dtu.sb.*" destdir="${javadoc.dir}" sourcepath="${source.dir}" windowtitle="DTU-SB" access="private">
 			<classpath refid="classpath" />
 		</javadoc>
 		<echo>
