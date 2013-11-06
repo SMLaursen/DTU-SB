@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Random;
 
 import dk.dtu.sb.Util;
-import dk.dtu.sb.data.Reactant;
 import dk.dtu.sb.data.Reaction;
 import dk.dtu.sb.data.ReactionEvent;
+import dk.dtu.sb.data.Species;
 
 public class GillespieAlgorithm extends Algorithm {
 
@@ -93,7 +93,7 @@ public class GillespieAlgorithm extends Algorithm {
      */
     private double calculatePropensity(Reaction r) {
         int h = 1;
-        for (Reactant reactant : r.getReactants().values()) {
+        for (Species reactant : r.getReactants().values()) {
             int marking = currentMarkings.get(reactant.getId());
             h *= binom(marking, reactant.getMultiplicity());
         }

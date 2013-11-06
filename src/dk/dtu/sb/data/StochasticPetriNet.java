@@ -14,12 +14,7 @@ public class StochasticPetriNet {
      * 
      */
     private Map<String, Reaction> reactions = new HashMap<String, Reaction>();
-    
-    /**
-     * 
-     */
-    private Map<String, Species> species = new HashMap<String, Species>();
-    
+        
     /**
      * 
      */
@@ -107,7 +102,7 @@ public class StochasticPetriNet {
                     + "]\"" + " [shape=box];\n";
 
             // Process the reactants
-            for (Reactant reactant : reaction.getReactants().values()) {
+            for (Species reactant : reaction.getReactants().values()) {
                 graph += "\"" + reactant.getLabel() + "\" -> " + "\""
                         + reaction.getLabel() + " [" + reaction.getRate()
                         + "]\"";
@@ -119,7 +114,7 @@ public class StochasticPetriNet {
             }
 
             // Process the products
-            for (Product product : reaction.getProducts().values()) {
+            for (Species product : reaction.getProducts().values()) {
                 graph += "\"" + reaction.getLabel() + " [" + reaction.getRate()
                         + "]\"" + " -> \"" + product.getLabel() +"\"";
                 // Set multiplicity on edges

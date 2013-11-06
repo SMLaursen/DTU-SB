@@ -31,12 +31,12 @@ public class Reaction {
     /**
      * The reactants in this reactions.
      */
-    private Map<String, Reactant> reactants = new HashMap<String, Reactant>();
+    private Map<String, Species> reactants = new HashMap<String, Species>();
 
     /**
      * The products in this reaction.
      */
-    private Map<String, Product> products = new HashMap<String, Product>();
+    private Map<String, Species> products = new HashMap<String, Species>();
 
     /**
      * Constructs a reaction.
@@ -67,23 +67,23 @@ public class Reaction {
     }
 
     /**
-     * Add Reactant to this reaction.
+     * Add reactant to this reaction.
      * 
      * @param reactant
-     *            See {@link Reactant}.
+     *            See {@link Species}.
      */
-    public void addReactant(Reactant reactant) {
+    public void addReactant(Species reactant) {
         reactants.put(reactant.getId(), reactant);
     }
 
     /**
-     * Remove the Reactant from the reactants of this reaction.
+     * Remove the reactant from the reactants of this reaction.
      * 
      * @param reactantId
      *            The unique id of the reactant.
-     * @return The removed {@link Reactant}.
+     * @return The removed {@link Species}.
      */
-    public Reactant removeReactant(String reactantId) {
+    public Species removeReactant(String reactantId) {
         return reactants.remove(reactantId);
     }
 
@@ -92,28 +92,28 @@ public class Reaction {
      * 
      * @return
      */
-    public Map<String, Reactant> getReactants() {
+    public Map<String, Species> getReactants() {
         return reactants;
     }
 
     /**
-     * Add Product to this reaction.
+     * Add product to this reaction.
      * 
      * @param product
-     *            See {@link Product}.
+     *            See {@link Species}.
      */
-    public void addProduct(Product product) {
+    public void addProduct(Species product) {
         products.put(product.getId(), product);
     }
 
     /**
-     * Remove Product from the products of this reaction.
+     * Remove product from the products of this reaction.
      * 
      * @param productId
      *            The unique id of the product.
-     * @return The removed {@link Product}.
+     * @return The removed {@link Species}.
      */
-    public Product removeProduct(String productId) {
+    public Species removeProduct(String productId) {
         return products.remove(productId);
     }
 
@@ -122,7 +122,7 @@ public class Reaction {
      * 
      * @return
      */
-    public Map<String, Product> getProducts() {
+    public Map<String, Species> getProducts() {
         return products;
     }
 
