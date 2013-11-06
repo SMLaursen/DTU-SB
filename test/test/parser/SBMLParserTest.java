@@ -1,4 +1,4 @@
-package test.sbml;
+package test.parser;
 
 import static org.junit.Assert.*;
 
