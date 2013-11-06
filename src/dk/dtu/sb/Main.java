@@ -15,6 +15,9 @@ import dk.dtu.sb.simulator.Simulator;
 import org.apache.commons.cli.*;
 import org.apache.commons.logging.impl.SimpleLog;
 
+/**
+ * 
+ */
 public class Main {
 
     private static final String OPT_CPROP = "cprop";
@@ -34,17 +37,26 @@ public class Main {
     
     private static final String DESCRIPTION = "DTU-SB v0.1";
     
+    /**
+     * Used to ask the user for input.
+     */
     private static BufferedReader cli = null;
 
     /**
+     * Initiates the simulation. Resets logging level.
      * 
-     * @param args
+     * @param args From command line.
      */
     public static void main(String[] args) {
         Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
         setupCli(args);
     }
 
+    /**
+     * Uses Apache Commons CLI to setup accepted parameters on the CLI.
+     * 
+     * @param args From command line.
+     */
     private static void setupCli(String[] args) {
         CommandLineParser parser = new GnuParser();
 
@@ -84,6 +96,13 @@ public class Main {
         }
     }
 
+    /**
+     * Sets the verbosity and initiates parsing.
+     * 
+     * @param parser The parser used.
+     * @param options Available parameters.
+     * @param args From command line.
+     */
     private static void parseCli(CommandLineParser parser, Options options,
             String[] args) {
         try {
@@ -97,6 +116,12 @@ public class Main {
         }
     }
 
+    /**
+     * Sets the verbosity based on the input.
+     * 
+     * @param line The parsed CLI.
+     * @throws NumberFormatException
+     */
     private static void setVerbosity(CommandLine line) throws NumberFormatException {
         if (line.hasOption(OPT_VERBOSITY_SHORT)) {
             Util.log.setLevel(Integer.parseInt(line.getOptionValue(OPT_VERBOSITY_SHORT)));
@@ -106,6 +131,11 @@ public class Main {
         }
     }
 
+    /**
+     * Start simulation based on the information given.
+     * 
+     * @param line The parsed CLI.
+     */
     private static void parseLine(CommandLine line) {
         if (line.hasOption(OPT_CPROP)) {
             createPropertiesFile();
@@ -127,6 +157,9 @@ public class Main {
         }
     }
     
+    /**
+     * Dynamically create a properties file by querying the user for parameters.
+     */
     private static void createPropertiesFile() {
         System.out.println("Follow the instructions to create a new properties file to use for simulation.");
         System.out.println("Default in []");
@@ -166,6 +199,12 @@ public class Main {
         }
     }
 
+    /**
+     * Set up the the tool chain required for simulation and run the simulation
+     * 
+     * @param params The parameters determined by user input. Either a default
+     * {@link Parameters} object with filename changed or a custom object.
+     */
     private static void simulate(Parameters params) {
         String filename = params.getFilename();
         try {
@@ -196,6 +235,14 @@ public class Main {
         }
     }
 
+    /**
+     * Creates an instance of the algorithm specified. Fallback to default 
+     * {@link GillespieAlgorithm} if the algorithm specified could not be found.
+     * 
+     * @param className The fully qualified name of the algorithm extending
+     * {@link Algorithm}.
+     * @return An instance of the Algorithm specified.
+     */
     private static Algorithm getAlgorithm(String className) {
         try {
             Class<?> algorithmClass = Class.forName(className);
@@ -212,6 +259,14 @@ public class Main {
         return new GillespieAlgorithm();
     }
 
+    /**
+     * Creates an instance of the parser specified. Fallback to default 
+     * {@link SBMLParser} if the parser specified could not be found.
+     * 
+     * @param className The fully qualified name of the parser extending
+     * {@link Parser}.
+     * @return An instance of the Parser specified.
+     */
     private static Parser getParser(String className) {
         try {
             Class<?> parserClass = Class.forName(className);
@@ -228,6 +283,14 @@ public class Main {
         return new SBMLParser();
     }
 
+    /**
+     * Interactively query the user for input.
+     * 
+     * @param text The query test.
+     * @param def Default if nothing specified.
+     * @return The input entered or the default.
+     * @throws IOException
+     */
     private static String prompt(String text, String def) throws IOException {
         if (def.trim().length() > 0) {
             text += " [" + def + "]";
@@ -241,6 +304,11 @@ public class Main {
         return input;
     }
 
+    /**
+     * Helper: Create the input stream reader if not already created.
+     * 
+     * @return See {@link Main#cli}.
+     */
     private static BufferedReader cli() {
         if (cli == null) {
             cli = new BufferedReader(new InputStreamReader(System.in));
