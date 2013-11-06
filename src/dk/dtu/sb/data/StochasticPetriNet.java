@@ -18,6 +18,11 @@ public class StochasticPetriNet {
     /**
      * 
      */
+    private Map<String, Species> species = new HashMap<String, Species>();
+    
+    /**
+     * 
+     */
     private Map<String, Integer> initialMarkings = new HashMap<String, Integer>();
 
     /**
@@ -29,6 +34,7 @@ public class StochasticPetriNet {
         if (reactions.containsKey(r.getId())) {
             throw new RuntimeException("Reaction " + r + " already defined.");
         }
+                
         reactions.put(r.getId(), r);
     }
 

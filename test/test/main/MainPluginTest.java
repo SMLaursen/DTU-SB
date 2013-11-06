@@ -1,6 +1,7 @@
 package test.main;
 import org.junit.Test;
 
+import test.StdOutTester;
 import dk.dtu.sb.Main;
 
 
