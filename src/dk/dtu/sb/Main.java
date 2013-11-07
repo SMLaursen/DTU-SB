@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import dk.dtu.sb.algorithm.Algorithm;
-import dk.dtu.sb.algorithm.GillespieAlgorithm;
 import dk.dtu.sb.compiler.Compiler;
 import dk.dtu.sb.output.GraphGUI;
 import dk.dtu.sb.parser.Parser;
@@ -222,11 +220,8 @@ public class Main {
             // instantiate compiler
             Compiler compiler = new Compiler(parser.parse());
             
-//            // instantiate algorithm specified in parameters file
-//            Algorithm algorithm = getAlgorithm(params.getAlgorithmClassName());
-            
             // input result of compilation and algorithm to the simulator and run
-            Simulator simulator = new Simulator(compiler.compile());
+            Simulator simulator = new Simulator(compiler.compile(), params);
             simulator.simulate();
             
             // show graph
@@ -241,30 +236,6 @@ public class Main {
             Util.log.fatal("An error occurred when reading the content of " + filename);
         }
     }
-
-//    /**
-//     * Creates an instance of the algorithm specified. Fallback to default 
-//     * {@link GillespieAlgorithm} if the algorithm specified could not be found.
-//     * 
-//     * @param className The fully qualified name of the algorithm extending
-//     * {@link Algorithm}.
-//     * @return An instance of the Algorithm specified.
-//     */
-//    private static Algorithm getAlgorithm(String className) {
-//        try {
-//            Class<?> algorithmClass = Class.forName(className);
-//            Algorithm algorithm = (Algorithm) algorithmClass.newInstance();
-//            
-//            Util.log.debug("Algorithm class: " + className);
-//            
-//            return algorithm;
-//        } catch (ClassNotFoundException e) {
-//            Util.log.fatal("The algorithm class: " + className + " could not be found. Using default.");
-//        } catch (Exception e) {
-//            Util.log.fatal("Using default algorithm.", e);
-//        }
-//        return new GillespieAlgorithm();
-//    }
 
     /**
      * Creates an instance of the parser specified. Fallback to default 
