@@ -200,7 +200,7 @@ public class Main {
             
             String filename = prompt("Save as", "sim.properties");
             
-            params.toFile(filename);
+            params.saveAsFile(filename);
         } catch (IOException e) {
             System.err.println("An error occurred: " + e);
         }

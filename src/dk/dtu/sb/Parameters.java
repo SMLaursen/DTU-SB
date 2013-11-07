@@ -69,7 +69,7 @@ public class Parameters extends Properties {
      * @param filename The name of the file to save to. Good practice is to
      * use the .propterties file extension.
      */
-    public void toFile(String filename) {
+    public void saveAsFile(String filename) {
         try {
             this.store(new FileOutputStream(filename), null);
         } catch (Exception e) {
