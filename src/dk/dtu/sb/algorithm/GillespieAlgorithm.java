@@ -31,15 +31,16 @@ public class GillespieAlgorithm extends Algorithm {
         Reaction R_mu;
 
         Random rand = new Random();
-
-        while (time < stoptime) {
-            // Step 1
-            a_0 = calculate_a0();
+    
+        while (true) {
+            
+        	// Step 1
+        	a_0 = calculate_a0();
             if (a_0 == 0.0) {
                 // Nothing more to be done
                 break;
             }
-
+            
             // Step 2
             r_1 = rand.nextDouble();
             r_2 = rand.nextDouble();
@@ -49,6 +50,9 @@ public class GillespieAlgorithm extends Algorithm {
 
             // Step 3
             time += tau;
+            if(time > stoptime){
+            	break;
+            }
             Util.updateMarkings(R_mu, currentMarkings);
 
             // Record time and R_u
