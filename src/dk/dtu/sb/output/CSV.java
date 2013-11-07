@@ -22,7 +22,7 @@ public class CSV extends Output {
             Util.log.error("No data to write");
         } else {
             try {
-                String fileURL = params.getProperty("OUTPUT_FILENAME", "out.csv");
+                String fileURL = "out.csv";//params.getProperty("OUTPUT_FILENAME", "out.csv");
                 File f = new File(fileURL);
                 if (!f.exists()) {
                     f.createNewFile();
@@ -31,6 +31,8 @@ public class CSV extends Output {
                 BufferedWriter bw = new BufferedWriter(fw);
                 // Mappings between index and name
                 HashMap<Integer, String> h = new HashMap<Integer, String>();
+                HashMap<String, Integer> currValues = new HashMap<String,Integer>();
+               //Index to ensure consistent lookups (Hashmaps do not guarantee ordering)
                 int index = 0;
 
                 // Write header
@@ -41,11 +43,13 @@ public class CSV extends Output {
                     index++;
                 }
                 bw.write("\n");
+                
                 // Write Content
                 for (Plot pl : data) {
-                    bw.write(String.valueOf(pl.time));
+                	currValues.putAll(pl.markings);
+                	bw.write(String.valueOf(pl.time));
                     for (int i = 0; i < h.size(); i++) {
-                        bw.write("," + pl.markings.get(h.get(i)));
+                        bw.write("," + currValues.get(h.get(i)));
                     }
                     bw.write("\n");
                 }

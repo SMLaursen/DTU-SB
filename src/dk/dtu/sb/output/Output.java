@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
@@ -33,31 +35,37 @@ public abstract class Output {
 		});
 
 		HashMap<String,Integer> marking = new HashMap<String,Integer>();
-
+		
 		// Multiply the initial marking with noOfIterations
 		for(String s : o.initialMarkings.keySet()){
 			marking.put(s, o.initialMarkings.get(s)*o.iterations);
 		}
-
 		data.add(new Plot(0,marking));
-
-		//TODO : very inefficient
 		
 		// Create PlotData from the OutputData
-		int i = 0;
+		int i = 1;
+		HashMap<String,Integer> old = new HashMap<String,Integer>();
 		for(ReactionEvent re : o.plotData){
-			Util.updateMarkings(re.reaction, marking);
-			//Enforce stepsize
-			if(i++ % params.getOutStepSize() == 0){
-				data.add(new Plot(re.time,marking));
+			
+			if(i % params.getOutStepSize() == 0){
+				old.clear();
+				old.putAll(marking);
 			}
+			
+			Util.updateMarkings(re.reaction, marking);		
+			
+			//Enforce stepsize
+			if(i % params.getOutStepSize() == 0){
+				data.add(new Plot(re.time,getIntersection(marking,old)));
+			}
+			i++;
 		}
-
+		
 		// Divide by no of iteration
 		for(Plot p : data){
 			for(String s : p.markings.keySet()){
-				int old = p.markings.get(s);
-				p.markings.put(s, old/o.iterations);
+				//Update value
+				p.markings.put(s, p.markings.get(s)/o.iterations);
 			}
 		}
 	}
@@ -69,11 +77,21 @@ public abstract class Output {
 	public void setParameters(Parameters params) {
 		this.params = params;
 	}
+	private HashMap<String,Integer> getIntersection(HashMap<String,Integer> mapOne, HashMap<String,Integer> mapTwo)
+	{
+		HashMap<String,Integer> intersection = new HashMap<String,Integer>();
+	    for (String key: mapOne.keySet())
+	    {
+	        if (mapOne.get(key)==mapTwo.get(key)){
+	           intersection.put(key, mapOne.get(key));
+	        }
+	    }
+	    return intersection;
+	}
 
 	/**
 	 * 
 	 */
 	public abstract void process();
-
-
 }
+

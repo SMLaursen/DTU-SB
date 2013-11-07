@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
-import dk.dtu.sb.algorithm.GillespieAlgorithm;
 import dk.dtu.sb.data.OutputData;
 import dk.dtu.sb.data.StochasticPetriNet;
 
@@ -24,6 +23,7 @@ public class Simulator {
 	public Simulator(StochasticPetriNet spn) {
 		this.spn = spn;
 		this.params = new Parameters();
+		this.algorithmName = params.getAlgorithmClassName();
 	}
 
 //	/**
