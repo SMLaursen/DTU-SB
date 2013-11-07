@@ -9,6 +9,7 @@ import java.util.Set;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
+import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.data.OutputData;
 import dk.dtu.sb.data.Plot;
 import dk.dtu.sb.data.ReactionEvent;
@@ -52,7 +53,7 @@ public abstract class Output {
 				old.putAll(marking);
 			}
 			
-			Util.updateMarkings(re.reaction, marking);		
+			Algorithm.updateMarkings(re.reaction, marking);		
 			
 			//Enforce stepsize
 			if(i % params.getOutStepSize() == 0){

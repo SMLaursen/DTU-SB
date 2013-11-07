@@ -36,28 +36,28 @@ public class GillespieTest {
 	        graph.process();
 	    }
 
-//	@Test
-//	public void test2() {
-//		SBMLParser parser = new SBMLParser();
-//		try {
-//			parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
-//		} catch (Exception e) {
-//
-//		}
-//
-//		Parameters p = new Parameters();
-//		p.setIterations(30);
-//		p.setNoOfThreads(4);
-//		p.setStoptime(1000);
-//		p.setOutStepSize(5);
-//
-//		Simulator simulator = new Simulator(parser.parse(), p);
-//		simulator.simulate();
-//
-//		CSV csv = new CSV();
-//		csv.setData(simulator.getOutputData());
-//		csv.process();
-//
-//	}
+	@Test
+	public void test2() {
+		SBMLParser parser = new SBMLParser();
+		try {
+			parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
+		} catch (Exception e) {
+
+		}
+
+		Parameters p = new Parameters();
+		p.setIterations(30);
+		p.setNoOfThreads(4);
+		p.setStoptime(1000);
+		p.setOutStepSize(5);
+
+		Simulator simulator = new Simulator(parser.parse(), p);
+		simulator.simulate();
+
+		CSV csv = new CSV();
+		csv.setData(simulator.getOutputData());
+		csv.process();
+
+	}
 
 }

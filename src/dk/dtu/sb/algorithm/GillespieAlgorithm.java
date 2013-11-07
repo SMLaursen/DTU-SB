@@ -53,10 +53,10 @@ public class GillespieAlgorithm extends Algorithm {
             if(time > stoptime){
             	break;
             }
-            Util.updateMarkings(R_mu, currentMarkings);
+            updateMarkings(R_mu, currentMarkings);
 
             // Record time and R_u
-            Util.addPartialResult(new ReactionEvent(time, R_mu));
+            addPartialResult(new ReactionEvent(time, R_mu));
             Util.log.debug(time + " :" + currentMarkings);
         }
     }

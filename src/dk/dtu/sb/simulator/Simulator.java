@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
-
+import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.data.OutputData;
 import dk.dtu.sb.data.StochasticPetriNet;
 
@@ -120,7 +120,7 @@ public class Simulator {
 	 * @return
 	 */
 	public OutputData getOutputData() {
-		return new OutputData(Util.getPlotData(),spn.getInitialMarkings(),params.getIterations());
+		return new OutputData(Algorithm.getPlotData(),spn.getInitialMarkings(),params.getIterations());
 	}
 
 }
