@@ -51,24 +51,14 @@ public class SBMLParserTest extends StdOutTester {
     // http://sandbox.kidstrythisathome.com/erdos/
     @Test
     public void testBioModelRepressilator() throws Exception {
-        resetStreams();
+        //resetStreams();
         
         SBMLParser parser = new SBMLParser();
         parser.readFile("test/test/parser/BIOMD0000000012.xml");
         StochasticPetriNet spn = parser.parse(); 
         System.out.println(spn.toGraphviz());
 
-        if (System.getProperty("os.name").equals("Mac OS X")) {
-            File dot = File.createTempFile("graph", ".dot");
-            FileOutputStream out = new FileOutputStream(dot);
-            out.write(spn.toGraphviz().getBytes());
-            out.close();
-            
-            Runtime rt = Runtime.getRuntime();
-            String[] args = {"/usr/local/bin/neato", "-Tpdf", dot.getAbsolutePath(), "-o", "test/test/parser/BIOMD0000000012.pdf"};
-            Process p = rt.exec(args);
-            p.waitFor();
-        }               
+        saveDotAsPdf(spn.toGraphviz(), "BIOMD0000000012.pdf");             
     }
     
     @Test
@@ -82,24 +72,28 @@ public class SBMLParserTest extends StdOutTester {
     
     @Test
     public void testBioModelRepressilator2() throws Exception {
-        resetStreams();
+        //resetStreams();
         
         SBMLParser parser = new SBMLParser();
         parser.readFile("test/test/parser/BIOMD0000000412.xml");
         StochasticPetriNet spn = parser.parse(); 
         System.out.println(spn.toGraphviz());
 
+        saveDotAsPdf(spn.toGraphviz(), "BIOMD0000000412.pdf");         
+    }
+    
+    private void saveDotAsPdf(String dot, String filename) throws IOException, InterruptedException {
         if (System.getProperty("os.name").equals("Mac OS X")) {
-            File dot = File.createTempFile("graph", ".dot");
-            FileOutputStream out = new FileOutputStream(dot);
-            out.write(spn.toGraphviz().getBytes());
+            File dotFile = File.createTempFile("graph", ".dot");
+            FileOutputStream out = new FileOutputStream(dotFile);
+            out.write(dot.getBytes());
             out.close();
             
             Runtime rt = Runtime.getRuntime();
-            String[] args = {"/usr/local/bin/dot", "-Tpdf", dot.getAbsolutePath(), "-o", "test/test/parser/BIOMD0000000412.pdf"};
+            String[] args = {"/usr/local/bin/dot", "-Tpdf", dotFile.getAbsolutePath(), "-o", "test/test/parser/"+filename};
             Process p = rt.exec(args);
             p.waitFor();
-        }               
+        } 
     }
 
 }

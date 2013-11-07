@@ -140,11 +140,6 @@ public class SBMLParser extends Parser {
             
             // find constant in expression
             for (ASTNode term : math.getChildren()) {
-                if (term.isName()) {
-                    String name = term.getName();
-                    System.out.println(model.getParameter(name));
-                }
-                
                 if (term.isReal()) {
                     constant = term.getReal();
                 } else if (term.isInteger()) {
