@@ -26,11 +26,14 @@ public class GillespieTest {
         Parameters p = new Parameters();
         p.setIterations(10);
         p.setStoptime(7);
+        p.setOutStepSize(100);
+    
         Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
         Simulator simulator = new Simulator(parser.parse(), algorithm, p);
         simulator.simulate();
 
         GraphGUI graph = new GraphGUI();
+        graph.setParameters(p);
         graph.setData(simulator.getOutputData());
         graph.process();
     }

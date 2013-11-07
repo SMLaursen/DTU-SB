@@ -26,8 +26,11 @@ public class Parameters extends Properties {
     private static final String PARAM_SIM_STOPTIME = "SIM_STOPTIME";
     public static final double PARAM_SIM_STOPTIME_DEFAULT = 20;
     
-    private static final String PARAM_SIM_RESULT_GUI = "SIM_RESULT_GUI";
-    public static final boolean PARAM_SIM_RESULT_GUI_DEFAULT = false;
+    private static final String PARAM_OUT_RESULT_GUI = "OUT_RESULT_GUI";
+    public static final boolean PARAM_OUT_RESULT_GUI_DEFAULT = false;
+    
+    private static final String PARAM_OUT_STEPSIZE = "OUT_STEPSIZE";
+    public static final int PARAM_OUT_STEPSIZE_DEFAULT = 1;
     
     /**
      * Instantiates a Parameter object with default values.
@@ -164,10 +167,10 @@ public class Parameters extends Properties {
     public boolean getResultGUI() {
         boolean result;
         try {
-            result = Boolean.parseBoolean(this.getProperty(PARAM_SIM_RESULT_GUI, ""+PARAM_SIM_RESULT_GUI_DEFAULT));
+            result = Boolean.parseBoolean(this.getProperty(PARAM_OUT_RESULT_GUI, ""+PARAM_OUT_RESULT_GUI_DEFAULT));
         } catch (NumberFormatException e) {
-            Util.log.warn(PARAM_SIM_RESULT_GUI + " is not a valid integer.");
-            result = PARAM_SIM_RESULT_GUI_DEFAULT;
+            Util.log.warn(PARAM_OUT_RESULT_GUI + " is not a valid integer.");
+            result = PARAM_OUT_RESULT_GUI_DEFAULT;
         }
         return result;
     }
@@ -176,6 +179,31 @@ public class Parameters extends Properties {
      * @param result Whether to show a graph after simulation
      */
     public void setResultGUI(boolean result) {
-        this.setProperty(PARAM_SIM_RESULT_GUI, ""+result);
+        this.setProperty(PARAM_OUT_RESULT_GUI, ""+result);
+    }
+   
+    /**
+     * @return number of steps between each observations for Output-presentation only.
+     * */
+    public int getOutStepSize() {
+        int stepsize;
+        try {
+            stepsize = Integer.parseInt(this.getProperty(PARAM_OUT_STEPSIZE, ""+PARAM_OUT_STEPSIZE_DEFAULT));
+            if(stepsize < 1){
+            	throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            Util.log.warn(PARAM_OUT_STEPSIZE + " is not a valid integer.");
+            stepsize = PARAM_OUT_STEPSIZE_DEFAULT;
+        }
+        return stepsize;
+    }
+    
+    /**
+     * How many steps between each observations for Output-presentation only.
+     * @param steps
+     */
+    public void setOutStepSize(int steps) {
+        this.setProperty(PARAM_OUT_STEPSIZE, ""+steps);
     }
 }

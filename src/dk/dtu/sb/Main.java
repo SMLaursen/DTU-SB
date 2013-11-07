@@ -185,11 +185,18 @@ public class Main {
             }
             params.setStoptime(stoptime);
             
-            boolean resultGUI = Parameters.PARAM_SIM_RESULT_GUI_DEFAULT;
+            boolean resultGUI = Parameters.PARAM_OUT_RESULT_GUI_DEFAULT;
             if (prompt("Show graph after simulation?", "no").equals("yes")) {
                 resultGUI = true;
             }
             params.setResultGUI(resultGUI);
+            
+            int stepsize = Parameters.PARAM_OUT_STEPSIZE_DEFAULT;
+            try{
+            	stepsize = Integer.parseInt(prompt("Output Stepsize",""+Parameters.PARAM_OUT_STEPSIZE_DEFAULT));
+            }catch (NumberFormatException e) {
+            }
+            params.setOutStepSize(stepsize);
             
             String filename = prompt("Save as", "sim.properties");
             
