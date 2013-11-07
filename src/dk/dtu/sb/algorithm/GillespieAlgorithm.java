@@ -13,14 +13,16 @@ public class GillespieAlgorithm extends Algorithm {
     /**
      * 
      */
-    private HashMap<String, Integer> currentMarkings;
+    public GillespieAlgorithm(){
+    	currentMarkings = new HashMap<String, Integer>();
+        currentMarkings.putAll(spn.getInitialMarkings());
+    }
 
     // Direct Method (First reaction may be faster)
-    public void run(double stoptime) {
+    public void run() {
 
         // Initialize
         double time = 0.0;
-        int step = 0;
 
         double a_0;
         double r_1;
@@ -29,9 +31,6 @@ public class GillespieAlgorithm extends Algorithm {
         Reaction R_mu;
 
         Random rand = new Random();
-
-        currentMarkings = new HashMap<String, Integer>();
-        currentMarkings.putAll(spn.getInitialMarkings());
 
         while (time < stoptime) {
             // Step 1
@@ -51,10 +50,9 @@ public class GillespieAlgorithm extends Algorithm {
             // Step 3
             time += tau;
             Util.updateMarkings(R_mu, currentMarkings);
-            step++;
 
             // Record time and R_u
-            resultData.add(new ReactionEvent(time, R_mu));
+            Util.addPartialResult(new ReactionEvent(time, R_mu));
             Util.log.debug(time + " :" + currentMarkings);
         }
     }
@@ -69,7 +67,7 @@ public class GillespieAlgorithm extends Algorithm {
     private Reaction findReaction(double val) {
         double sum = 0;
         for (Reaction r : spn.getReactions().values()) {
-            sum += r.getPropensity();
+            sum += r.getPropensity(Thread.currentThread().getId());
             if (sum >= val) {
                 return r;
             }
@@ -98,7 +96,7 @@ public class GillespieAlgorithm extends Algorithm {
         }
         h *= r.getRate();
         // Set propensity to avoid recalculations later
-        r.setPropensity(h);
+        r.setPropensity(h,Thread.currentThread().getId());
         return h;
     }
 
@@ -114,4 +112,5 @@ public class GillespieAlgorithm extends Algorithm {
         }
         return (int) coeff;
     }
+
 }

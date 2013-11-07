@@ -5,8 +5,6 @@ import org.junit.Test;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
-import dk.dtu.sb.algorithm.GillespieAlgorithm;
-import dk.dtu.sb.output.CSV;
 import dk.dtu.sb.output.GraphGUI;
 import dk.dtu.sb.parser.SBMLParser;
 import dk.dtu.sb.simulator.Simulator;
@@ -22,14 +20,14 @@ public class GillespieTest {
 
         }
 
-        GillespieAlgorithm algorithm = new GillespieAlgorithm();
         Parameters p = new Parameters();
         p.setIterations(10);
+//p.setNoOfThreads(2);
         p.setStoptime(100000);
         p.setOutStepSize(100);
-    
+
         Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
-        Simulator simulator = new Simulator(parser.parse(), algorithm, p);
+        Simulator simulator = new Simulator(parser.parse(), p);
         simulator.simulate();
 
         GraphGUI graph = new GraphGUI();
@@ -38,24 +36,24 @@ public class GillespieTest {
         graph.process();
     }
 
-    @Test
-    public void test2() {
-        SBMLParser parser = new SBMLParser();
-        try {
-            parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
-        } catch (Exception e) {
-
-        }
-
-        GillespieAlgorithm algorithm = new GillespieAlgorithm();
-        Simulator simulator = new Simulator(parser.parse(), algorithm);
-        simulator.simulate();
-
-        CSV csv = new CSV();
-        csv.setData(simulator.getOutputData());
-        csv.process();
-        // simulator.writeCSVFile("test/test/simulator/test_simulator.csv");
-
-    }
+//    @Test
+//    public void test2() {
+//        SBMLParser parser = new SBMLParser();
+//        try {
+//            parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
+//        } catch (Exception e) {
+//
+//        }
+//
+////        GillespieAlgorithm algorithm = new GillespieAlgorithm();
+//        Simulator simulator = new Simulator(parser.parse());
+//        simulator.simulate();
+//
+//        CSV csv = new CSV();
+//        csv.setData(simulator.getOutputData());
+//        csv.process();
+//        // simulator.writeCSVFile("test/test/simulator/test_simulator.csv");
+//
+//    }
 
 }

@@ -1,18 +1,23 @@
 package dk.dtu.sb;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.apache.commons.logging.impl.SimpleLog;
 
 import dk.dtu.sb.data.Reaction;
+import dk.dtu.sb.data.ReactionEvent;
 import dk.dtu.sb.data.Species;
+import dk.dtu.sb.data.StochasticPetriNet;
 
 public class Util {
 
+	private volatile static LinkedList<ReactionEvent> resultData = new LinkedList<ReactionEvent>();
+	
     /**
      * 
      */
-    public static SimpleLog log = new SimpleLog("DTU-SB");
+    public static  SimpleLog log = new SimpleLog("DTU-SB");
 
     /**
      * Executes the reaction and updates the markings with r
@@ -20,7 +25,7 @@ public class Util {
      * @param reaction
      * @param previousMarkings
      */
-    public static void updateMarkings(Reaction reaction,
+    public static synchronized void updateMarkings(Reaction reaction,
             HashMap<String, Integer> previousMarkings) {
         // Reactants
         for (Species reactant : reaction.getReactants().values()) {
@@ -44,5 +49,13 @@ public class Util {
             previousMarkings.put(product.getId(), old + multiplicity);
         }
     }
-
+	
+	public static synchronized LinkedList<ReactionEvent> getPlotData(){
+			return resultData;
+	}
+	
+	
+	public static synchronized void addPartialResult(ReactionEvent r){
+			Util.resultData.add(r);
+	}
 }
