@@ -60,9 +60,9 @@ public class SBMLParserTest extends StdOutTester {
         out.close();
         
         Runtime rt = Runtime.getRuntime();
-        String[] args = {"/usr/local/bin/neato", "-Tpdf", dot.getAbsolutePath(), "-o", "test/test/sbml/BIOMD0000000012.pdf"};
+        String[] args = {"/usr/local/bin/neato", "-Tpdf", dot.getAbsolutePath(), "-o", "test/test/parser/BIOMD0000000012.pdf"};
         Process p = rt.exec(args);
-        p.waitFor();*/                
+        p.waitFor();*/               
     }
     
     @Test

@@ -93,7 +93,7 @@ public class StochasticPetriNet {
      */
     public String toGraphviz() {
         // Use http://sandbox.kidstrythisathome.com/erdos/
-        String graph = "digraph G {\n";
+        String graph = "digraph G {\nsize=\"4,4\";\nfontsize=\"10\";nodesep=\"2.0\";\n";
 
         for (Reaction reaction : reactions.values()) {
 
