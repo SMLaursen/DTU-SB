@@ -131,7 +131,7 @@ public class SBMLParser extends Parser {
         double constant = def;
         
         if (math != null) {
-         // find constant in root
+            // find constant in root
             if (math.isReal()) {
                 constant = math.getReal();
             } else if (math.isInteger()) {

@@ -79,5 +79,27 @@ public class SBMLParserTest extends StdOutTester {
         
         assertTrue(err.toString().contains("An error occurred when parsing the SBML file:"));
     }
+    
+    @Test
+    public void testBioModelRepressilator2() throws Exception {
+        resetStreams();
+        
+        SBMLParser parser = new SBMLParser();
+        parser.readFile("test/test/parser/BIOMD0000000412.xml");
+        StochasticPetriNet spn = parser.parse(); 
+        System.out.println(spn.toGraphviz());
+
+        if (System.getProperty("os.name").equals("Mac OS X")) {
+            File dot = File.createTempFile("graph", ".dot");
+            FileOutputStream out = new FileOutputStream(dot);
+            out.write(spn.toGraphviz().getBytes());
+            out.close();
+            
+            Runtime rt = Runtime.getRuntime();
+            String[] args = {"/usr/local/bin/dot", "-Tpdf", dot.getAbsolutePath(), "-o", "test/test/parser/BIOMD0000000412.pdf"};
+            Process p = rt.exec(args);
+            p.waitFor();
+        }               
+    }
 
 }
