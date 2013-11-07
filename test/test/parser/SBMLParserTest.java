@@ -44,7 +44,7 @@ public class SBMLParserTest extends StdOutTester {
         SBMLParser parser = new SBMLParser();
         
         parser.readFile("test/test/parser/neg_feedback_wo_read.xml");
-        //resetStreams();
+        resetStreams();
         System.out.println(parser.parse().toGraphviz());
     }
     

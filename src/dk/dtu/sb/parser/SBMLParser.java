@@ -1,5 +1,7 @@
 package dk.dtu.sb.parser;
 
+import java.util.Properties;
+
 import javax.xml.stream.XMLStreamException;
 
 import org.sbml.jsbml.ASTNode;
@@ -12,6 +14,10 @@ import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.Species;
 import org.sbml.jsbml.SpeciesReference;
 
+import de.congrace.exp4j.Calculable;
+import de.congrace.exp4j.ExpressionBuilder;
+import de.congrace.exp4j.UnknownFunctionException;
+import de.congrace.exp4j.UnparsableExpressionException;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.data.Reaction;
 import dk.dtu.sb.data.StochasticPetriNet;
@@ -74,23 +80,26 @@ public class SBMLParser extends Parser {
 
             for (ModifierSpeciesReference sr : reaction.getListOfModifiers()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addReactant(new dk.dtu.sb.data.Species(s.getId(), s.getName()));
+                newReaction.addReactant(new dk.dtu.sb.data.Species(s.getId(), s
+                        .getName()));
             }
 
             for (SpeciesReference sr : reaction.getListOfReactants()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addReactant(new dk.dtu.sb.data.Species(s.getId(), s.getName()));
+                newReaction.addReactant(new dk.dtu.sb.data.Species(s.getId(), s
+                        .getName()));
             }
 
             for (SpeciesReference sr : reaction.getListOfProducts()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addProduct(new dk.dtu.sb.data.Species(s.getId(), s.getName()));
+                newReaction.addProduct(new dk.dtu.sb.data.Species(s.getId(), s
+                        .getName()));
             }
 
             spn.addReaction(newReaction);
         }
     }
-    
+
     /**
      * Determines parameters for the reaction.
      * 
@@ -98,9 +107,9 @@ public class SBMLParser extends Parser {
      * @return {@link Reaction}
      */
     private Reaction translateReaction(org.sbml.jsbml.Reaction reaction) {
-        
+
         double rate = getConstant(reaction.getKineticLaw().getMath(), 1.0);
-        
+
         return new Reaction(reaction.getId(), reaction.getName(), rate);
     }
 
@@ -112,42 +121,64 @@ public class SBMLParser extends Parser {
             spn.setInitialMarking(specie.getId(),
                     (int) specie.getInitialAmount());
         }
-        
+
         for (InitialAssignment ia : model.getListOfInitialAssignments()) {
-            int marking = (int)getConstant(ia.getMath(), spn.getInitialMarking(ia.getVariable()));
-                        
+            int marking = (int) getConstant(ia.getMath(),
+                    spn.getInitialMarking(ia.getVariable()));
+
             spn.setInitialMarking(ia.getVariable(), marking);
         }
     }
-    
+
     /**
      * Traverses the MathML object and finds a constant to use.
      * 
-     * @param math {@link ASTNode}.
-     * @param def Default constant.
+     * @param math
+     *            {@link ASTNode}.
+     * @param def
+     *            Default constant.
      * @return The found constant or the default.
      */
     private double getConstant(ASTNode math, double def) {
         double constant = def;
-        
+
         if (math != null) {
-            // find constant in root
-            if (math.isReal()) {
-                constant = math.getReal();
-            } else if (math.isInteger()) {
-                constant = math.getInteger();
-            }
-            
-            // find constant in expression
-            for (ASTNode term : math.getChildren()) {
-                if (term.isReal()) {
-                    constant = term.getReal();
-                } else if (term.isInteger()) {
-                    constant = term.getInteger();
+            if (math.getChildCount() > 0) {
+                
+                ExpressionBuilder expr = new ExpressionBuilder(math.toFormula());
+                
+                // find constant in expression
+                for (ASTNode term : math.getChildren()) {
+                    if (term.isName()) {
+                        expr.withVariable(term.getName(), 1.0);
+                    }
+                    if (term.isReal()) {
+                        constant = term.getReal();
+                    } else if (term.isInteger()) {
+                        constant = term.getInteger();
+                    }
+                }
+                
+                try {
+                    System.out.println(expr.build().calculate());
+                } catch (UnknownFunctionException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (UnparsableExpressionException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } else {
+                // find constant in root
+                if (math.isReal()) {
+                    constant = math.getReal();
+                } else if (math.isInteger()) {
+                    constant = math.getInteger();
                 }
             }
+
         }
-        
+
         return constant;
     }
 
