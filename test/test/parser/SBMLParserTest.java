@@ -20,12 +20,14 @@ public class SBMLParserTest extends StdOutTester {
         SBMLParser parser = new SBMLParser();
         
         parser.readFile("test/test/parser/simple.xml");
-        
+        //resetStreams();
         StochasticPetriNet spn = parser.parse();
         
         assertNotNull(spn.getReaction("reaction"));
         assertTrue(spn.getReaction("reaction").getProducts().containsKey("P"));
         assertTrue(spn.getReaction("reaction").getReactants().containsKey("R"));
+        
+        System.out.println(spn);
     }
     
     @Test
@@ -49,7 +51,7 @@ public class SBMLParserTest extends StdOutTester {
     // http://sandbox.kidstrythisathome.com/erdos/
     @Test
     public void testBioModelRepressilator() throws Exception {
-        //resetStreams();
+        resetStreams();
         
         SBMLParser parser = new SBMLParser();
         parser.readFile("test/test/parser/BIOMD0000000012.xml");

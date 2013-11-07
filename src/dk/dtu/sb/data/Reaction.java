@@ -171,9 +171,9 @@ public class Reaction {
     }
 
     public String toString() {
-        String s = "id : " + name + ", rate : " + rate + "\n";
-        s += "  Reactants :" + reactants + "\n";
-        s += "  Products  :" + products + "\n";
+        String s = "id: " + id + ", rate: " + rate + "\n";
+        s += "  Reactants: " + reactants + "\n";
+        s += "  Products:  " + products + "\n";
         return s;
     }
 }

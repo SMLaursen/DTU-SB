@@ -143,11 +143,11 @@ public class StochasticPetriNet {
     }
 
     public String toString() {
-        String output = "Reactions :\n";
+        String output = "Reactions:\n";
         for (Reaction reaction : reactions.values()) {
-            output += reaction.toString() + "\n";
+            output += " " + reaction;
         }
-        output += "\n initial markings :" + initialMarkings;
+        output += "Initial markings:\n " + initialMarkings;
         return output;
     }
 }

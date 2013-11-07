@@ -6,7 +6,7 @@
     </listOfCompartments>
     <listOfSpecies>
       <species id="R" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
-      <species id="P" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="P" compartment="compartment" hasOnlySubstanceUnits="true"/>
     </listOfSpecies>
     <listOfReactions>
       <reaction id="reaction" reversible="false">
@@ -16,8 +16,36 @@
         <listOfProducts>
           <speciesReference species="P"/>
         </listOfProducts>
-        <kineticLaw/>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <cn> 0.1 </cn>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay" reversible="false">
+        <listOfReactants>
+          <speciesReference species="R"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="P"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <times/>
+                <cn>0.001</cn>
+                <ci>P</ci>
+              </apply>
+          </math>
+        </kineticLaw>
       </reaction>
     </listOfReactions>
+    <listOfInitialAssignments>
+        <initialAssignment symbol="P">
+             <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <cn>1</cn>
+             </math>
+         </initialAssignment>
+    </listOfInitialAssignments>
   </model>
 </sbml>

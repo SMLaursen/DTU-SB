@@ -3,6 +3,7 @@ package dk.dtu.sb.parser;
 import javax.xml.stream.XMLStreamException;
 
 import org.sbml.jsbml.ASTNode;
+import org.sbml.jsbml.InitialAssignment;
 import org.sbml.jsbml.KineticLaw;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.ModifierSpeciesReference;
@@ -63,6 +64,9 @@ public class SBMLParser extends Parser {
         return false;
     }
 
+    /**
+     * Set the transitions in the SPN.
+     */
     private void parseReactions() {
         for (org.sbml.jsbml.Reaction reaction : model.getListOfReactions()) {
 
@@ -94,24 +98,62 @@ public class SBMLParser extends Parser {
      * @return {@link Reaction}
      */
     private Reaction translateReaction(org.sbml.jsbml.Reaction reaction) {
-        double rate = 1.0;
-           
-        if (reaction.getKineticLaw().getMath() != null) {
-            for (ASTNode term : reaction.getKineticLaw().getMath().getChildren()) {
-                if (term.isNumber()) {
-                    rate = term.getReal();
-                }
-            }
-        }
+        
+        double rate = getConstant(reaction.getKineticLaw().getMath(), 1.0);
         
         return new Reaction(reaction.getId(), reaction.getName(), rate);
     }
 
+    /**
+     * Sets the initial markings of the SPN.
+     */
     private void parseMarkings() {
         for (Species specie : model.getListOfSpecies()) {
             spn.setInitialMarking(specie.getId(),
                     (int) specie.getInitialAmount());
         }
+        
+        for (InitialAssignment ia : model.getListOfInitialAssignments()) {
+            int marking = (int)getConstant(ia.getMath(), spn.getInitialMarking(ia.getVariable()));
+                        
+            spn.setInitialMarking(ia.getVariable(), marking);
+        }
+    }
+    
+    /**
+     * Traverses the MathML object and finds a constant to use.
+     * 
+     * @param math {@link ASTNode}.
+     * @param def Default constant.
+     * @return The found constant or the default.
+     */
+    private double getConstant(ASTNode math, double def) {
+        double constant = def;
+        
+        if (math != null) {
+         // find constant in root
+            if (math.isReal()) {
+                constant = math.getReal();
+            } else if (math.isInteger()) {
+                constant = math.getInteger();
+            }
+            
+            // find constant in expression
+            for (ASTNode term : math.getChildren()) {
+                if (term.isName()) {
+                    String name = term.getName();
+                    System.out.println(model.getParameter(name));
+                }
+                
+                if (term.isReal()) {
+                    constant = term.getReal();
+                } else if (term.isInteger()) {
+                    constant = term.getInteger();
+                }
+            }
+        }
+        
+        return constant;
     }
 
 }
