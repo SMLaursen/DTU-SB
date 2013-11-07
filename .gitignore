@@ -8,3 +8,4 @@ DTU-SB*jar
 test/test/sbml/BIOMD0000000012.pdf
 out.csv
 test/test/parser/BIOMD0000000012.pdf
+test/test/parser/BIOMD0000000412.pdf
