@@ -42,27 +42,31 @@ public class SBMLParserTest extends StdOutTester {
         SBMLParser parser = new SBMLParser();
         
         parser.readFile("test/test/parser/neg_feedback_wo_read.xml");
-        
-        parser.parse();        
+        //resetStreams();
+        System.out.println(parser.parse().toGraphviz());
     }
     
     // http://sandbox.kidstrythisathome.com/erdos/
     @Test
     public void testBioModelRepressilator() throws Exception {
+        //resetStreams();
+        
         SBMLParser parser = new SBMLParser();
         parser.readFile("test/test/parser/BIOMD0000000012.xml");
         StochasticPetriNet spn = parser.parse(); 
         System.out.println(spn.toGraphviz());
 
-        /*File dot = File.createTempFile("graph", ".dot");
-        FileOutputStream out = new FileOutputStream(dot);
-        out.write(spn.toGraphviz().getBytes());
-        out.close();
-        
-        Runtime rt = Runtime.getRuntime();
-        String[] args = {"/usr/local/bin/neato", "-Tpdf", dot.getAbsolutePath(), "-o", "test/test/parser/BIOMD0000000012.pdf"};
-        Process p = rt.exec(args);
-        p.waitFor();*/               
+        if (System.getProperty("os.name").equals("Mac OS X")) {
+            File dot = File.createTempFile("graph", ".dot");
+            FileOutputStream out = new FileOutputStream(dot);
+            out.write(spn.toGraphviz().getBytes());
+            out.close();
+            
+            Runtime rt = Runtime.getRuntime();
+            String[] args = {"/usr/local/bin/neato", "-Tpdf", dot.getAbsolutePath(), "-o", "test/test/parser/BIOMD0000000012.pdf"};
+            Process p = rt.exec(args);
+            p.waitFor();
+        }               
     }
     
     @Test

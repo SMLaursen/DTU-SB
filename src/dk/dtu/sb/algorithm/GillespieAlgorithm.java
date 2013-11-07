@@ -91,7 +91,7 @@ public class GillespieAlgorithm extends Algorithm {
      * Reaction r
      */
     private double calculatePropensity(Reaction r) {
-        int h = 1;
+        double h = 1.0;
         for (Species reactant : r.getReactants().values()) {
             int marking = currentMarkings.get(reactant.getId());
             h *= binom(marking, reactant.getMultiplicity());

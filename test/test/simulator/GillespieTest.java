@@ -25,7 +25,7 @@ public class GillespieTest {
         GillespieAlgorithm algorithm = new GillespieAlgorithm();
         Parameters p = new Parameters();
         p.setIterations(10);
-        p.setStoptime(7);
+        p.setStoptime(100000);
         p.setOutStepSize(100);
     
         Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);

@@ -7,7 +7,7 @@
     <listOfSpecies>
       <species id="mRNA" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
       <species id="lacI" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
-      <species id="Plac" compartment="compartment" initialAmount="100" hasOnlySubstanceUnits="true"/>
+      <species id="Plac" compartment="compartment" initialAmount="1" hasOnlySubstanceUnits="true"/>
       <species id="Plac_lacI" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
     </listOfSpecies>
     <listOfReactions>

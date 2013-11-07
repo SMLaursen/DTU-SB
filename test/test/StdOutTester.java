@@ -20,7 +20,7 @@ public class StdOutTester {
     }
     
     @After
-    public void cleanUp() {
+    public void resetStreams() {
         System.setOut(stdout);
         System.setErr(stderr);
     }

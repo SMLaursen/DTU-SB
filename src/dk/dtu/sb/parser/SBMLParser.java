@@ -2,6 +2,8 @@ package dk.dtu.sb.parser;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.sbml.jsbml.ASTNode;
+import org.sbml.jsbml.KineticLaw;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.ModifierSpeciesReference;
 import org.sbml.jsbml.SBMLDocument;
@@ -64,8 +66,7 @@ public class SBMLParser extends Parser {
     private void parseReactions() {
         for (org.sbml.jsbml.Reaction reaction : model.getListOfReactions()) {
 
-            Reaction newReaction = new Reaction(reaction.getId(),
-                    reaction.getName(), 1.0);
+            Reaction newReaction = translateReaction(reaction);
 
             for (ModifierSpeciesReference sr : reaction.getListOfModifiers()) {
                 Species s = sr.getSpeciesInstance();
@@ -84,6 +85,26 @@ public class SBMLParser extends Parser {
 
             spn.addReaction(newReaction);
         }
+    }
+    
+    /**
+     * Determines parameters for the reaction.
+     * 
+     * @param reaction
+     * @return {@link Reaction}
+     */
+    private Reaction translateReaction(org.sbml.jsbml.Reaction reaction) {
+        double rate = 1.0;
+           
+        if (reaction.getKineticLaw().getMath() != null) {
+            for (ASTNode term : reaction.getKineticLaw().getMath().getChildren()) {
+                if (term.isNumber()) {
+                    rate = term.getReal();
+                }
+            }
+        }
+        
+        return new Reaction(reaction.getId(), reaction.getName(), rate);
     }
 
     private void parseMarkings() {

@@ -146,7 +146,7 @@ public class Reaction {
      * @return {@link #name} if present, else {@link #id}.
      */
     public String getLabel() {
-        return name != null ? name : id;
+        return name != null && !name.trim().isEmpty() ? name : id;
     }
 
     /**
