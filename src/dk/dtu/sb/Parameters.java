@@ -23,6 +23,9 @@ public class Parameters extends Properties {
     private static final String PARAM_SIM_ITERATIONS = "SIM_ITERATIONS";
     public static final int PARAM_SIM_ITERATIONS_DEFAULT = 1;
     
+    private static final String PARAM_SIM_NOOFTHREADS = "SIM_NOOFTHREADS";
+    public static final int PARAM_SIM_NOOFTHREADS_DEFAULT = Runtime.getRuntime().availableProcessors();
+    
     private static final String PARAM_SIM_STOPTIME = "SIM_STOPTIME";
     public static final double PARAM_SIM_STOPTIME_DEFAULT = 20;
     
@@ -31,6 +34,8 @@ public class Parameters extends Properties {
     
     private static final String PARAM_OUT_STEPSIZE = "OUT_STEPSIZE";
     public static final int PARAM_OUT_STEPSIZE_DEFAULT = 1;
+    
+    
     
     /**
      * Instantiates a Parameter object with default values.
@@ -139,6 +144,31 @@ public class Parameters extends Properties {
     public void setIterations(int iterations) {
         this.setProperty(PARAM_SIM_ITERATIONS, ""+iterations);
     }
+    
+    /**
+     * @return The maximum number of threads to run the simulation
+     */
+    public int getNoOfThreads() {
+        int n;
+        try {
+            n = Integer.parseInt(this.getProperty(PARAM_SIM_NOOFTHREADS, ""+PARAM_SIM_NOOFTHREADS_DEFAULT));
+            if(n < 1){
+            	throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            Util.log.warn(PARAM_SIM_NOOFTHREADS + " is not a valid integer.");
+            n = PARAM_SIM_NOOFTHREADS_DEFAULT;
+        }
+        return n;
+    }
+    
+    /**
+     * @param n The maximum number of threads to run the simulation
+     */
+    public void setNoOfThreads(int n) {
+        this.setProperty(PARAM_SIM_NOOFTHREADS, ""+n);
+    }
+    
     
     /**
      * @return

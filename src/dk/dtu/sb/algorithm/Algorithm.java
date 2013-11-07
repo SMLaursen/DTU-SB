@@ -1,23 +1,22 @@
 package dk.dtu.sb.algorithm;
 
-import java.util.LinkedList;
+import java.util.HashMap;
 
-import dk.dtu.sb.data.Plot;
-import dk.dtu.sb.data.ReactionEvent;
 import dk.dtu.sb.data.StochasticPetriNet;
 
-public abstract class Algorithm {
+public class Algorithm implements Runnable {
+
+	protected static double stoptime;
+	protected HashMap<String, Integer> currentMarkings;
+	protected static StochasticPetriNet spn;
 	
-	protected StochasticPetriNet spn;
-	protected LinkedList<ReactionEvent> resultData = new LinkedList<ReactionEvent>();
-	
-	public void setSPN(StochasticPetriNet spn) {
-	    this.spn = spn;
+	public static void initialize(StochasticPetriNet spn, double stoptime){
+		Algorithm.stoptime = stoptime;
+		Algorithm.spn = spn;
 	}
 	
-	public abstract void run(double stoptime);
-	
-	public LinkedList<ReactionEvent> getPlotData(){
-		return resultData;
+	public void run() {
+		throw new UnsupportedOperationException("Not implemented");
+		
 	}
 }

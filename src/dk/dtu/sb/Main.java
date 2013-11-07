@@ -222,11 +222,11 @@ public class Main {
             // instantiate compiler
             Compiler compiler = new Compiler(parser.parse());
             
-            // instantiate algorithm specified in parameters file
-            Algorithm algorithm = getAlgorithm(params.getAlgorithmClassName());
+//            // instantiate algorithm specified in parameters file
+//            Algorithm algorithm = getAlgorithm(params.getAlgorithmClassName());
             
             // input result of compilation and algorithm to the simulator and run
-            Simulator simulator = new Simulator(compiler.compile(), algorithm);
+            Simulator simulator = new Simulator(compiler.compile());
             simulator.simulate();
             
             // show graph
@@ -242,29 +242,29 @@ public class Main {
         }
     }
 
-    /**
-     * Creates an instance of the algorithm specified. Fallback to default 
-     * {@link GillespieAlgorithm} if the algorithm specified could not be found.
-     * 
-     * @param className The fully qualified name of the algorithm extending
-     * {@link Algorithm}.
-     * @return An instance of the Algorithm specified.
-     */
-    private static Algorithm getAlgorithm(String className) {
-        try {
-            Class<?> algorithmClass = Class.forName(className);
-            Algorithm algorithm = (Algorithm) algorithmClass.newInstance();
-            
-            Util.log.debug("Algorithm class: " + className);
-            
-            return algorithm;
-        } catch (ClassNotFoundException e) {
-            Util.log.fatal("The algorithm class: " + className + " could not be found. Using default.");
-        } catch (Exception e) {
-            Util.log.fatal("Using default algorithm.", e);
-        }
-        return new GillespieAlgorithm();
-    }
+//    /**
+//     * Creates an instance of the algorithm specified. Fallback to default 
+//     * {@link GillespieAlgorithm} if the algorithm specified could not be found.
+//     * 
+//     * @param className The fully qualified name of the algorithm extending
+//     * {@link Algorithm}.
+//     * @return An instance of the Algorithm specified.
+//     */
+//    private static Algorithm getAlgorithm(String className) {
+//        try {
+//            Class<?> algorithmClass = Class.forName(className);
+//            Algorithm algorithm = (Algorithm) algorithmClass.newInstance();
+//            
+//            Util.log.debug("Algorithm class: " + className);
+//            
+//            return algorithm;
+//        } catch (ClassNotFoundException e) {
+//            Util.log.fatal("The algorithm class: " + className + " could not be found. Using default.");
+//        } catch (Exception e) {
+//            Util.log.fatal("Using default algorithm.", e);
+//        }
+//        return new GillespieAlgorithm();
+//    }
 
     /**
      * Creates an instance of the parser specified. Fallback to default 

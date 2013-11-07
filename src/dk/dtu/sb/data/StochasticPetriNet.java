@@ -137,6 +137,13 @@ public class StochasticPetriNet {
         // TODO
         return null;
     }
+    
+    public StochasticPetriNet clone(){
+    	StochasticPetriNet s = new StochasticPetriNet();
+    	s.initialMarkings.putAll(initialMarkings);
+    	s.reactions.putAll(reactions);
+    	return s;
+    }
 
     public String toString() {
         String output = "Reactions :\n";
