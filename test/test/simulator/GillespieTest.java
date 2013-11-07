@@ -12,7 +12,7 @@ import dk.dtu.sb.simulator.Simulator;
 public class GillespieTest {
 
     @Test
-    public void test1() {
+    public void testNegFeedback() {
         SBMLParser parser = new SBMLParser();
         try {
             parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
@@ -21,10 +21,37 @@ public class GillespieTest {
         }
 
         Parameters p = new Parameters();
-        p.setIterations(500);
-	    p.setNoOfThreads(1);
+
+        p.setIterations(50);
+        p.setNoOfThreads(4);
         p.setStoptime(100000);
-        p.setOutStepSize(800);
+        p.setOutStepSize(50);
+
+        Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
+        Simulator simulator = new Simulator(parser.parse(), p);
+        simulator.simulate();
+
+//        GraphGUI graph = new GraphGUI();
+//        graph.setParameters(p);
+//        graph.setData(simulator.getOutputData());
+//        graph.process();
+    }
+    
+    @Test
+    public void testRepressilator() {
+        SBMLParser parser = new SBMLParser();
+        try {
+            parser.readFile("test/test/parser/BIOMD0000000012.xml");
+        } catch (Exception e) {
+
+        }
+
+        Parameters p = new Parameters();
+
+        p.setIterations(50);
+        p.setNoOfThreads(4);
+        p.setStoptime(100000);
+        p.setOutStepSize(50);
 
         Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
         Simulator simulator = new Simulator(parser.parse(), p);
@@ -45,7 +72,7 @@ public class GillespieTest {
 //
 //        }
 //
-////        GillespieAlgorithm algorithm = new GillespieAlgorithm();
+//        GillespieAlgorithm algorithm = new GillespieAlgorithm();
 //        Simulator simulator = new Simulator(parser.parse());
 //        simulator.simulate();
 //

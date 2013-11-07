@@ -1,16 +1,12 @@
 package dk.dtu.sb.simulator;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import com.sun.xml.internal.rngom.digested.DDataPattern.Param;
-
-import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
-import dk.dtu.sb.algorithm.GillespieAlgorithm;
+import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.data.OutputData;
 import dk.dtu.sb.data.StochasticPetriNet;
 
@@ -97,6 +93,8 @@ public class Simulator {
 	                    
 	        Class<?> algorithmClass = Class.forName(algorithmName);
 	        Algorithm worker;
+	        
+	        Util.log.debug("Algorithm class: " + algorithmName);
 	        
 	        for (int i = 0; i < params.getIterations(); i++) {
 	            worker = (Algorithm) algorithmClass.newInstance();
