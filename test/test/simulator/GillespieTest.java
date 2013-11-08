@@ -12,8 +12,9 @@ import dk.dtu.sb.simulator.Simulator;
 
 public class GillespieTest {
 
+
 	    @Test
-	    public void test1() {
+	    public void testNegFeedback() {
 	        SBMLParser parser = new SBMLParser();
 	        try {
 	            parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
@@ -21,7 +22,7 @@ public class GillespieTest {
 	
 	        }
 	        Parameters p = new Parameters();
-	        p.setIterations(500);
+	        p.setIterations(50);
 		    p.setNoOfThreads(4);
 	        p.setStoptime(100000);
 	        p.setOutStepSize(50);
@@ -36,28 +37,29 @@ public class GillespieTest {
 	        graph.process();
 	    }
 
-	@Test
-	public void test2() {
-		SBMLParser parser = new SBMLParser();
-		try {
-			parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
-		} catch (Exception e) {
+//	@Test
+//	public void test2() {
+//		SBMLParser parser = new SBMLParser();
+//		try {
+//			parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
+//		} catch (Exception e) {
+//
+//		}
+//
+//		Parameters p = new Parameters();
+//		p.setIterations(30);
+//		p.setNoOfThreads(4);
+//		p.setStoptime(1000);
+//		p.setOutStepSize(5);
+//
+//		Simulator simulator = new Simulator(parser.parse(), p);
+//		simulator.simulate();
+//
+//		CSV csv = new CSV();
+//		csv.setData(simulator.getOutputData());
+//		csv.process();
+//
+//	}
 
-		}
-
-		Parameters p = new Parameters();
-		p.setIterations(30);
-		p.setNoOfThreads(4);
-		p.setStoptime(1000);
-		p.setOutStepSize(5);
-
-		Simulator simulator = new Simulator(parser.parse(), p);
-		simulator.simulate();
-
-		CSV csv = new CSV();
-		csv.setData(simulator.getOutputData());
-		csv.process();
-
-	}
 
 }
