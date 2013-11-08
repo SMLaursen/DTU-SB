@@ -20,26 +20,69 @@
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <cn> 0.1 </cn>
           </math>
+          
         </kineticLaw>
       </reaction>
-      <reaction id="decay" reversible="false">
+      <reaction id="decay1" reversible="false">
         <listOfReactants>
-          <speciesReference species="R"/>
-        </listOfReactants>
-        <listOfProducts>
           <speciesReference species="P"/>
-        </listOfProducts>
+        </listOfReactants>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
               <apply>
                 <times/>
                 <cn>0.001</cn>
                 <ci>P</ci>
+                <ci>k</ci>
+              </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k" value="0.1" />
+        </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay2" reversible="false">
+        <listOfReactants>
+          <speciesReference species="R"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <apply>
+                <times/>
+                <cn>0.001</cn>
+                <ci>R</ci>
+                <ci>c2</ci>
+                <apply>
+                    <divide/>
+                    <ci>c</ci>
+                    <ci>R</ci>
+                </apply>
               </apply>
           </math>
         </kineticLaw>
       </reaction>
     </listOfReactions>
+    <listOfParameters>
+        <parameter id="c" value="3.4" constant="true" />
+        <parameter id="c2" constant="false" />
+        <parameter id="c3" constant="false" />
+    </listOfParameters>
+    <listOfRules>
+        <assignmentRule variable="c2">
+             <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <apply> 
+                    <divide/> 
+                    <cn> 1 </cn> 
+                    <ci> c3 </ci> 
+                </apply>
+             </math>
+         </assignmentRule>
+         <assignmentRule variable="c3">
+             <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <cn> 99 </cn> 
+             </math>
+         </assignmentRule>
+    </listOfRules>
     <listOfInitialAssignments>
         <initialAssignment symbol="P">
              <math xmlns="http://www.w3.org/1998/Math/MathML">

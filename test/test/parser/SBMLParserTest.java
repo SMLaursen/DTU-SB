@@ -26,8 +26,6 @@ public class SBMLParserTest extends StdOutTester {
         assertNotNull(spn.getReaction("reaction"));
         assertTrue(spn.getReaction("reaction").getProducts().containsKey("P"));
         assertTrue(spn.getReaction("reaction").getReactants().containsKey("R"));
-        
-        System.out.println(spn);
     }
     
     @Test
@@ -45,7 +43,7 @@ public class SBMLParserTest extends StdOutTester {
         
         parser.readFile("test/test/parser/neg_feedback_wo_read.xml");
         resetStreams();
-        System.out.println(parser.parse().toGraphviz());
+        System.out.println(parser.parse());
     }
     
     // http://sandbox.kidstrythisathome.com/erdos/

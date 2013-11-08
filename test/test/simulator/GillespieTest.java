@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
+import dk.dtu.sb.data.StochasticPetriNet;
 import dk.dtu.sb.output.CSV;
 import dk.dtu.sb.output.GraphGUI;
 import dk.dtu.sb.parser.SBMLParser;
@@ -22,13 +23,15 @@ public class GillespieTest {
 	
 	        }
 	        Parameters p = new Parameters();
-	        p.setIterations(50);
+	        p.setIterations(20);
 		    p.setNoOfThreads(4);
 	        p.setStoptime(100000);
-	        p.setOutStepSize(50);
+	        p.setOutStepSize(1);
 	
-	        Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
-	        Simulator simulator = new Simulator(parser.parse(), p);
+	        //Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+	        StochasticPetriNet spn = parser.parse();
+	        System.out.println(spn);
+	        Simulator simulator = new Simulator(spn, p);
 	        simulator.simulate();
 	
 	        GraphGUI graph = new GraphGUI();
@@ -37,29 +40,31 @@ public class GillespieTest {
 	        graph.process();
 	    }
 
-//	@Test
-//	public void test2() {
-//		SBMLParser parser = new SBMLParser();
-//		try {
-//			parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
-//		} catch (Exception e) {
-//
-//		}
-//
-//		Parameters p = new Parameters();
-//		p.setIterations(30);
-//		p.setNoOfThreads(4);
-//		p.setStoptime(1000);
-//		p.setOutStepSize(5);
-//
-//		Simulator simulator = new Simulator(parser.parse(), p);
-//		simulator.simulate();
-//
-//		CSV csv = new CSV();
-//		csv.setData(simulator.getOutputData());
-//		csv.process();
-//
-//	}
+	    @Test
+        public void testRepressilator() {
+            SBMLParser parser = new SBMLParser();
+            try {
+                parser.readFile("test/test/simulator/BIOMD0000000012.xml");
+            } catch (Exception e) {
+    
+            }
+            Parameters p = new Parameters();
+            p.setIterations(1);
+            p.setNoOfThreads(4);
+            p.setStoptime(100000);
+            p.setOutStepSize(1);
+    
+            //Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+            StochasticPetriNet spn = parser.parse();
+            System.out.println(spn);
+            Simulator simulator = new Simulator(spn, p);
+            simulator.simulate();
+    
+            GraphGUI graph = new GraphGUI();
+            graph.setParameters(p);
+            graph.setData(simulator.getOutputData());
+            graph.process();
+        }
 
 
 }

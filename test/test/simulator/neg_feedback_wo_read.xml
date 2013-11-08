@@ -21,11 +21,7 @@
         </listOfProducts>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <apply>
-              <times/>
               <cn> 0.1 </cn>
-              <ci> Plac </ci>
-            </apply>
           </math>
         </kineticLaw>
       </reaction>
@@ -35,11 +31,7 @@
         </listOfReactants>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <apply>
-              <times/>
               <cn> 0.001 </cn>
-              <ci> mRNA </ci>
-            </apply>
           </math>
         </kineticLaw>
       </reaction>
@@ -67,11 +59,8 @@
         </listOfReactants>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <apply>
-              <times/>
               <cn> 0.001 </cn>
-              <ci> lacI </ci>
-            </apply>
+
           </math>
         </kineticLaw>
       </reaction>

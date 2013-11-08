@@ -13,8 +13,8 @@ public class GillespieAlgorithm extends Algorithm {
     /**
      * 
      */
-    public GillespieAlgorithm(){
-    	currentMarkings = new HashMap<String, Integer>();
+    public GillespieAlgorithm() {
+        currentMarkings = new HashMap<String, Integer>();
         currentMarkings.putAll(spn.getInitialMarkings());
     }
 
@@ -31,27 +31,30 @@ public class GillespieAlgorithm extends Algorithm {
         Reaction R_mu;
 
         Random rand = new Random();
-    
+
         while (true) {
-            
-        	// Step 1
-        	a_0 = calculate_a0();
+
+            // Step 1
+            a_0 = calculate_a0();
             if (a_0 == 0.0) {
                 // Nothing more to be done
                 break;
             }
-            
+
             // Step 2
             r_1 = rand.nextDouble();
             r_2 = rand.nextDouble();
             tau = ((1.0 / a_0) * Math.log(1.0 / r_1));
-            Util.log.debug("a_0 : " + a_0 + "    r_1 :" + r_1 + "     tau :"+ tau);
+            Util.log.debug("a_0 : " + a_0 + "    r_1 :" + r_1 + "     tau :"
+                    + tau);
             R_mu = findReaction(a_0 * r_2);
+            
+            Util.log.debug(R_mu);
 
             // Step 3
             time += tau;
-            if(time > stoptime){
-            	break;
+            if (time > stoptime) {
+                break;
             }
             updateMarkings(R_mu, currentMarkings);
 
@@ -92,15 +95,15 @@ public class GillespieAlgorithm extends Algorithm {
      * Returns the propensity a_r = rate * PROD binom(m_i,f_i) forall i in
      * Reaction r
      */
-    private double calculatePropensity(Reaction r) {
+    private double calculatePropensity(Reaction reaction) {
         double h = 1.0;
-        for (Species reactant : r.getReactants().values()) {
+        for (Species reactant : reaction.getReactants().values()) {
             int marking = currentMarkings.get(reactant.getId());
             h *= binom(marking, reactant.getMultiplicity());
         }
-        h *= r.getRate();
+        h *= reaction.getRate(currentMarkings);
         // Set propensity to avoid recalculations later
-        r.setPropensity(h,Thread.currentThread().getId());
+        reaction.setPropensity(h, Thread.currentThread().getId());
         return h;
     }
 

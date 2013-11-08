@@ -23,6 +23,11 @@ public class Reaction {
      * 
      */
     private double rate;
+    
+    /**
+     * 
+     */
+    private RateFunction rateFunction;
 
     /**
      * Map of threadID's and calculated propensity. Significantly speeds up the implementation.
@@ -47,8 +52,8 @@ public class Reaction {
      * @param rate
      *            See {@link #rate}.
      */
-    public Reaction(String id, double rate) {
-        this(id, id, rate);
+    public Reaction(String id, RateFunction rateFunction) {
+        this(id, id, rateFunction);
     }
 
     /**
@@ -61,10 +66,10 @@ public class Reaction {
      * @param rate
      *            See {@link #rate}.
      */
-    public Reaction(String id, String name, double rate) {
+    public Reaction(String id, String name, RateFunction rateFunction) {
         this.id = id;
         this.name = name;
-        this.rate = rate;
+        this.rateFunction = rateFunction;
     }
 
     /**
@@ -153,8 +158,12 @@ public class Reaction {
     /**
      * See {@link #rate}.
      */
-    public double getRate() {
-        return rate;
+    public double getRate(Map<String, Integer> vars) {
+        return rateFunction.getRate(vars);
+    }
+    
+    public RateFunction getRateFunction() {
+        return rateFunction;
     }
 
     /**
@@ -175,7 +184,7 @@ public class Reaction {
     }
 
     public String toString() {
-        String s = "id: " + id + ", rate: " + rate + "\n";
+        String s = "id: " + id + ", rate: " + rateFunction + "\n";
         s += "  Reactants: " + reactants + "\n";
         s += "  Products:  " + products + "\n";
         return s;

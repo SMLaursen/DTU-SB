@@ -98,7 +98,7 @@ public class StochasticPetriNet {
 
         for (Reaction reaction : reactions.values()) {
 
-            graph += "\"" + reaction.getLabel() + " [" + reaction.getRate()
+            graph += "\"" + reaction.getLabel() + " [" + reaction.getRateFunction()
                     + "]\"" + " [shape=box];\n";
 
             // Process the reactants
@@ -106,7 +106,7 @@ public class StochasticPetriNet {
                 graph += "\"" + reactant.getLabel() + " ("
                         + getInitialMarking(reactant.getId()) + ")\" -> "
                         + "\"" + reaction.getLabel() + " ["
-                        + reaction.getRate() + "]\"";
+                        + reaction.getRateFunction() + "]\"";
                 // Set multiplicity on edges
                 if (reactant.getMultiplicity() > 1) {
                     graph += " [label = \"" + reactant.getMultiplicity()
@@ -117,7 +117,7 @@ public class StochasticPetriNet {
 
             // Process the products
             for (Species product : reaction.getProducts().values()) {
-                graph += "\"" + reaction.getLabel() + " [" + reaction.getRate()
+                graph += "\"" + reaction.getLabel() + " [" + reaction.getRateFunction()
                         + "]\"" + " -> \"" + product.getLabel() + " ("
                         + getInitialMarking(product.getId()) + ")\"";
                 // Set multiplicity on edges
