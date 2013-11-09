@@ -101,7 +101,8 @@ public class GillespieAlgorithm extends Algorithm {
             int marking = currentMarkings.get(reactant.getId());
             h *= binom(marking, reactant.getMultiplicity());
         }
-        h *= reaction.getRate(currentMarkings);
+        double rate = reaction.getRate(currentMarkings);
+        h *= rate;
         // Set propensity to avoid recalculations later
         reaction.setPropensity(h, Thread.currentThread().getId());
         return h;
