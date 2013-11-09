@@ -39,6 +39,35 @@ public class GillespieTest {
 	        graph.setData(simulator.getOutputData());
 	        graph.process();
 	    }
+	    
+	    @Test
+        public void testNegFeedbackSuite() {
+            SBMLParser parser = new SBMLParser();
+            try {
+                parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
+            } catch (Exception e) {
+    
+            }
+            Parameters p = new Parameters();
+            p.setIterations(20);
+            p.setNoOfThreads(4);
+            p.setStoptime(100000);
+            p.setOutStepSize(1);
+    
+            //Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+            StochasticPetriNet spn = parser.parse();
+    
+            long totalTime = 0;
+            int TIMES = 20;
+            
+            for (int i = 0; i < TIMES; i++) {
+                Simulator simulator = new Simulator(spn, p);
+                simulator.simulate();
+                totalTime += simulator.getSimulationTime();
+            }
+            
+            System.out.println("Avg: " + totalTime / TIMES);
+        }
 
 	    @Test
         public void testRepressilator() {

@@ -18,11 +18,6 @@ public class Reaction {
      * A human-readable label for this reaction.
      */
     private String name;
-
-    /**
-     * 
-     */
-    private double rate;
     
     /**
      * 
@@ -49,8 +44,8 @@ public class Reaction {
      * 
      * @param id
      *            See {@link #id}.
-     * @param rate
-     *            See {@link #rate}.
+     * @param rateFunction
+     *            See {@link #rateFunction}.
      */
     public Reaction(String id, RateFunction rateFunction) {
         this(id, id, rateFunction);
@@ -63,8 +58,8 @@ public class Reaction {
      *            See {@link #id}.
      * @param name
      *            See {@link #name}.
-     * @param rate
-     *            See {@link #rate}.
+     * @param rateFunction
+     *            See {@link #rateFunction}.
      */
     public Reaction(String id, String name, RateFunction rateFunction) {
         this.id = id;
@@ -156,12 +151,19 @@ public class Reaction {
     }
 
     /**
-     * See {@link #rate}.
+     * Calculates the rate based on the current markings and the rate function.
+     * 
+     * @param vars A map of variables and their current values.
+     * @return The rate of this reaction.
      */
     public double getRate(Map<String, Integer> vars) {
         return rateFunction.getRate(vars);
     }
     
+    /**
+     * Getter method.
+     * @return {@link RateFunction}
+     */
     public RateFunction getRateFunction() {
         return rateFunction;
     }
