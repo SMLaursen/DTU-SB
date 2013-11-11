@@ -84,7 +84,7 @@ public class Simulator {
 	 * Simulates using the given stoptime and no of iterations
 	 */
 	public void simulate(){
-	    Algorithm.initialize(spn, params.getStoptime());
+	    Algorithm.setInput(spn, params.getStoptime());
 	    
 		try {
 		    long startTime = System.currentTimeMillis();
@@ -120,7 +120,7 @@ public class Simulator {
 	 * @return
 	 */
 	public OutputData getOutputData() {
-		return new OutputData(Algorithm.getPlotData(),spn.getInitialMarkings(),params.getIterations());
+		return new OutputData(Algorithm.getOutput(), spn.getInitialMarkings(), params.getIterations());
 	}
 
 }

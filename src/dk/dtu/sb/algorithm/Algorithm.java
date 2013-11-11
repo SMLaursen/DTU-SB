@@ -50,7 +50,7 @@ public class Algorithm implements Runnable {
 	 * @param spn {@link StochasticPetriNet}.
 	 * @param stoptime The maximum of the last time point of the simulation.
 	 */
-	public static void initialize(StochasticPetriNet spn, double stoptime){		
+	public static void setInput(StochasticPetriNet spn, double stoptime){		
 		Algorithm.stoptime = stoptime;
 		Algorithm.spn = spn;
 		resultData.clear();
@@ -96,7 +96,7 @@ public class Algorithm implements Runnable {
 	 * 
 	 * @return
 	 */
-    public static synchronized LinkedList<ReactionEvent> getPlotData(){
+    public static synchronized LinkedList<ReactionEvent> getOutput(){
 			return resultData;
 	}
 	
