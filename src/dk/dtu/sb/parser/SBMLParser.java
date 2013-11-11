@@ -148,7 +148,7 @@ public class SBMLParser extends Parser {
     private List<String> unknowns = new ArrayList<String>();
     
     private RateFunction getRateFunction(KineticLaw kl) {
-        RateFunction rateFunction = new RateFunction();
+        RateFunction rateFunction = new RateFunction(1.0);
         
         if (kl != null && kl.getMath() != null) {
             unknowns = new ArrayList<String>();

@@ -12,6 +12,7 @@
 	<property name="commons-log.lib" value="lib/commons-logging-api-1.1.3.jar" />
 	<property name="jfreechart.lib" value="lib/jfreechart-1.0.16.jar" />
 	<property name="jcommon.lib" value="lib/jcommon-1.0.20.jar" />
+	<property name="exp4j.lib" value="lib/exp4j-0.3.11.jar" />
 
 	<path id="classpath">
 		<pathelement location="${build.dir}" />
@@ -20,6 +21,7 @@
 		<pathelement location="${commons-log.lib}" />
 		<pathelement location="${jfreechart.lib}" />
         <pathelement location="${jcommon.lib}" />
+		<pathelement location="${exp4j.lib}" />
 	</path>
 
 	<path id="classpath.test">
