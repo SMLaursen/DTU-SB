@@ -31,21 +31,21 @@ import dk.dtu.sb.data.Plot;
 public class GraphGUI extends Output {
 
 	public void process() {
-		if (!data.isEmpty()) {
+		if (!graphData.isEmpty()) {
 			XYSeriesCollection dataset = new XYSeriesCollection();
 			HashMap<String,XYSeries> graph = new HashMap<String,XYSeries>();
 			//Create a XYSeries for each species
-			for(String s : data.peekFirst().markings.keySet()){
+			for(String s : graphData.peekFirst().markings.keySet()){
 				graph.put(s, new XYSeries(s));
 			}
 			// Run through all plots and add their value
-			for (Plot d : data) {
+			for (Plot d : graphData) {
 				for(String s : d.markings.keySet()){
 					graph.get(s).add(d.time,d.markings.get(s));
 				}
 			}
 			//Add all series
-			for(String s : data.peekFirst().markings.keySet()){
+			for(String s : graphData.peekFirst().markings.keySet()){
 				dataset.addSeries(graph.get(s));
 			}
 		final JFreeChart chart = ChartFactory.createXYLineChart("DTU-SB",
@@ -63,7 +63,7 @@ public class GraphGUI extends Output {
 		jPanel.add(chartpanel, BorderLayout.CENTER);
 
 		final JList list = new JList(
-				createData(data.peekFirst().markings.keySet()));
+				createData(graphData.peekFirst().markings.keySet()));
 		list.setCellRenderer(new CheckListRenderer());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBorder(new EmptyBorder(0, 3, 0, 0));

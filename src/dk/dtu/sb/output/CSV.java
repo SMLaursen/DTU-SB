@@ -18,7 +18,7 @@ public class CSV extends Output {
      * Outputs the simulation results in CSV format to fileURL.
      */
     public void process() {
-        if (data.isEmpty()) {
+        if (graphData.isEmpty()) {
             Util.log.error("No data to write");
         } else {
             try {
@@ -31,13 +31,13 @@ public class CSV extends Output {
                 BufferedWriter bw = new BufferedWriter(fw);
                 // Mappings between index and name
                 HashMap<Integer, String> h = new HashMap<Integer, String>();
-                HashMap<String, Integer> currValues = new HashMap<String,Integer>();
+                HashMap<String, Float> currValues = new HashMap<String,Float>();
                //Index to ensure consistent lookups (Hashmaps do not guarantee ordering)
                 int index = 0;
 
                 // Write header
                 bw.write("time");
-                for (String i : data.peekFirst().markings.keySet()) {
+                for (String i : graphData.peekFirst().markings.keySet()) {
                     bw.write("," + i);
                     h.put(index, i);
                     index++;
@@ -45,7 +45,7 @@ public class CSV extends Output {
                 bw.write("\n");
                 
                 // Write Content
-                for (Plot pl : data) {
+                for (Plot pl : graphData) {
                 	currValues.putAll(pl.markings);
                 	bw.write(String.valueOf(pl.time));
                     for (int i = 0; i < h.size(); i++) {

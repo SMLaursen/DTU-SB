@@ -120,7 +120,7 @@ public class Simulator {
 	 * @return
 	 */
 	public OutputData getOutputData() {
-		return new OutputData(Algorithm.getOutput(), spn.getInitialMarkings(), params.getIterations());
+		return new OutputData(Algorithm.getOutput(), spn.getInitialMarkings(), params.getIterations(), params.getStoptime());
 	}
 
 }
