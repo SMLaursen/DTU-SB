@@ -17,3 +17,12 @@ Initial version.
 
 * 
 
+### Dependencies
+
+* Apache Commons CLI 1.2 - http://commons.apache.org/proper/commons-cli/
+* Apache Commons Logging 1.1.3 - http://commons.apache.org/proper/commons-logging/
+* JFreeChart 1.0.16 - http://www.jfree.org/jfreechart/
+* JCommon 1.0.20 - http://www.jfree.org/jcommon/
+* JSBML 0.8 (with dependencies) - http://sbml.org/Software/JSBML
+* JUnit 4.11 (only for testing) - https://github.com/junit-team/junit/wiki/Download-and-Install
+* Hamcrest 1.3 (only for testing) - https://github.com/junit-team/junit/wiki/Download-and-Install
