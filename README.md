@@ -24,5 +24,6 @@ Initial version.
 * JFreeChart 1.0.16 - http://www.jfree.org/jfreechart/
 * JCommon 1.0.20 - http://www.jfree.org/jcommon/
 * JSBML 0.8 (with dependencies) - http://sbml.org/Software/JSBML
+* exp4j 0.3.11 - http://www.objecthunter.net/exp4j/
 * JUnit 4.11 (only for testing) - https://github.com/junit-team/junit/wiki/Download-and-Install
 * Hamcrest 1.3 (only for testing) - https://github.com/junit-team/junit/wiki/Download-and-Install
