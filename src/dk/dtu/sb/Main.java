@@ -189,12 +189,12 @@ public class Main {
             }
             params.setResultGUI(resultGUI);
             
-            int stepsize = Parameters.PARAM_OUT_STEPSIZE_DEFAULT;
+            int stepsize = Parameters.PARAM_OUT_STEPCOUNT_DEFAULT;
             try{
-            	stepsize = Integer.parseInt(prompt("Output Stepsize",""+Parameters.PARAM_OUT_STEPSIZE_DEFAULT));
+            	stepsize = Integer.parseInt(prompt("Output Stepsize",""+Parameters.PARAM_OUT_STEPCOUNT_DEFAULT));
             }catch (NumberFormatException e) {
             }
-            params.setOutStepSize(stepsize);
+            params.setOutStepCount(stepsize);
             
             String filename = prompt("Save as", "sim.properties");
             

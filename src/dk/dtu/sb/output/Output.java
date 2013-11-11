@@ -15,39 +15,44 @@ import dk.dtu.sb.data.ReactionEvent;
  *
  */
 public abstract class Output {
-    
-	protected LinkedList<Plot> data = new LinkedList<Plot>();
+	protected LinkedList<Plot> graphData = new LinkedList<Plot>();
 	protected Parameters params = new Parameters();
 
 	/**
 	 * 
-	 * @param data
+	 * @param tempOutputData
 	 */
-	public void setData(OutputData outputData) {
+	public void setData(OutputData simulationData) {
 
-		//Sort on times
-		Collections.sort(outputData.plotData, new Comparator<ReactionEvent>() {
+		//Sort simulationData on times
+		Collections.sort(simulationData.data, new Comparator<ReactionEvent>() {
 			@Override
 			public int compare(ReactionEvent r1, ReactionEvent r2) {
 				return Double.compare(r1.time, r2.time);
 			}
 		});
+		
+		//Calculate the stepsize of data to include in output
+		int stepsize = 1;
+		if(params.getOutStepCount() > 0){
+			stepsize = simulationData.data.size() / params.getOutStepCount();
+		}
 
 		HashMap<String,Integer> currMarking = new HashMap<String,Integer>();
 		
 		// Multiply the initial marking with noOfIterations
-		for(String key : outputData.initialMarkings.keySet()){
-			currMarking.put(key, outputData.initialMarkings.get(key)*outputData.iterations);
+		for(String key : simulationData.initialMarkings.keySet()){
+			currMarking.put(key, simulationData.initialMarkings.get(key)*simulationData.iterations);
 		}
 		//Add initial marking
-		data.add(new Plot(0,currMarking));
+		graphData.add(new Plot(0,currMarking));
 		
 		// Create PlotData from the OutputData
 		int i = 1;
 		HashMap<String,Integer> prevMarking = new HashMap<String,Integer>();
-		for(ReactionEvent reaction : outputData.plotData){
+		for(ReactionEvent reaction : simulationData.data){
 			
-			if(i % params.getOutStepSize() == 0){
+			if(i % stepsize == 0){
 				prevMarking.clear();
 				prevMarking.putAll(currMarking);
 			}
@@ -55,18 +60,20 @@ public abstract class Output {
 			Algorithm.updateMarkings(reaction.reaction, currMarking);		
 			
 			//Enforce stepsize
-			if(i % params.getOutStepSize() == 0){
-				data.add(new Plot(reaction.time,getIntersection(currMarking,prevMarking)));
+			if(i % stepsize == 0){
+				graphData.add(new Plot(reaction.time,getIntersection(currMarking,prevMarking)));
 			}
 			i++;
 		}
+		//Add last output point to ensure it will not get cut-off.
+		graphData.add(new Plot(simulationData.stopTime,currMarking));
 		
-		// Divide by no of iteration
-		for(Plot p : data){
+		// Divide by no of iteration and put result in graphData
+		for(Plot p : graphData){
 			for(String s : p.markings.keySet()){
-				//Update value
-				p.markings.put(s, p.markings.get(s)/outputData.iterations);
+				p.markings.put(s, p.markings.get(s) / simulationData.iterations);
 			}
+	
 		}
 	}
 
@@ -101,4 +108,3 @@ public abstract class Output {
 	 */
 	public abstract void process();
 }
-

@@ -21,10 +21,11 @@ public class GillespieTest {
 	
 	        }
 	        Parameters p = new Parameters();
-	        p.setIterations(10);
+
+	        p.setIterations(50);
 		    p.setNoOfThreads(2);
 	        p.setStoptime(100000);
-	        p.setOutStepSize(1);
+	        p.setOutStepCount(100);
 	
 	        Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
 	        Simulator simulator = new Simulator(parser.parse(), p);
@@ -48,8 +49,8 @@ public class GillespieTest {
 //		Parameters p = new Parameters();
 //		p.setIterations(1);
 //		p.setNoOfThreads(2);
-//		p.setStoptime(10000);
-//		p.setOutStepSize(1);
+//		p.setStoptime(100000);
+//		p.setOutStepCount(0);
 //
 //		Simulator simulator = new Simulator(parser.parse(), p);
 //		simulator.simulate();
@@ -59,6 +60,6 @@ public class GillespieTest {
 //		csv.process();
 //
 //	}
-
-
+//
+//
 }

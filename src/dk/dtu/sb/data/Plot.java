@@ -8,11 +8,14 @@ import java.util.HashMap;
 public class Plot {
     
 	public double time;
-	public HashMap<String,Integer> markings = new HashMap<String,Integer>();
+	public HashMap<String,Float> markings = new HashMap<String,Float>();
 	
-	public Plot(double time, HashMap<String,Integer> currentMarkings){
+	public Plot(double time, HashMap<String, Integer> currMarking){
 		this.time = time;		
-		markings.putAll(currentMarkings);
+		//Store as float values
+		for(String key : currMarking.keySet()){
+			markings.put(key, (float) currMarking.get(key));
+		}
 	}
 	
 	public String toString(){
