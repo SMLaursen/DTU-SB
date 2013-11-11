@@ -80,7 +80,9 @@ public class RateFunction {
      */
     public RateFunction(String formula, List<String> unknowns) {
         ExpressionBuilder expr = new ExpressionBuilder(formula);
-        this.unknowns.addAll(unknowns);
+        if (unknowns != null) {
+            this.unknowns.addAll(unknowns);
+        }
         this.formula = formula;
 
         try {
