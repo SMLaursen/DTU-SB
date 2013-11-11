@@ -16,46 +16,47 @@ import dk.dtu.sb.data.ReactionEvent;
  */
 public abstract class Output {
     
-	LinkedList<Plot> data = new LinkedList<Plot>();
-	Parameters params = new Parameters();
+	protected LinkedList<Plot> data = new LinkedList<Plot>();
+	protected Parameters params = new Parameters();
 
 	/**
 	 * 
 	 * @param data
 	 */
-	public void setData(OutputData o) {
+	public void setData(OutputData outputData) {
 
 		//Sort on times
-		Collections.sort(o.plotData, new Comparator<ReactionEvent>() {
+		Collections.sort(outputData.plotData, new Comparator<ReactionEvent>() {
 			@Override
 			public int compare(ReactionEvent r1, ReactionEvent r2) {
 				return Double.compare(r1.time, r2.time);
 			}
 		});
 
-		HashMap<String,Integer> marking = new HashMap<String,Integer>();
+		HashMap<String,Integer> currMarking = new HashMap<String,Integer>();
 		
 		// Multiply the initial marking with noOfIterations
-		for(String s : o.initialMarkings.keySet()){
-			marking.put(s, o.initialMarkings.get(s)*o.iterations);
+		for(String key : outputData.initialMarkings.keySet()){
+			currMarking.put(key, outputData.initialMarkings.get(key)*outputData.iterations);
 		}
-		data.add(new Plot(0,marking));
+		//Add initial marking
+		data.add(new Plot(0,currMarking));
 		
 		// Create PlotData from the OutputData
 		int i = 1;
-		HashMap<String,Integer> old = new HashMap<String,Integer>();
-		for(ReactionEvent re : o.plotData){
+		HashMap<String,Integer> prevMarking = new HashMap<String,Integer>();
+		for(ReactionEvent reaction : outputData.plotData){
 			
 			if(i % params.getOutStepSize() == 0){
-				old.clear();
-				old.putAll(marking);
+				prevMarking.clear();
+				prevMarking.putAll(currMarking);
 			}
 			
-			Algorithm.updateMarkings(re.reaction, marking);		
+			Algorithm.updateMarkings(reaction.reaction, currMarking);		
 			
 			//Enforce stepsize
 			if(i % params.getOutStepSize() == 0){
-				data.add(new Plot(re.time,getIntersection(marking,old)));
+				data.add(new Plot(reaction.time,getIntersection(currMarking,prevMarking)));
 			}
 			i++;
 		}
@@ -64,7 +65,7 @@ public abstract class Output {
 		for(Plot p : data){
 			for(String s : p.markings.keySet()){
 				//Update value
-				p.markings.put(s, p.markings.get(s)/o.iterations);
+				p.markings.put(s, p.markings.get(s)/outputData.iterations);
 			}
 		}
 	}
@@ -81,14 +82,14 @@ public abstract class Output {
 	 * 
 	 * @param mapOne
 	 * @param mapTwo
-	 * @return
+	 * @return A map of those keys that have changed their values
 	 */
 	private HashMap<String,Integer> getIntersection(HashMap<String,Integer> mapOne, HashMap<String,Integer> mapTwo)
 	{
 		HashMap<String,Integer> intersection = new HashMap<String,Integer>();
 	    for (String key: mapOne.keySet())
 	    {
-	        if (mapOne.get(key)==mapTwo.get(key)){
+	        if (mapOne.get(key) != (mapTwo.get(key))){
 	           intersection.put(key, mapOne.get(key));
 	        }
 	    }

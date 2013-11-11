@@ -21,10 +21,10 @@ public class GillespieTest {
 	
 	        }
 	        Parameters p = new Parameters();
-	        p.setIterations(20);
-		    p.setNoOfThreads(4);
+	        p.setIterations(100);
+		    p.setNoOfThreads(2);
 	        p.setStoptime(100000);
-	        p.setOutStepSize(1);
+	        p.setOutStepSize(100);
 	
 	        Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
 	        Simulator simulator = new Simulator(parser.parse(), p);
@@ -35,7 +35,7 @@ public class GillespieTest {
 	        graph.setData(simulator.getOutputData());
 	        graph.process();
 	    }
-
+//
 //	@Test
 //	public void test2() {
 //		SBMLParser parser = new SBMLParser();
@@ -46,10 +46,10 @@ public class GillespieTest {
 //		}
 //
 //		Parameters p = new Parameters();
-//		p.setIterations(30);
-//		p.setNoOfThreads(4);
-//		p.setStoptime(1000);
-//		p.setOutStepSize(5);
+//		p.setIterations(1);
+//		p.setNoOfThreads(2);
+//		p.setStoptime(10000);
+//		p.setOutStepSize(1);
 //
 //		Simulator simulator = new Simulator(parser.parse(), p);
 //		simulator.simulate();
