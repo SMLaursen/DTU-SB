@@ -33,10 +33,10 @@ public class GillespieTest {
 	        Simulator simulator = new Simulator(spn, p);
 	        simulator.simulate();
 	
-	        GraphGUI graph = new GraphGUI();
-	        graph.setParameters(p);
-	        graph.setData(simulator.getOutputData());
-	        graph.process();
+//	        GraphGUI graph = new GraphGUI();
+//	        graph.setParameters(p);
+//	        graph.setData(simulator.getOutputData());
+//	        graph.process();
 	    }
 	    
 	    @Test
