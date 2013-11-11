@@ -4,11 +4,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.Util;
 import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.data.OutputData;
 import dk.dtu.sb.data.Plot;
@@ -18,6 +15,7 @@ import dk.dtu.sb.data.ReactionEvent;
  *
  */
 public abstract class Output {
+    
 	LinkedList<Plot> data = new LinkedList<Plot>();
 	Parameters params = new Parameters();
 
@@ -78,6 +76,13 @@ public abstract class Output {
 	public void setParameters(Parameters params) {
 		this.params = params;
 	}
+	
+	/**
+	 * 
+	 * @param mapOne
+	 * @param mapTwo
+	 * @return
+	 */
 	private HashMap<String,Integer> getIntersection(HashMap<String,Integer> mapOne, HashMap<String,Integer> mapTwo)
 	{
 		HashMap<String,Integer> intersection = new HashMap<String,Integer>();

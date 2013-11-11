@@ -1,6 +1,5 @@
 package dk.dtu.sb.data;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,11 +22,6 @@ public class Reaction {
      * 
      */
     private RateFunction rateFunction;
-
-    /**
-     * Map of threadID's and calculated propensity. Significantly speeds up the implementation.
-     */
-    private Map<Long, Double> propensity = new HashMap<Long, Double>();
 
     /**
      * The reactants in this reactions.
@@ -166,23 +160,6 @@ public class Reaction {
      */
     public RateFunction getRateFunction() {
         return rateFunction;
-    }
-
-    /**
-     * See {@link #propensity}.
-     */
-    public void setPropensity(double propensity, Long tid) {
-    	synchronized(this){
-    		this.propensity.put(tid, propensity);
-    	}
-        
-    }
-
-    /**
-     * See {@link #propensity}.
-     */
-    public double getPropensity(Long tid) {
-        return propensity.get(tid);
     }
 
     public String toString() {

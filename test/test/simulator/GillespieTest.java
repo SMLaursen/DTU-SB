@@ -13,7 +13,6 @@ import dk.dtu.sb.simulator.Simulator;
 
 public class GillespieTest {
 
-
 	    @Test
 	    public void testNegFeedback() {
 	        SBMLParser parser = new SBMLParser();
