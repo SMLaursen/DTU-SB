@@ -43,8 +43,8 @@ public class SBMLParser extends Parser {
      */
     public StochasticPetriNet parse() {
         if (parseFile()) {
+            parseSpecies();
             parseReactions();
-            parseMarkings();
         }
 
         return this.spn;
@@ -80,20 +80,17 @@ public class SBMLParser extends Parser {
 
             for (ModifierSpeciesReference sr : reaction.getListOfModifiers()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addReactant(new dk.dtu.sb.data.Species(s.getId(), s
-                        .getName()));
+                newReaction.addReactant(s.getId());
             }
 
             for (SpeciesReference sr : reaction.getListOfReactants()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addReactant(new dk.dtu.sb.data.Species(s.getId(), s
-                        .getName()));
+                newReaction.addReactant(s.getId());
             }
 
             for (SpeciesReference sr : reaction.getListOfProducts()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addProduct(new dk.dtu.sb.data.Species(s.getId(), s
-                        .getName()));
+                newReaction.addProduct(s.getId());
             }
 
             spn.addReaction(newReaction);
@@ -116,10 +113,10 @@ public class SBMLParser extends Parser {
     /**
      * Sets the initial markings of the SPN.
      */
-    private void parseMarkings() {
+    private void parseSpecies() {
         for (Species specie : model.getListOfSpecies()) {
-            spn.setInitialMarking(specie.getId(),
-                    (int) specie.getInitialAmount());
+            spn.addSpecies(new dk.dtu.sb.data.Species(specie.getId(), specie.getName()));
+            spn.setInitialMarking(specie.getId(), (int) specie.getInitialAmount());
         }
 
         for (InitialAssignment ia : model.getListOfInitialAssignments()) {

@@ -3,6 +3,7 @@ package dk.dtu.sb.algorithm;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import dk.dtu.sb.Util;
 import dk.dtu.sb.data.Reaction;
@@ -30,14 +31,14 @@ public class GillespieAlgorithm extends Algorithm {
         double r_1;
         double r_2;
         double tau;
-        Reaction R_mu;
+        Reaction R_mu = null;
 
         Random rand = new Random();
 
         while (true) {
 
             // Step 1
-            a_0 = calculate_a0();
+            a_0 = calculate_a0(R_mu);
             if (a_0 == 0.0) {
                 // Nothing more to be done
                 break;
@@ -90,11 +91,27 @@ public class GillespieAlgorithm extends Algorithm {
      * 
      * @return
      */
-    private double calculate_a0() {
+    private double calculate_a0(Reaction R_mu) {
         double a_0 = 0;
-        for (Reaction reaction : spn.getReactions().values()) {
-            a_0 += calculatePropensity(reaction);
-        }
+        //if (R_mu == null) {
+            for (Reaction reaction : spn.getReactions().values()) {
+                a_0 += calculatePropensity(reaction);
+            }
+        /*} else {
+            for (String productId : R_mu.getProducts().keySet()) {
+                for (Reaction reaction : spn.getSpecies(productId).asReactantReactions()) {
+                    calculatePropensity(reaction);
+                }
+            }
+            for (String reactantId : R_mu.getReactants().keySet()) {
+                for (Reaction reaction : spn.getSpecies(reactantId).asReactantReactions()) {
+                    calculatePropensity(reaction);
+                }
+            }
+            for (Reaction reaction : spn.getReactions().values()) {
+                a_0 += propensities.get(reaction.getId());
+            }
+        } */       
         return a_0;
     }
 
@@ -107,9 +124,8 @@ public class GillespieAlgorithm extends Algorithm {
      */
     private double calculatePropensity(Reaction reaction) {
         double h = 1.0;
-        for (Species reactant : reaction.getReactants().values()) {
-            int marking = currentMarkings.get(reactant.getId());
-            h *= Util.binom(marking, reactant.getMultiplicity());
+        for (Entry<String, Integer> reactant : reaction.getReactants().entrySet()) {
+            h *= Util.binom(currentMarkings.get(reactant.getKey()), reactant.getValue());
         }
         h *= reaction.getRate();
         // Set propensity to avoid recalculations later

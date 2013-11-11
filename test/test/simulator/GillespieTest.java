@@ -21,10 +21,10 @@ public class GillespieTest {
 	
 	        }
 	        Parameters p = new Parameters();
-	        p.setIterations(50);
+	        p.setIterations(10);
 		    p.setNoOfThreads(2);
 	        p.setStoptime(100000);
-	        p.setOutStepCount(100);
+	        p.setOutStepCount(1000);
 	
 	        Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
 	        Simulator simulator = new Simulator(parser.parse(), p);

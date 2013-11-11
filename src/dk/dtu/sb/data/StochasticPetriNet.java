@@ -3,6 +3,8 @@ package dk.dtu.sb.data;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * 
@@ -20,6 +22,11 @@ public class StochasticPetriNet {
     private Map<String, Integer> initialMarkings = new HashMap<String, Integer>();
 
     /**
+     * 
+     */
+    private Map<String, Species> species = new HashMap<String, Species>();
+
+    /**
      * Adds a reaction to the SPN.
      * 
      * @param reaction
@@ -28,6 +35,24 @@ public class StochasticPetriNet {
         if (reactions.containsKey(reaction.getId())) {
             throw new RuntimeException("Reaction with ID " + reaction.getId()
                     + " already defined.");
+        }
+
+        for (String speciesId : reaction.getProducts().keySet()) {
+            if (!species.containsKey(speciesId)) {
+                throw new RuntimeException("The species with the ID "
+                        + speciesId + " was not found in this SPN.");
+            } else {
+                species.get(speciesId).addAsProductReaction(reaction);
+            }
+        }
+
+        for (String speciesId : reaction.getReactants().keySet()) {
+            if (!species.containsKey(speciesId)) {
+                throw new RuntimeException("The species with the ID "
+                        + speciesId + " was not found in this SPN.");
+            } else {
+                species.get(speciesId).addAsReactantReaction(reaction);
+            }
         }
 
         reactions.put(reaction.getId(), reaction);
@@ -58,6 +83,18 @@ public class StochasticPetriNet {
      */
     public Map<String, Reaction> getReactions() {
         return reactions;
+    }
+
+    public void addSpecies(Species species) {
+        this.species.put(species.getId(), species);
+    }
+
+    public Species getSpecies(String speciesId) {
+        return species.get(speciesId);
+    }
+
+    public Map<String, Species> getSpeciess() {
+        return species;
     }
 
     /**
@@ -102,27 +139,29 @@ public class StochasticPetriNet {
                     + "]\"" + " [shape=box];\n";
 
             // Process the reactants
-            for (Species reactant : reaction.getReactants().values()) {
-                graph += "\"" + reactant.getLabel() + " ("
-                        + getInitialMarking(reactant.getId()) + ")\" -> "
-                        + "\"" + reaction.getLabel() + " ["
+            for (Entry<String, Integer> reactantEntry : reaction.getReactants()
+                    .entrySet()) {
+                graph += "\"" + getSpecies(reactantEntry.getKey()).getLabel()
+                        + " (" + getInitialMarking(reactantEntry.getKey())
+                        + ")\" -> " + "\"" + reaction.getLabel() + " ["
                         + reaction.getRate() + "]\"";
                 // Set multiplicity on edges
-                if (reactant.getMultiplicity() > 1) {
-                    graph += " [label = \"" + reactant.getMultiplicity()
-                            + "\"]";
+                if (reactantEntry.getValue() > 1) {
+                    graph += " [label = \"" + reactantEntry.getValue() + "\"]";
                 }
                 graph += ";\n";
             }
 
             // Process the products
-            for (Species product : reaction.getProducts().values()) {
+            for (Entry<String, Integer> productEntry : reaction.getReactants()
+                    .entrySet()) {
                 graph += "\"" + reaction.getLabel() + " [" + reaction.getRate()
-                        + "]\"" + " -> \"" + product.getLabel() + " ("
-                        + getInitialMarking(product.getId()) + ")\"";
+                        + "]\"" + " -> \""
+                        + getSpecies(productEntry.getKey()).getLabel() + " ("
+                        + getInitialMarking(productEntry.getKey()) + ")\"";
                 // Set multiplicity on edges
-                if (product.getMultiplicity() > 1) {
-                    graph += " [label = \"" + product.getMultiplicity() + "\"]";
+                if (productEntry.getValue() > 1) {
+                    graph += " [label = \"" + productEntry.getValue() + "\"]";
                 }
                 graph += ";\n";
             }
@@ -141,12 +180,12 @@ public class StochasticPetriNet {
         // TODO
         return null;
     }
-    
-    public StochasticPetriNet clone(){
-    	StochasticPetriNet s = new StochasticPetriNet();
-    	s.initialMarkings.putAll(initialMarkings);
-    	s.reactions.putAll(reactions);
-    	return s;
+
+    public StochasticPetriNet clone() {
+        StochasticPetriNet s = new StochasticPetriNet();
+        s.initialMarkings.putAll(initialMarkings);
+        s.reactions.putAll(reactions);
+        return s;
     }
 
     public String toString() {

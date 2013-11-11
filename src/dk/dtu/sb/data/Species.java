@@ -1,37 +1,45 @@
 package dk.dtu.sb.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Species {
 
     private String id;
     
     private String name;
     
-    private int multiplicity;
+    private List<Reaction> asProduct = new ArrayList<Reaction>();
     
-    public Species(String id, String name, int multiplicity) {
-        this.id = id;
-        this.name = name;
-        this.multiplicity = multiplicity;
-    }
-    
-    public Species(String id, int multiplicity) {
-        this(id, id, multiplicity);
-    }
+    private List<Reaction> asReactant = new ArrayList<Reaction>();
     
     public Species(String id, String name) {
-        this(id, name, 1);
+        this.id = id;
+        this.name = name;
     }
     
     public Species(String id) {
-        this(id, id, 1);
+        this(id, id);
     }
     
     public String getId() {
         return id;
     }
     
-    public int getMultiplicity() {
-        return multiplicity;
+    public void addAsProductReaction(Reaction reaction) {
+        asProduct.add(reaction);
+    }
+    
+    public List<Reaction> asProductReactions() {
+        return asProduct;
+    }
+    
+    public void addAsReactantReaction(Reaction reaction) {
+        asReactant.add(reaction);
+    }
+    
+    public List<Reaction> asReactantReactions() {
+        return asReactant;
     }
     
     /**
@@ -44,6 +52,6 @@ public class Species {
     }
     
     public String toString() {
-        return "<" + getLabel() +  ", " + multiplicity + ">";
+        return "<" + id +  ", " + name + ">";
     }
 }
