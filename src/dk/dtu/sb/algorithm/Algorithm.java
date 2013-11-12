@@ -3,6 +3,7 @@ package dk.dtu.sb.algorithm;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import dk.dtu.sb.data.Reaction;
 import dk.dtu.sb.data.ReactionEvent;
@@ -72,22 +73,20 @@ public class Algorithm implements Runnable {
     public static synchronized void updateMarkings(Reaction reaction,
             Map<String, Integer> markings) {
         int multiplicity, oldMarking;
-        for (Species reactant : reaction.getReactants().values()) {
-            multiplicity = reactant.getMultiplicity();
-            oldMarking = markings.get(reactant.getId());
-
+        for (Entry<String, Integer> reactantEntry : reaction.getReactants().entrySet()) {
+            multiplicity = reactantEntry.getValue();
+            oldMarking = markings.get(reactantEntry.getKey());
             if (oldMarking < multiplicity) {
                 throw new RuntimeException(
                         "Performing update with fewer tokens than required.");
             }
-            markings.put(reactant.getId(), oldMarking - multiplicity);
+            markings.put(reactantEntry.getKey(), oldMarking - multiplicity);
         }
 
-        for (Species product : reaction.getProducts().values()) {
-            multiplicity = product.getMultiplicity();
-            oldMarking = markings.get(product.getId());
-            
-            markings.put(product.getId(), oldMarking + multiplicity);
+        for (Entry<String, Integer> productEntry : reaction.getProducts().entrySet()) {
+            multiplicity = productEntry.getValue();
+            oldMarking = markings.get(productEntry.getKey());            
+            markings.put(productEntry.getKey(), oldMarking + multiplicity);
         }
     }
     

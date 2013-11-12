@@ -26,13 +26,13 @@ public class Reaction {
     /**
      * The reactants in this reactions.
      */
-    private Map<String, Species> reactants = new HashMap<String, Species>();
+    private Map<String, Integer> reactants = new HashMap<String, Integer>();
 
     /**
      * The products in this reaction.
      */
-    private Map<String, Species> products = new HashMap<String, Species>();
-
+    private Map<String, Integer> products = new HashMap<String, Integer>();
+    
     /**
      * Constructs a reaction.
      * 
@@ -64,22 +64,23 @@ public class Reaction {
     /**
      * Add reactant to this reaction.
      * 
-     * @param reactant
-     *            See {@link Species}.
+     * @param speciesId
      */
-    public void addReactant(Species reactant) {
-        reactants.put(reactant.getId(), reactant);
+    public void addReactant(String speciesId) {
+        addReactant(speciesId, 1);
+    }
+    
+    public void addReactant(String speciesId, int multiplicity) {
+        reactants.put(speciesId, multiplicity);
     }
 
     /**
      * Remove the reactant from the reactants of this reaction.
      * 
      * @param reactantId
-     *            The unique id of the reactant.
-     * @return The removed {@link Species}.
      */
-    public Species removeReactant(String reactantId) {
-        return reactants.remove(reactantId);
+    public void removeReactant(String reactantId) {
+        reactants.remove(reactantId);
     }
 
     /**
@@ -87,7 +88,7 @@ public class Reaction {
      * 
      * @return
      */
-    public Map<String, Species> getReactants() {
+    public Map<String, Integer> getReactants() {
         return reactants;
     }
 
@@ -97,8 +98,12 @@ public class Reaction {
      * @param product
      *            See {@link Species}.
      */
-    public void addProduct(Species product) {
-        products.put(product.getId(), product);
+    public void addProduct(String speciesId) {
+        addProduct(speciesId, 1);
+    }
+    
+    public void addProduct(String speciesId, int multiplicity) {
+        products.put(speciesId, multiplicity);
     }
 
     /**
@@ -108,8 +113,8 @@ public class Reaction {
      *            The unique id of the product.
      * @return The removed {@link Species}.
      */
-    public Species removeProduct(String productId) {
-        return products.remove(productId);
+    public void removeProduct(String speciesId) {
+        products.remove(speciesId);
     }
 
     /**
@@ -117,7 +122,7 @@ public class Reaction {
      * 
      * @return
      */
-    public Map<String, Species> getProducts() {
+    public Map<String, Integer> getProducts() {
         return products;
     }
 
@@ -167,5 +172,9 @@ public class Reaction {
         s += "  Reactants: " + reactants + "\n";
         s += "  Products:  " + products + "\n";
         return s;
+    }
+    
+    public boolean equals(Reaction other) {
+        return this.id == other.getId();
     }
 }
