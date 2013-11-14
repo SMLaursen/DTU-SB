@@ -89,7 +89,7 @@ public class Algorithm implements Runnable {
             markings.put(productEntry.getKey(), oldMarking + multiplicity);
         }
     }
-    
+        
 	/**
 	 * Get the output.
 	 * 

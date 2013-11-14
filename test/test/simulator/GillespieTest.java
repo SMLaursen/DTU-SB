@@ -16,25 +16,25 @@ public class GillespieTest {
 	    public void testNegFeedback() {
 	        SBMLParser parser = new SBMLParser();
 	        try {
-	            parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
+	            parser.readFile("test/test/simulator/BIOMD0000000012.xml");
 	        } catch (Exception e) {
 	
 	        }
 	        Parameters p = new Parameters();
 
-	        p.setIterations(10);
+	        p.setIterations(2);
 		    p.setNoOfThreads(2);
-	        p.setStoptime(100000);
-	        p.setOutStepCount(1000);
+	        p.setStoptime(50);
+	        p.setOutStepCount(100);
 	
 	        Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
 	        Simulator simulator = new Simulator(parser.parse(), p);
 	        simulator.simulate();
 	        
-//	        GraphGUI graph = new GraphGUI();
-//	        graph.setParameters(p);
-//	        graph.setData(simulator.getOutputData());
-//	        graph.process();
+	        GraphGUI graph = new GraphGUI();
+	        graph.setParameters(p);
+	        graph.setData(simulator.getOutputData());
+	        graph.process();
 	    }
 //
 //	@Test

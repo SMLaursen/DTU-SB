@@ -2,6 +2,7 @@ package dk.dtu.sb.data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Represents a transition in the {@link StochasticPetriNet}.
@@ -165,6 +166,23 @@ public class Reaction {
      */
     public RateFunction getRateFunction() {
         return rateFunction;
+    }
+    
+    /**
+     * 
+     * @param reaction
+     * @return
+     */
+    public boolean canReact(Map<String, Integer> markings) {
+        int multiplicity, oldMarking;
+        for (Entry<String, Integer> reactantEntry : getReactants().entrySet()) {
+            multiplicity = reactantEntry.getValue();
+            oldMarking = markings.get(reactantEntry.getKey());
+            if (oldMarking < multiplicity) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public String toString() {

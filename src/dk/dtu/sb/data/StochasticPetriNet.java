@@ -144,7 +144,7 @@ public class StochasticPetriNet {
                 graph += "\"" + getSpecies(reactantEntry.getKey()).getLabel()
                         + " (" + getInitialMarking(reactantEntry.getKey())
                         + ")\" -> " + "\"" + reaction.getLabel() + " ["
-                        + reaction.getRate() + "]\"";
+                        + reaction.getRateFunction() + "]\"";
                 // Set multiplicity on edges
                 if (reactantEntry.getValue() > 1) {
                     graph += " [label = \"" + reactantEntry.getValue() + "\"]";
@@ -155,7 +155,7 @@ public class StochasticPetriNet {
             // Process the products
             for (Entry<String, Integer> productEntry : reaction.getReactants()
                     .entrySet()) {
-                graph += "\"" + reaction.getLabel() + " [" + reaction.getRate()
+                graph += "\"" + reaction.getLabel() + " [" + reaction.getRateFunction()
                         + "]\"" + " -> \""
                         + getSpecies(productEntry.getKey()).getLabel() + " ("
                         + getInitialMarking(productEntry.getKey()) + ")\"";

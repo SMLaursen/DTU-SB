@@ -3,12 +3,10 @@ package dk.dtu.sb.algorithm;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Map.Entry;
 
 import dk.dtu.sb.Util;
 import dk.dtu.sb.data.Reaction;
 import dk.dtu.sb.data.ReactionEvent;
-import dk.dtu.sb.data.Species;
 
 /**
  * Concrete implementation of the Algorithm class, specifically Gillespie's 
@@ -130,12 +128,16 @@ public class GillespieAlgorithm extends Algorithm {
      * @return
      */
     private double calculatePropensity(Reaction reaction) {
-        double h = 1.0;
-        for (Entry<String, Integer> reactant : reaction.getReactants().entrySet()) {
-            h *= Util.binom(currentMarkings.get(reactant.getKey()), reactant.getValue());
+        double h;
+        /*for (Entry<String, Integer> reactant : reaction.getReactants().entrySet()) {
+            //h *= Util.binom(currentMarkings.get(reactant.getKey()), reactant.getValue());
+            
+        }*/
+        if (!reaction.canReact(currentMarkings)) {
+            h = 0;
+        } else {
+            h = reaction.getRate(currentMarkings);
         }
-        double rate = reaction.getRate(currentMarkings);
-        h *= rate;
         // Set propensity to avoid recalculations later
         propensities.put(reaction.getId(), h);
         return h;
