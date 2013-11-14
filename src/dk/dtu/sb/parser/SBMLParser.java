@@ -93,7 +93,7 @@ public class SBMLParser extends Parser {
 
             for (ModifierSpeciesReference sr : reaction.getListOfModifiers()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addReactant(s.getId());
+                newReaction.addModifier(s.getId());
             }
 
             for (SpeciesReference sr : reaction.getListOfReactants()) {
@@ -130,8 +130,10 @@ public class SBMLParser extends Parser {
      */
     private void parseSpecies() {
         for (Species specie : model.getListOfSpecies()) {
-            spn.addSpecies(new dk.dtu.sb.data.Species(specie.getId(), specie.getName()));
-            spn.setInitialMarking(specie.getId(), (int) specie.getInitialAmount());
+            spn.addSpecies(new dk.dtu.sb.data.Species(specie.getId(), specie
+                    .getName()));
+            spn.setInitialMarking(specie.getId(),
+                    (int) specie.getInitialAmount());
         }
 
         for (InitialAssignment ia : model.getListOfInitialAssignments()) {
