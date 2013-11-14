@@ -363,7 +363,7 @@
           </rdf:RDF>
         </annotation>
       </species>
-      <species id="Y" initialAmount="20" hasOnlySubstanceUnits="true" name="TetR mRNA" metaid="_905781" sboTerm="SBO:0000250" compartment="cell">
+      <species id="Y" initialAmount="200" hasOnlySubstanceUnits="true" name="TetR mRNA" metaid="_905781" sboTerm="SBO:0000250" compartment="cell">
         <annotation>
           <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:bqmodel="http://biomodels.net/model-qualifiers/" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/">
             <rdf:Description rdf:about="#_905781">

@@ -22,15 +22,15 @@ public class GillespieTest {
 	        }
 	        Parameters p = new Parameters();
 
-	        p.setIterations(2);
+	        p.setIterations(1);
 		    p.setNoOfThreads(2);
 	        p.setStoptime(50);
-	        p.setOutStepCount(100);
+	        p.setOutStepCount(200);
 	
-	        Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
+	        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
 	        Simulator simulator = new Simulator(parser.parse(), p);
 	        simulator.simulate();
-	        
+	        System.out.println(simulator.getOutputData().data.size());
 	        GraphGUI graph = new GraphGUI();
 	        graph.setParameters(p);
 	        graph.setData(simulator.getOutputData());

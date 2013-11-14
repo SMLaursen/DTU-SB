@@ -2,6 +2,7 @@ package dk.dtu.sb.algorithm;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import dk.dtu.sb.Util;
@@ -38,6 +39,8 @@ public class GillespieAlgorithm extends Algorithm {
 
         Random rand = new Random();
 
+        Util.log.debug("Thread start: " + Thread.currentThread().getId());
+        
         while (true) {
 
             // Step 1
@@ -51,11 +54,13 @@ public class GillespieAlgorithm extends Algorithm {
             r_1 = rand.nextDouble();
             r_2 = rand.nextDouble();
             tau = ((1.0 / a_0) * Math.log(1.0 / r_1));
-            Util.log.debug("a_0 : " + a_0 + "    r_1 :" + r_1 + "     tau :"
-                    + tau);
-            R_mu = findReaction(a_0 * r_2);
             
-            Util.log.debug(R_mu);
+            /*if ((int)tau % 10 == 0) {
+                Util.log.debug("a_0 : " + a_0 + "    r_1 :" + r_1 + "     tau :"
+                        + tau);
+            }*/
+            
+            R_mu = findReaction(a_0 * r_2);
 
             // Step 3
             time += tau;
@@ -66,8 +71,8 @@ public class GillespieAlgorithm extends Algorithm {
 
             // Record time and R_u
             addPartialResult(new ReactionEvent(time, R_mu));
-            Util.log.debug(time + " :" + currentMarkings);
         }
+        Util.log.debug("Thread done: " + Thread.currentThread().getId());
     }
 
     // TODO determine if these should go here. They are general but Gillespie
@@ -128,16 +133,16 @@ public class GillespieAlgorithm extends Algorithm {
      * @return
      */
     private double calculatePropensity(Reaction reaction) {
-        double h;
-        /*for (Entry<String, Integer> reactant : reaction.getReactants().entrySet()) {
-            //h *= Util.binom(currentMarkings.get(reactant.getKey()), reactant.getValue());
+        double h = 1.0;
+        for (Entry<String, Integer> reactant : reaction.getReactants().entrySet()) {
+            h *= Util.binom(currentMarkings.get(reactant.getKey()), reactant.getValue());
             
-        }*/
+        }/*
         if (!reaction.canReact(currentMarkings)) {
             h = 0;
         } else {
             h = reaction.getRate(currentMarkings);
-        }
+        }*/
         // Set propensity to avoid recalculations later
         propensities.put(reaction.getId(), h);
         return h;

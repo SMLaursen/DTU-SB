@@ -46,7 +46,7 @@ public class RateFunction {
      * To avoid recalculations with the same variable values, we cache each
      * calculation.
      */
-    private Map<String, Double> cache = new HashMap<String, Double>();
+    private volatile Map<String, Double> cache = new HashMap<String, Double>();
 
     /**
      * Constructor for constant rates.
@@ -120,7 +120,7 @@ public class RateFunction {
         try {
             this.calc = expr.build();
         } catch (Exception e) {
-            Util.log.fatal("An error occurred. Using default. "
+            Util.log.fatal("An error occurred when building the Calculable object. Using default. "
                     + e.getMessage());
         }
     }
@@ -139,12 +139,14 @@ public class RateFunction {
             try {
                 String key = setVariablesAndGetKey(vars);
                 if (!cache.containsKey(key)) {
-                    cache.put(key, calc.calculate());
+                    double result = calc.calculate();
+                    cache.put(key, result);
+                    return result;
+                } else {
+                    return cache.get(key);
                 }
-                return cache.get(key);
             } catch (Exception e) {
-                Util.log.fatal("An error occurred. Using default. "
-                        + e.getMessage());
+                Util.log.fatal("An error occurred. Using default. ", e);
             }
         }
 
