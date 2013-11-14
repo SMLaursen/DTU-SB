@@ -13,6 +13,7 @@ import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
 
 import org.sbml.jsbml.ASTNode;
+import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.ExplicitRule;
 import org.sbml.jsbml.FunctionDefinition;
 import org.sbml.jsbml.InitialAssignment;
@@ -117,8 +118,6 @@ public class SBMLParser extends Parser {
      * @return {@link Reaction}
      */
     private Reaction translateReaction(org.sbml.jsbml.Reaction reaction) {
-
-        //double rate = getConstant(reaction.getKineticLaw().getMath(), 1.0);
         
         RateFunction rateFunction = getRateFunction(reaction.getKineticLaw());
 
@@ -170,6 +169,7 @@ public class SBMLParser extends Parser {
                     LocalParameter local = kl.getLocalParameter(term.getName());
                     // global
                     Parameter param = model.getParameter(term.getName());
+                    Compartment compartment = model.getCompartment(term.getName());
                     if (local != null) {
                         if (local.isSetValue()) {
                             replace = new ASTNode(local.getValue());
@@ -185,6 +185,10 @@ public class SBMLParser extends Parser {
                             }
                         }
                     // modifier, product or reactant
+                    } else if (compartment != null) {
+                        if (compartment.isSetValue()) {
+                            replace = new ASTNode(compartment.getValue());
+                        }
                     } else {
                         replace = term;
                         unknowns.add(term.getName());
@@ -192,8 +196,7 @@ public class SBMLParser extends Parser {
                 } /*else if (term.isFunction() && term.getName() != null) {
                     FunctionDefinition function = model.getFunctionDefinition(term.getName());
                     if (function != null) {
-                        System.out.println("fn " +function);
-                        replace = replaceVars(kl, function.getMath());
+                        replace = replaceVars(kl, function.getBody());
                     }
                 }*/ else {
                     replace = replaceVars(kl, term);

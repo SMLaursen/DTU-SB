@@ -16,7 +16,7 @@ public class GillespieTest {
 	    public void testNegFeedback() {
 	        SBMLParser parser = new SBMLParser();
 	        try {
-	            parser.readFile("test/test/simulator/BIOMD0000000012.xml");
+	            parser.readFile("test/test/simulator/neg_feedback_wo_read.xml.xml");
 	        } catch (Exception e) {
 	
 	        }
@@ -40,30 +40,33 @@ public class GillespieTest {
 	        graph.setData(simulator.getOutputData());
 	        graph.process();
 	    }
-//
-//	@Test
-//	public void test2() {
-//		SBMLParser parser = new SBMLParser();
-//		try {
-//			parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
-//		} catch (Exception e) {
-//
-//		}
-//
-//		Parameters p = new Parameters();
-//		p.setIterations(1);
-//		p.setNoOfThreads(2);
-//		p.setStoptime(100000);
-//		p.setOutStepCount(0);
-//
-//		Simulator simulator = new Simulator(parser.parse(), p);
-//		simulator.simulate();
-//
-//		CSV csv = new CSV();
-//		csv.setData(simulator.getOutputData());
-//		csv.process();
-//
-//	}
-//
-//
+
+	    @Test
+        public void testRepressilator() {
+            SBMLParser parser = new SBMLParser();
+            try {
+                parser.readFile("test/test/simulator/BIOMD0000000012.xml");
+            } catch (Exception e) {
+    
+            }
+            Parameters p = new Parameters();
+
+            p.setIterations(4);
+            p.setNoOfThreads(2);
+            p.setStoptime(1500);
+            p.setOutStepCount(1000);
+    
+            StochasticPetriNet spn = parser.parse();
+            
+            System.out.println(spn);
+            
+            Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+            Simulator simulator = new Simulator(spn, p);
+            simulator.simulate();
+            
+            GraphGUI graph = new GraphGUI();
+            graph.setParameters(p);
+            graph.setData(simulator.getOutputData());
+            graph.process();
+        }
 }
