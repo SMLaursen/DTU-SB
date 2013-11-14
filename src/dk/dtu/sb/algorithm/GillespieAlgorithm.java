@@ -134,15 +134,15 @@ public class GillespieAlgorithm extends Algorithm {
      */
     private double calculatePropensity(Reaction reaction) {
         double h = 1.0;
-        for (Entry<String, Integer> reactant : reaction.getReactants().entrySet()) {
+        /*for (Entry<String, Integer> reactant : reaction.getReactants().entrySet()) {
             h *= Util.binom(currentMarkings.get(reactant.getKey()), reactant.getValue());
             
-        }/*
+        }*/
         if (!reaction.canReact(currentMarkings)) {
             h = 0;
         } else {
             h = reaction.getRate(currentMarkings);
-        }*/
+        }
         // Set propensity to avoid recalculations later
         propensities.put(reaction.getId(), h);
         return h;

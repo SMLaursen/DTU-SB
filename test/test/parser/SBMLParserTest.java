@@ -70,12 +70,12 @@ public class SBMLParserTest extends StdOutTester {
     
     @Test
     public void testBioModelRepressilator2() throws Exception {
-        //resetStreams();
+        resetStreams();
         
         SBMLParser parser = new SBMLParser();
         parser.readFile("test/test/parser/BIOMD0000000412.xml");
         StochasticPetriNet spn = parser.parse(); 
-        System.out.println(spn.toGraphviz());
+        System.out.println(spn);
 
         saveDotAsPdf(spn.toGraphviz(), "BIOMD0000000412.pdf");         
     }

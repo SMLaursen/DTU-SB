@@ -134,7 +134,7 @@ public class RateFunction {
      *            A map with the current values of the variables.
      * @return The rate calculated or the {@link #constantRate}.
      */
-    public double getRate(Map<String, Integer> vars) {
+    public synchronized double getRate(Map<String, Integer> vars) {
         if (calc != null) {
             try {
                 String key = setVariablesAndGetKey(vars);

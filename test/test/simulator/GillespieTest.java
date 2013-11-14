@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
-import dk.dtu.sb.output.CSV;
+import dk.dtu.sb.data.StochasticPetriNet;
 import dk.dtu.sb.output.GraphGUI;
 import dk.dtu.sb.parser.SBMLParser;
 import dk.dtu.sb.simulator.Simulator;
@@ -22,15 +22,19 @@ public class GillespieTest {
 	        }
 	        Parameters p = new Parameters();
 
-	        p.setIterations(1);
+	        p.setIterations(4);
 		    p.setNoOfThreads(2);
-	        p.setStoptime(50);
-	        p.setOutStepCount(200);
+	        p.setStoptime(1500);
+	        p.setOutStepCount(1000);
 	
+	        StochasticPetriNet spn = parser.parse();
+	        
+	        System.out.println(spn);
+	        
 	        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
-	        Simulator simulator = new Simulator(parser.parse(), p);
+	        Simulator simulator = new Simulator(spn, p);
 	        simulator.simulate();
-	        System.out.println(simulator.getOutputData().data.size());
+	        
 	        GraphGUI graph = new GraphGUI();
 	        graph.setParameters(p);
 	        graph.setData(simulator.getOutputData());
