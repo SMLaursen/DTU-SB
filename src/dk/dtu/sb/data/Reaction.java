@@ -11,34 +11,11 @@ import java.util.Map.Entry;
  */
 public class Reaction {
 
-    /**
-     * The unique id of this reaction.
-     */
     private String id;
-
-    /**
-     * A human-readable label for this reaction.
-     */
     private String name;
-    
-    /**
-     * 
-     */
     private RateFunction rateFunction;
-
-    /**
-     * The reactants in this reactions.
-     */
     private Map<String, Integer> reactants = new HashMap<String, Integer>();
-
-    /**
-     * The products in this reaction.
-     */
     private Map<String, Integer> products = new HashMap<String, Integer>();
-    
-    /**
-     * 
-     */
     private List<String> modifiers = new ArrayList<String>();
 
     /**
@@ -70,18 +47,25 @@ public class Reaction {
     }
 
     /**
-     * Add reactant to this reaction.
+     * Add reactant to this reaction with multiplicity 1.
      * 
      * @param speciesId
+     *            An identifier for an instance of the Species-class found in
+     *            the associated {@link StochasticPetriNet}.
      */
     public void addReactant(String speciesId) {
         addReactant(speciesId, 1);
     }
 
     /**
+     * Add reactant to this reaction.
      * 
      * @param speciesId
+     *            An identifier for an instance of the Species-class found in
+     *            the associated {@link StochasticPetriNet}.
      * @param multiplicity
+     *            The amount subtracted from this reactant when this reaction is
+     *            fired.
      */
     public void addReactant(String speciesId, int multiplicity) {
         reactants.put(speciesId, multiplicity);
@@ -90,35 +74,40 @@ public class Reaction {
     /**
      * Remove the reactant from the reactants of this reaction.
      * 
-     * @param reactantId
+     * @param speciesId
+     *            An identifier for an instance of the Species-class found in
+     *            the associated {@link StochasticPetriNet}
      */
-    public void removeReactant(String reactantId) {
-        reactants.remove(reactantId);
+    public void removeReactant(String speciesId) {
+        reactants.remove(speciesId);
     }
 
     /**
      * Get all reactants of this reaction.
-     * 
-     * @return
      */
     public Map<String, Integer> getReactants() {
         return reactants;
     }
 
     /**
-     * Add product to this reaction.
+     * Add product to this reaction with multiplicity 1.
      * 
-     * @param product
-     *            See {@link Species}.
+     * @param speciesId
+     *            An identifier for an instance of the Species-class found in
+     *            the associated {@link StochasticPetriNet}.
      */
     public void addProduct(String speciesId) {
         addProduct(speciesId, 1);
     }
 
     /**
+     * Add product to this reaction.
      * 
      * @param speciesId
+     *            An identifier for an instance of the Species-class found in
+     *            the associated {@link StochasticPetriNet}.
      * @param multiplicity
+     *            The amount added to this product when this reaction is fired.
      */
     public void addProduct(String speciesId, int multiplicity) {
         products.put(speciesId, multiplicity);
@@ -127,9 +116,9 @@ public class Reaction {
     /**
      * Remove product from the products of this reaction.
      * 
-     * @param productId
-     *            The unique id of the product.
-     * @return The removed {@link Species}.
+     * @param speciesId
+     *            An identifier for an instance of the Species-class found in
+     *            the associated {@link StochasticPetriNet}.
      */
     public void removeProduct(String speciesId) {
         products.remove(speciesId);
@@ -137,8 +126,6 @@ public class Reaction {
 
     /**
      * Get all products of this reaction.
-     * 
-     * @return
      */
     public Map<String, Integer> getProducts() {
         return products;
@@ -149,15 +136,22 @@ public class Reaction {
      * and a product with this speciesId and multiplicity 1.
      * 
      * @param speciesId
+     *            An identifier for an instance of the Species-class found in
+     *            the associated {@link StochasticPetriNet}.
      */
     public void addModifier(String speciesId) {
         modifiers.add(speciesId);
         addReactant(speciesId);
         addProduct(speciesId);
     }
-    
-    /** 
+
+    /**
+     * Remove the modifier, meaning remove the reactant and product from
+     * this reaction.
+     * 
      * @param speciesId
+     *            An identifier for an instance of the Species-class found in
+     *            the associated {@link StochasticPetriNet}.
      */
     public void removeModifier(String speciesId) {
         if (modifiers.contains(speciesId)) {
@@ -166,24 +160,23 @@ public class Reaction {
             removeProduct(speciesId);
         }
     }
-    
+
     /**
-     * 
-     * @return
+     * Get all modifiers of this reaction.
      */
     public List<String> getModifiers() {
         return modifiers;
     }
 
     /**
-     * See {@link #name}.
+     * A human-readable label for this reaction.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * See {@link #id}.
+     * The unique id of this reaction.
      */
     public String getId() {
         return id;
@@ -192,7 +185,7 @@ public class Reaction {
     /**
      * Can be used to represent the reaction in e.g. graphs.
      * 
-     * @return {@link #name} if present, else {@link #id}.
+     * @return {@link #getName()} if present, else {@link #getId()}.
      */
     public String getLabel() {
         return name != null && !name.trim().isEmpty() ? name : id;
@@ -201,25 +194,30 @@ public class Reaction {
     /**
      * Calculates the rate based on the current markings and the rate function.
      * 
-     * @param vars A map of variables and their current values.
+     * @param vars
+     *            A map of variables and their current values.
      * @return The rate of this reaction.
      */
     public double getRate(Map<String, Integer> vars) {
         return rateFunction.getRate(vars);
     }
-    
+
     /**
      * Getter method.
+     * 
      * @return {@link RateFunction}
      */
     public RateFunction getRateFunction() {
         return rateFunction;
     }
-    
+
     /**
+     * Helper, decides whether this reaction can be fired with the given
+     * marking.
      * 
      * @param reaction
-     * @return
+     *            See {@link Reaction}.
+     * @return true if the markings enables this reaction, else false.
      */
     public boolean canReact(Map<String, Integer> markings) {
         int multiplicity, oldMarking;
@@ -240,7 +238,7 @@ public class Reaction {
         return s;
     }
 
-    public boolean equals(Reaction other) {
-        return this.id == other.getId();
+    public boolean equals(Object other) {
+        return other instanceof Reaction && this.id == ((Reaction) other).id;
     }
 }
