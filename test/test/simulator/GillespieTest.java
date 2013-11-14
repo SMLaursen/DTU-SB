@@ -12,61 +12,208 @@ import dk.dtu.sb.simulator.Simulator;
 
 public class GillespieTest {
 
-	    @Test
-	    public void testNegFeedback() {
-	        SBMLParser parser = new SBMLParser();
-	        try {
-	            parser.readFile("test/test/simulator/neg_feedback_wo_read.xml.xml");
-	        } catch (Exception e) {
-	
-	        }
-	        Parameters p = new Parameters();
+    @Test
+    public void testNegFeedback() {
+        SBMLParser parser = new SBMLParser();
+        try {
+            parser.readFile("test/test/simulator/neg_feedback_wo_read.xml.xml");
+        } catch (Exception e) {
 
-	        p.setIterations(4);
-		    p.setNoOfThreads(2);
-	        p.setStoptime(1500);
-	        p.setOutStepCount(1000);
-	
-	        StochasticPetriNet spn = parser.parse();
-	        
-	        System.out.println(spn);
-	        
-	        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
-	        Simulator simulator = new Simulator(spn, p);
-	        simulator.simulate();
-	        
-	        GraphGUI graph = new GraphGUI();
-	        graph.setParameters(p);
-	        graph.setData(simulator.getOutputData());
-	        graph.process();
-	    }
-
-	    @Test
-        public void testRepressilator() {
-            SBMLParser parser = new SBMLParser();
-            try {
-                parser.readFile("test/test/simulator/BIOMD0000000012.xml");
-            } catch (Exception e) {
-    
-            }
-            Parameters p = new Parameters();
-
-            p.setIterations(4);
-            p.setNoOfThreads(2);
-            p.setStoptime(1500);
-            p.setOutStepCount(1000);
-    
-            StochasticPetriNet spn = parser.parse();
-            
-            System.out.println(spn);
-            
-            Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
-            Simulator simulator = new Simulator(spn, p);
-            simulator.simulate();
-            
-            GraphGUI graph = new GraphGUI();
-            graph.setParameters(p);
-            graph.setData(simulator.getOutputData());
-            graph.process();
         }
+        Parameters p = new Parameters();
+
+        p.setIterations(4);
+        p.setNoOfThreads(2);
+        p.setStoptime(1500);
+        p.setOutStepCount(1000);
+
+        StochasticPetriNet spn = parser.parse();
+
+        System.out.println(spn);
+
+        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+        Simulator simulator = new Simulator(spn, p);
+        simulator.simulate();
+
+        GraphGUI graph = new GraphGUI();
+        graph.setParameters(p);
+        graph.setData(simulator.getOutputData());
+        graph.process();
+    }
+
+    @Test
+    public void testRepressilator() {
+        SBMLParser parser = new SBMLParser();
+        try {
+            parser.readFile("test/test/simulator/BIOMD0000000012.xml");
+        } catch (Exception e) {
+
+        }
+        Parameters p = new Parameters();
+
+        p.setIterations(4);
+        p.setNoOfThreads(2);
+        p.setStoptime(1500);
+        p.setOutStepCount(1000);
+
+        StochasticPetriNet spn = parser.parse();
+
+        System.out.println(spn);
+
+        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+        Simulator simulator = new Simulator(spn, p);
+        simulator.simulate();
+
+        GraphGUI graph = new GraphGUI();
+        graph.setParameters(p);
+        graph.setData(simulator.getOutputData());
+        graph.process();
+    }
+    
+    @Test
+    public void testBioModelOscillator2() {
+        // EmptySet is never used, maybe remove in a Compilation phase
+        SBMLParser parser = new SBMLParser();
+        try {
+            parser.readFile("test/test/simulator/BIOMD0000000035.xml");
+        } catch (Exception e) {
+
+        }
+        Parameters p = new Parameters();
+
+        p.setIterations(2);
+        p.setNoOfThreads(2);
+        p.setStoptime(200);
+        p.setOutStepCount(1000);
+
+        StochasticPetriNet spn = parser.parse();
+
+        System.out.println(spn);
+
+        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+        Simulator simulator = new Simulator(spn, p);
+        simulator.simulate();
+
+        GraphGUI graph = new GraphGUI();
+        graph.setParameters(p);
+        graph.setData(simulator.getOutputData());
+        graph.process();        
+    }
+    
+    @Test
+    public void testBioModel_MetThr_synthesis() {
+        SBMLParser parser = new SBMLParser();
+        try {
+            parser.readFile("test/test/simulator/BIOMD0000000068.xml");
+        } catch (Exception e) {
+
+        }
+        Parameters p = new Parameters();
+
+        p.setIterations(1);
+        p.setNoOfThreads(2);
+        p.setStoptime(1000);
+        p.setOutStepCount(1000);
+
+        StochasticPetriNet spn = parser.parse();
+
+        System.out.println(spn);
+
+        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+        Simulator simulator = new Simulator(spn, p);
+        simulator.simulate();
+
+        GraphGUI graph = new GraphGUI();
+        graph.setParameters(p);
+        graph.setData(simulator.getOutputData());
+        graph.process();        
+    }
+    
+    @Test
+    public void testBioModel_TCell_receptor_activation() {
+        SBMLParser parser = new SBMLParser();
+        try {
+            parser.readFile("test/test/simulator/BIOMD0000000120.xml");
+        } catch (Exception e) {
+
+        }
+        Parameters p = new Parameters();
+
+        p.setIterations(5);
+        p.setNoOfThreads(4);
+        p.setStoptime(50000);
+        p.setOutStepCount(1000);
+
+        StochasticPetriNet spn = parser.parse();
+
+        System.out.println(spn);
+
+        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+        Simulator simulator = new Simulator(spn, p);
+        simulator.simulate();
+
+        GraphGUI graph = new GraphGUI();
+        graph.setParameters(p);
+        graph.setData(simulator.getOutputData());
+        graph.process();        
+    }
+    
+    @Test
+    public void testBioModel_BistableReaction() {
+        SBMLParser parser = new SBMLParser();
+        try {
+            parser.readFile("test/test/simulator/BIOMD0000000233.xml");
+        } catch (Exception e) {
+
+        }
+        Parameters p = new Parameters();
+
+        p.setIterations(10);
+        p.setNoOfThreads(2);
+        p.setStoptime(2);
+        p.setOutStepCount(0);
+
+        StochasticPetriNet spn = parser.parse();
+
+        System.out.println(spn);
+
+        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+        Simulator simulator = new Simulator(spn, p);
+        simulator.simulate();
+
+        GraphGUI graph = new GraphGUI();
+        graph.setParameters(p);
+        graph.setData(simulator.getOutputData());
+        graph.process();        
+    }
+    
+    @Test
+    public void testBioModel_SpontaneousOscillations() {
+        SBMLParser parser = new SBMLParser();
+        try {
+            parser.readFile("test/test/simulator/BIOMD0000000099.xml");
+        } catch (Exception e) {
+
+        }
+        Parameters p = new Parameters();
+
+        p.setIterations(1);
+        p.setNoOfThreads(2);
+        p.setStoptime(10);
+        p.setOutStepCount(1000);
+
+        StochasticPetriNet spn = parser.parse();
+
+        System.out.println(spn);
+
+        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+        Simulator simulator = new Simulator(spn, p);
+        simulator.simulate();
+
+        GraphGUI graph = new GraphGUI();
+        graph.setParameters(p);
+        graph.setData(simulator.getOutputData());
+        graph.process();        
+    }
+    
 }

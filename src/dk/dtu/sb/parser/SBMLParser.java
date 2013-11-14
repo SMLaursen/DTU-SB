@@ -128,11 +128,10 @@ public class SBMLParser extends Parser {
      * Sets the initial markings of the SPN.
      */
     private void parseSpecies() {
-        for (Species specie : model.getListOfSpecies()) {
-            spn.addSpecies(new dk.dtu.sb.data.Species(specie.getId(), specie
-                    .getName()));
-            spn.setInitialMarking(specie.getId(),
-                    (int) specie.getInitialAmount());
+        for (Species species : model.getListOfSpecies()) {
+            spn.addSpecies(new dk.dtu.sb.data.Species(species.getId(), species
+                    .getName()));            
+            spn.setInitialMarking(species.getId(), getInitialAmount(species));
         }
 
         for (InitialAssignment ia : model.getListOfInitialAssignments()) {
@@ -141,6 +140,14 @@ public class SBMLParser extends Parser {
 
             spn.setInitialMarking(ia.getVariable(), marking);
         }
+    }
+    
+    private int getInitialAmount(Species species) {
+        int initial = (int)species.getInitialAmount();
+        if (initial == 0) {
+            initial = (int)species.getInitialConcentration();
+        }
+        return initial;
     }
     
     private List<String> unknowns = new ArrayList<String>();

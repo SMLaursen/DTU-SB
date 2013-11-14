@@ -10,6 +10,9 @@ import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.data.OutputData;
 import dk.dtu.sb.data.StochasticPetriNet;
 
+/**
+ * 
+ */
 public class Simulator {
 
     private String algorithmName;
@@ -43,9 +46,9 @@ public class Simulator {
      * @param spn
      * @param p
      */
-    public Simulator(StochasticPetriNet spn, Parameters p) {
+    public Simulator(StochasticPetriNet spn, Parameters params) {
         this.spn = spn;
-        this.params = p;
+        this.params = params;
         this.algorithmName = this.params.getAlgorithmClassName();
     }
 
@@ -91,7 +94,8 @@ public class Simulator {
         try {
             long startTime = System.currentTimeMillis();
 
-            ExecutorService executor = Executors.newFixedThreadPool(params.getNoOfThreads());
+            ExecutorService executor = Executors.newFixedThreadPool(params
+                    .getNoOfThreads());
 
             Class<?> algorithmClass = Class.forName(algorithmName);
             Algorithm worker;
@@ -135,7 +139,8 @@ public class Simulator {
      * @return
      */
     public OutputData getOutputData() {
-        return new OutputData(Algorithm.getOutput(), spn.getInitialMarkings(), params.getIterations(), params.getStoptime());
+        return new OutputData(Algorithm.getOutput(), spn.getInitialMarkings(),
+                params.getIterations(), params.getStoptime());
     }
 
 }

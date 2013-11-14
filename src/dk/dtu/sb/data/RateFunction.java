@@ -146,7 +146,7 @@ public class RateFunction {
                     return cache.get(key);
                 }
             } catch (Exception e) {
-                Util.log.fatal("An error occurred. Using default. ", e);
+                Util.log.fatal("An error occurred. Using default. " + e.getMessage());
             }
         }
 
