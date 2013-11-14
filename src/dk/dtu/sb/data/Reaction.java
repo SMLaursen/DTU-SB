@@ -1,6 +1,8 @@
 package dk.dtu.sb.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +35,11 @@ public class Reaction {
      */
     private Map<String, Integer> products = new HashMap<String, Integer>();
     
+    /**
+     * 
+     */
+    private List<String> modifiers = new ArrayList<String>();
+
     /**
      * Constructs a reaction.
      * 
@@ -69,7 +76,12 @@ public class Reaction {
     public void addReactant(String speciesId) {
         addReactant(speciesId, 1);
     }
-    
+
+    /**
+     * 
+     * @param speciesId
+     * @param multiplicity
+     */
     public void addReactant(String speciesId, int multiplicity) {
         reactants.put(speciesId, multiplicity);
     }
@@ -101,7 +113,12 @@ public class Reaction {
     public void addProduct(String speciesId) {
         addProduct(speciesId, 1);
     }
-    
+
+    /**
+     * 
+     * @param speciesId
+     * @param multiplicity
+     */
     public void addProduct(String speciesId, int multiplicity) {
         products.put(speciesId, multiplicity);
     }
@@ -124,6 +141,37 @@ public class Reaction {
      */
     public Map<String, Integer> getProducts() {
         return products;
+    }
+
+    /**
+     * Adds a modifier for this reaction. This is just a macro adding a reactant
+     * and a product with this speciesId and multiplicity 1.
+     * 
+     * @param speciesId
+     */
+    public void addModifier(String speciesId) {
+        modifiers.add(speciesId);
+        addReactant(speciesId);
+        addProduct(speciesId);
+    }
+    
+    /** 
+     * @param speciesId
+     */
+    public void removeModifier(String speciesId) {
+        if (modifiers.contains(speciesId)) {
+            modifiers.remove(speciesId);
+            removeReactant(speciesId);
+            removeProduct(speciesId);
+        }
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public List<String> getModifiers() {
+        return modifiers;
     }
 
     /**
@@ -162,7 +210,7 @@ public class Reaction {
         s += "  Products:  " + products + "\n";
         return s;
     }
-    
+
     public boolean equals(Reaction other) {
         return this.id == other.getId();
     }
