@@ -13,6 +13,7 @@ import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
 
 import org.sbml.jsbml.ASTNode;
+import org.sbml.jsbml.AssignmentRule;
 import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.ExplicitRule;
 import org.sbml.jsbml.FunctionDefinition;
@@ -22,6 +23,7 @@ import org.sbml.jsbml.LocalParameter;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.ModifierSpeciesReference;
 import org.sbml.jsbml.Parameter;
+import org.sbml.jsbml.Rule;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.Species;
@@ -99,12 +101,12 @@ public class SBMLParser extends Parser {
 
             for (SpeciesReference sr : reaction.getListOfReactants()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addReactant(s.getId());
+                newReaction.addReactant(s.getId(), (int)sr.getStoichiometry());
             }
 
             for (SpeciesReference sr : reaction.getListOfProducts()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addProduct(s.getId());
+                newReaction.addProduct(s.getId(), (int)sr.getStoichiometry());
             }
 
             spn.addReaction(newReaction);
@@ -118,7 +120,7 @@ public class SBMLParser extends Parser {
      * @return {@link Reaction}
      */
     private Reaction translateReaction(org.sbml.jsbml.Reaction reaction) {
-        
+
         RateFunction rateFunction = getRateFunction(reaction.getKineticLaw());
 
         return new Reaction(reaction.getId(), reaction.getName(), rateFunction);
@@ -128,62 +130,86 @@ public class SBMLParser extends Parser {
      * Sets the initial markings of the SPN.
      */
     private void parseSpecies() {
+        // Add species to SPN
+        // 1. Get initial marking from initialAmount or initialConcentration
+        // attr.
         for (Species species : model.getListOfSpecies()) {
             spn.addSpecies(new dk.dtu.sb.data.Species(species.getId(), species
-                    .getName()));            
+                    .getName()));
             spn.setInitialMarking(species.getId(), getInitialAmount(species));
         }
 
+        // 2. Get initial marking from listOfInitialAssignments (overrides)
         for (InitialAssignment ia : model.getListOfInitialAssignments()) {
             int marking = (int) getConstant(ia.getMath(),
                     spn.getInitialMarking(ia.getVariable()));
 
             spn.setInitialMarking(ia.getVariable(), marking);
         }
+
+        // 3. Get initial marking from AssignmentRules
+        for (Rule rule : model.getListOfRules()) {
+            if (rule.isAssignment()) {
+                AssignmentRule aRule = (AssignmentRule) rule;
+                ASTNode math = replaceVars(null, aRule.getMath());
+                ExpressionBuilder expr = new ExpressionBuilder(math.toFormula());
+                for (String unknown : unknowns) {
+                    expr.withVariable(unknown, spn.getInitialMarking(unknown));
+                }
+                try {
+                    spn.setInitialMarking(aRule.getVariable(), (int) expr
+                            .build().calculate());
+                } catch (Exception e) {
+                }
+            }
+        }
     }
-    
+
     private int getInitialAmount(Species species) {
-        int initial = (int)species.getInitialAmount();
+        int initial = (int) species.getInitialAmount();
         if (initial == 0) {
-            initial = (int)species.getInitialConcentration();
+            initial = (int) species.getInitialConcentration();
         }
         return initial;
     }
-    
+
     private List<String> unknowns = new ArrayList<String>();
-    
+
     private RateFunction getRateFunction(KineticLaw kl) {
         RateFunction rateFunction = new RateFunction(1.0);
-        
+
         if (kl != null && kl.getMath() != null) {
             unknowns = new ArrayList<String>();
             ASTNode math = replaceVars(kl, kl.getMath());
             rateFunction = new RateFunction(math, unknowns);
         }
-        
+
         return rateFunction;
     }
-    
-    public ASTNode replaceVars(KineticLaw kl, ASTNode root) {   
+
+    public ASTNode replaceVars(KineticLaw kl, ASTNode root) {
         if (!root.isNumber()) {
-            for (Enumeration<TreeNode> it = root.children(); it.hasMoreElements(); ) {
-                ASTNode term = (ASTNode)it.nextElement();
+            for (Enumeration<TreeNode> it = root.children(); it
+                    .hasMoreElements();) {
+                ASTNode term = (ASTNode) it.nextElement();
                 int index = root.getIndex(term);
                 ASTNode replace = new ASTNode(1);
-                
+
                 if (term.isName()) {
                     // local
-                    LocalParameter local = kl.getLocalParameter(term.getName());
+                    LocalParameter local = kl != null ? kl
+                            .getLocalParameter(term.getName()) : null;
                     // global
                     Parameter param = model.getParameter(term.getName());
-                    Compartment compartment = model.getCompartment(term.getName());
+                    Compartment compartment = model.getCompartment(term
+                            .getName());
                     if (local != null) {
                         if (local.isSetValue()) {
                             replace = new ASTNode(local.getValue());
                         }
                     } else if (param != null) {
                         if (param.isSetValue()) {
-                            replace = new ASTNode(param.getValue());                        
+                            replace = new ASTNode(param.getValue());
                         } else {
                             // rule
                             ExplicitRule rule = model.getRule(param.getId());
@@ -191,7 +217,7 @@ public class SBMLParser extends Parser {
                                 replace = replaceVars(kl, rule.getMath());
                             }
                         }
-                    // modifier, product or reactant
+                        // modifier, product or reactant
                     } else if (compartment != null) {
                         if (compartment.isSetValue()) {
                             replace = new ASTNode(compartment.getValue());
@@ -200,19 +226,20 @@ public class SBMLParser extends Parser {
                         replace = term;
                         unknowns.add(term.getName());
                     }
-                } /*else if (term.isFunction() && term.getName() != null) {
-                    FunctionDefinition function = model.getFunctionDefinition(term.getName());
-                    if (function != null) {
-                        replace = replaceVars(kl, function.getBody());
-                    }
-                }*/ else {
+                } /*
+                   * else if (term.isFunction() && term.getName() != null) {
+                   * FunctionDefinition function =
+                   * model.getFunctionDefinition(term.getName()); if (function
+                   * != null) { replace = replaceVars(kl, function.getBody()); }
+                   * }
+                   */else {
                     replace = replaceVars(kl, term);
                 }
-                
+
                 root.replaceChild(index, replace);
             }
         }
-        
+
         return root;
     }
 
