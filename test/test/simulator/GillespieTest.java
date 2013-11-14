@@ -16,20 +16,49 @@ public class GillespieTest {
     public void testNegFeedback() {
         SBMLParser parser = new SBMLParser();
         try {
-            parser.readFile("test/test/simulator/neg_feedback_wo_read.xml.xml");
+            parser.readFile("test/test/simulator/neg_feedback_wo_read.xml");
         } catch (Exception e) {
 
         }
         Parameters p = new Parameters();
 
-        p.setIterations(4);
+        p.setIterations(5);
         p.setNoOfThreads(2);
-        p.setStoptime(1500);
-        p.setOutStepCount(1000);
+        p.setStoptime(100000);
+        p.setOutStepCount(0);
 
         StochasticPetriNet spn = parser.parse();
 
         System.out.println(spn);
+
+        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+        Simulator simulator = new Simulator(spn, p);
+        simulator.simulate();
+
+        GraphGUI graph = new GraphGUI();
+        graph.setParameters(p);
+        graph.setData(simulator.getOutputData());
+        graph.process();
+    }
+    
+    @Test
+    public void testNOR() {
+        SBMLParser parser = new SBMLParser();
+        try {
+            parser.readFile("test/test/simulator/nor.xml");
+        } catch (Exception e) {
+
+        }
+        Parameters p = new Parameters();
+
+        p.setIterations(1);
+        p.setNoOfThreads(2);
+        p.setStoptime(100);
+        p.setOutStepCount(0);
+
+        StochasticPetriNet spn = parser.parse();
+
+        System.out.println(spn.toGraphviz());
 
         Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
         Simulator simulator = new Simulator(spn, p);
