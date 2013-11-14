@@ -153,7 +153,7 @@ public class StochasticPetriNet {
             }
 
             // Process the products
-            for (Entry<String, Integer> productEntry : reaction.getReactants()
+            for (Entry<String, Integer> productEntry : reaction.getProducts()
                     .entrySet()) {
                 graph += "\"" + reaction.getLabel() + " [" + reaction.getRateFunction()
                         + "]\"" + " -> \""

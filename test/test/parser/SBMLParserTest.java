@@ -92,6 +92,16 @@ public class SBMLParserTest extends StdOutTester {
         saveDotAsPdf(spn.toGraphviz(), "BIOMD0000000010.pdf");         
     }
     
+    @Test
+    public void testBioModel_NegFB_Homeostasis() throws Exception {
+        resetStreams();
+        
+        SBMLParser parser = new SBMLParser();
+        parser.readFile("test/test/simulator/BIOMD0000000308.xml");
+        StochasticPetriNet spn = parser.parse(); 
+        System.out.println(spn.toGraphviz());         
+    }
+    
     private void saveDotAsPdf(String dot, String filename) throws IOException, InterruptedException {
         if (System.getProperty("os.name").equals("Mac OS X")) {
             File dotFile = File.createTempFile("graph", ".dot");
