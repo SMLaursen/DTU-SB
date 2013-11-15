@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import dk.dtu.sb.Parameters;
 import dk.dtu.sb.data.Reaction;
 import dk.dtu.sb.data.ReactionEvent;
 import dk.dtu.sb.data.Species;
@@ -19,6 +20,11 @@ public class Algorithm implements Runnable {
      * 
      */
 	protected static double stoptime;
+	
+	/**
+	 * 
+	 */
+	protected static int rateMode;
 	
 	/**
 	 * 
@@ -51,8 +57,9 @@ public class Algorithm implements Runnable {
 	 * @param spn {@link StochasticPetriNet}.
 	 * @param stoptime The maximum of the last time point of the simulation.
 	 */
-	public static void setInput(StochasticPetriNet spn, double stoptime){		
-		Algorithm.stoptime = stoptime;
+	public static void setInput(StochasticPetriNet spn, Parameters params){		
+		Algorithm.stoptime = params.getStoptime();
+		Algorithm.rateMode = params.getRateMode();
 		Algorithm.spn = spn;
 		resultData.clear();
 	}

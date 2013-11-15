@@ -5,18 +5,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.data.Reaction;
 import dk.dtu.sb.data.ReactionEvent;
 
 /**
- * Concrete implementation of the Algorithm class, specifically Gillespie's 
+ * Concrete implementation of the Algorithm class, specifically Gillespie's
  * algorithm is implemented.
  */
 public class GillespieAlgorithm extends Algorithm {
 
     private Map<String, Double> propensities = new HashMap<String, Double>();
-    
+
     /**
      * 
      */
@@ -25,7 +26,9 @@ public class GillespieAlgorithm extends Algorithm {
         currentMarkings.putAll(spn.getInitialMarkings());
     }
 
-    // Direct Method (First reaction may be faster)
+    /**
+     * Direct Method (First reaction may be faster)
+     */
     public void run() {
 
         // Initialize
@@ -40,7 +43,7 @@ public class GillespieAlgorithm extends Algorithm {
         Random rand = new Random();
 
         Util.log.debug("Thread start: " + Thread.currentThread().getId());
-        
+
         while (true) {
 
             // Step 1
@@ -54,12 +57,12 @@ public class GillespieAlgorithm extends Algorithm {
             r_1 = rand.nextDouble();
             r_2 = rand.nextDouble();
             tau = ((1.0 / a_0) * Math.log(1.0 / r_1));
-            
-            /*if ((int)tau % 10 == 0) {
-                Util.log.debug("a_0 : " + a_0 + "    r_1 :" + r_1 + "     tau :"
-                        + tau);
-            }*/
-            
+
+            /*
+             * if ((int)tau % 10 == 0) { Util.log.debug("a_0 : " + a_0 +
+             * "    r_1 :" + r_1 + "     tau :" + tau); }
+             */
+
             R_mu = findReaction(a_0 * r_2);
 
             // Step 3
@@ -82,7 +85,8 @@ public class GillespieAlgorithm extends Algorithm {
      * Returns a reaction that fulfills: \Sum_{v=1}^{mu-1} a_v < val <
      * \Sum_{v=1}^{mu} a_v
      * 
-     * @param val a_0 * random
+     * @param val
+     *            a_0 * random
      * @return {@link Reaction}.
      */
     private Reaction findReaction(double val) {
@@ -103,25 +107,20 @@ public class GillespieAlgorithm extends Algorithm {
      */
     private double calculate_a0(Reaction R_mu) {
         double a_0 = 0;
-        //if (R_mu == null) {
-            for (Reaction reaction : spn.getReactions().values()) {
-                a_0 += calculatePropensity(reaction);
-            }
-        /*} else {
-            for (String productId : R_mu.getProducts().keySet()) {
-                for (Reaction reaction : spn.getSpecies(productId).asReactantReactions()) {
-                    calculatePropensity(reaction);
-                }
-            }
-            for (String reactantId : R_mu.getReactants().keySet()) {
-                for (Reaction reaction : spn.getSpecies(reactantId).asReactantReactions()) {
-                    calculatePropensity(reaction);
-                }
-            }
-            for (Reaction reaction : spn.getReactions().values()) {
-                a_0 += propensities.get(reaction.getId());
-            }
-        } */       
+        // if (R_mu == null) {
+        for (Reaction reaction : spn.getReactions().values()) {
+            a_0 += calculatePropensity(reaction);
+        }
+        /*
+         * } else { for (String productId : R_mu.getProducts().keySet()) { for
+         * (Reaction reaction : spn.getSpecies(productId).asReactantReactions())
+         * { calculatePropensity(reaction); } } for (String reactantId :
+         * R_mu.getReactants().keySet()) { for (Reaction reaction :
+         * spn.getSpecies(reactantId).asReactantReactions()) {
+         * calculatePropensity(reaction); } } for (Reaction reaction :
+         * spn.getReactions().values()) { a_0 +=
+         * propensities.get(reaction.getId()); } }
+         */
         return a_0;
     }
 
@@ -134,18 +133,28 @@ public class GillespieAlgorithm extends Algorithm {
      */
     private double calculatePropensity(Reaction reaction) {
         double h = 1.0;
-        /*for (Entry<String, Integer> reactant : reaction.getReactants().entrySet()) {
-            h *= Util.binom(currentMarkings.get(reactant.getKey()), reactant.getValue());
-            
-        }*/
-        if (!reaction.canReact(currentMarkings)) {
-            h = 0;
-        } else {
-            h = reaction.getRate(currentMarkings);
+        switch (rateMode) {
+        case Parameters.PARAM_SIM_RATE_MODE_CUSTOM:
+            if (!reaction.canReact(currentMarkings)) {
+                h = 0;
+            } else {
+                h = reaction.getRate(currentMarkings);
+            }
+            break;
+        case Parameters.PARAM_SIM_RATE_MODE_CONSTANT:
+        default:
+            for (Entry<String, Integer> reactant : reaction.getReactants()
+                    .entrySet()) {
+                h *= Util.binom(currentMarkings.get(reactant.getKey()),
+                        reactant.getValue());
+            }
+            h *= reaction.getRate(currentMarkings);
+            break;
+
         }
+
         // Set propensity to avoid recalculations later
         propensities.put(reaction.getId(), h);
         return h;
     }
-    
 }

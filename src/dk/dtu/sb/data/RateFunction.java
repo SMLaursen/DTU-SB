@@ -46,7 +46,7 @@ public class RateFunction {
      * To avoid recalculations with the same variable values, we cache each
      * calculation.
      */
-    private volatile Map<String, Double> cache = new HashMap<String, Double>();
+    private Map<String, Double> cache = new HashMap<String, Double>();
 
     /**
      * Constructor for constant rates.

@@ -89,7 +89,7 @@ public class Simulator {
      * Simulates using the given stoptime and no of iterations
      */
     public void simulate() {
-        Algorithm.setInput(spn, params.getStoptime());
+        Algorithm.setInput(spn, params);
 
         try {
             long startTime = System.currentTimeMillis();

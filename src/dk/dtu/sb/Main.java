@@ -177,9 +177,9 @@ public class Main {
             }
             params.setIterations(iterations); 
             
-            double stoptime = Parameters.PARAM_SIM_ITERATIONS_DEFAULT;
+            int stoptime = Parameters.PARAM_SIM_ITERATIONS_DEFAULT;
             try {
-                stoptime = Double.parseDouble(prompt("Stoptime", ""+Parameters.PARAM_SIM_STOPTIME_DEFAULT));
+                stoptime = Integer.parseInt(prompt("Stoptime", ""+Parameters.PARAM_SIM_STOPTIME_DEFAULT));
             } catch (NumberFormatException e) {
             }
             params.setStoptime(stoptime);
