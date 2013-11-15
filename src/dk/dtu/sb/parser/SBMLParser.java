@@ -101,12 +101,12 @@ public class SBMLParser extends Parser {
 
             for (SpeciesReference sr : reaction.getListOfReactants()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addReactant(s.getId(), (int)sr.getStoichiometry());
+                newReaction.addReactant(s.getId(), (int) sr.getStoichiometry());
             }
 
             for (SpeciesReference sr : reaction.getListOfProducts()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addProduct(s.getId(), (int)sr.getStoichiometry());
+                newReaction.addProduct(s.getId(), (int) sr.getStoichiometry());
             }
 
             spn.addReaction(newReaction);
@@ -166,9 +166,12 @@ public class SBMLParser extends Parser {
     }
 
     private int getInitialAmount(Species species) {
-        int initial = (int) species.getInitialAmount();
+        // TODO: Not sure if it is okay to round up (GEC example requires this),
+        // also I had to manually change , to . in the initialAmount of the GEC
+        // examlpe
+        int initial = (int) Math.ceil(species.getInitialAmount());
         if (initial == 0) {
-            initial = (int) species.getInitialConcentration();
+            initial = (int) Math.ceil(species.getInitialConcentration());
         }
         return initial;
     }

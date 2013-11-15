@@ -275,4 +275,34 @@ public class GillespieTest {
         graph.process();        
     }
     
+    @Test
+    public void test_Gec_Repressilator() {
+        SBMLParser parser = new SBMLParser();
+        try {
+            parser.readFile("test/test/simulator/gec_repressilator.xml");
+        } catch (Exception e) {
+
+        }
+        Parameters p = new Parameters();
+
+        p.setIterations(2);
+        p.setNoOfThreads(2);
+        p.setStoptime(10000);
+        p.setOutStepCount(1000);
+
+        StochasticPetriNet spn = parser.parse();
+
+        System.out.println(spn);
+        System.out.println(spn.toGraphviz());
+
+        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+        Simulator simulator = new Simulator(spn, p);
+        simulator.simulate();
+
+        GraphGUI graph = new GraphGUI();
+        graph.setParameters(p);
+        graph.setData(simulator.getOutputData());
+        graph.process();        
+    }
+    
 }
