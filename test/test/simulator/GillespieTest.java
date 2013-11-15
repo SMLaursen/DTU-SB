@@ -285,9 +285,9 @@ public class GillespieTest {
         }
         Parameters p = new Parameters();
 
-        p.setIterations(2);
+        p.setIterations(1);
         p.setNoOfThreads(2);
-        p.setStoptime(10000);
+        p.setStoptime(100);
         p.setOutStepCount(1000);
 
         StochasticPetriNet spn = parser.parse();

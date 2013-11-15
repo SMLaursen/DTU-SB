@@ -26,7 +26,7 @@
       </unitDefinition>
     </listOfUnitDefinitions>
     <listOfCompartments>
-      <compartment id="c" size="1.66053886312701E-15"/>
+      <compartment id="c" size="1.66053886312701"/>
     </listOfCompartments>
     <listOfSpecies>
       <species id="s_id0" name="mrna10" compartment="c" initialAmount="0" constant="false"/>
