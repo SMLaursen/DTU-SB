@@ -19,7 +19,6 @@ public class GillespieTest {
         p.setIterations(5);
         p.setNoOfThreads(2);
         p.setStoptime(100000);
-        p.setOutStepCount(0);
         p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/neg_feedback_wo_read.xml"), p);
@@ -32,7 +31,6 @@ public class GillespieTest {
         p.setIterations(1);
         p.setNoOfThreads(2);
         p.setStoptime(100);
-        p.setOutStepCount(0);
         p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/neg_feedback_wo_read.xml"), p);
@@ -98,7 +96,6 @@ public class GillespieTest {
         p.setIterations(10);
         p.setNoOfThreads(2);
         p.setStoptime(2);
-        p.setOutStepCount(0);
         p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000233.xml"), p);       
@@ -146,12 +143,12 @@ public class GillespieTest {
     public void testPredatorPrey() {
         Parameters p = new Parameters();
 
-        p.setIterations(20);
-        p.setSimThreshold(0.0005);
+        p.setIterations(1);
+//        p.setSimThreshold(0.0005);
         p.setMaxIterTime(20);
         p.setNoOfThreads(2);
-        p.setStoptime(30);
-        p.setOutStepCount(500);
+        p.setStoptime(5);
+//        p.setOutStepCount(500);
         p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CONSTANT);
 
         simulateAndOutput(parse("test/test/simulator/PP.xml"), p);

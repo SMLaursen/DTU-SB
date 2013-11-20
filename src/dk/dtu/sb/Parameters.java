@@ -45,7 +45,7 @@ public class Parameters extends Properties {
     public static final int PARAM_OUT_STEPCOUNT_DEFAULT = 1000;
     
     private static final String PARAM_SIM_THRESHOLD = "simulation.threshold";
-    public static final double PARAM_SIM_THRESHOLD_DEFAULT = 0.0;
+    public static final double PARAM_SIM_THRESHOLD_DEFAULT = 0.0005;
 
     /**
      * Instantiates a Parameter object with default values.
