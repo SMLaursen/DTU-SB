@@ -142,6 +142,20 @@ public class GillespieTest {
 
         simulateAndOutput(parse("test/test/simulator/gec_repressilator.xml"), p);      
     }
+    @Test
+    public void testPredatorPrey() {
+        Parameters p = new Parameters();
+
+        p.setIterations(20);
+        p.setSimThreshold(0.0005);
+        p.setMaxIterTime(20);
+        p.setNoOfThreads(2);
+        p.setStoptime(30);
+        p.setOutStepCount(500);
+        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CONSTANT);
+
+        simulateAndOutput(parse("test/test/simulator/PP.xml"), p);
+    }
     
     public StochasticPetriNet parse(String filename) {
         StochasticPetriNet spn = null;
@@ -168,5 +182,7 @@ public class GillespieTest {
         graph.setData(simulator.getOutputData());
         graph.process();  
     }
+    
+   
     
 }

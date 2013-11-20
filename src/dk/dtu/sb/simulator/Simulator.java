@@ -105,11 +105,17 @@ public class Simulator {
             for (int i = 0; i < params.getIterations(); i++) {
                 worker = (Algorithm) algorithmClass.newInstance();
                 executor.execute(worker);
-            }
 
+            }
             executor.shutdown();
-            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+            executor.awaitTermination(params.getMaxIterTime(), TimeUnit.SECONDS);
             executor.shutdownNow();
+            
+            //Wait additional 5sec to ensure the thread has been shutdown entirely due to timeout 
+            if(!executor.awaitTermination(5, TimeUnit.SECONDS)){
+            	Util.log.info("Aborting : Thread timedout but could not be shutdown");
+            	System.exit(1);
+            }
 
             simulationTime = System.currentTimeMillis() - startTime;
             Util.log.info("Simulation ended in: " + simulationTime + "ms");

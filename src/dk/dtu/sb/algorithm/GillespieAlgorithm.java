@@ -8,7 +8,7 @@ import java.util.Random;
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.data.Reaction;
-import dk.dtu.sb.data.ReactionEvent;
+import dk.dtu.sb.data.DataPoint;
 
 /**
  * Concrete implementation of the Algorithm class, specifically Gillespie's
@@ -30,7 +30,7 @@ public class GillespieAlgorithm extends Algorithm {
      * Direct Method (First reaction may be faster)
      */
     public void run() {
-
+    	
         // Initialize
         double time = 0.0;
 
@@ -38,12 +38,14 @@ public class GillespieAlgorithm extends Algorithm {
         double r_1;
         double r_2;
         double tau;
+        double deltaTau = 0;
         Reaction R_mu = null;
+        int steps = 0;
 
         Random rand = new Random();
 
         Util.log.debug("Thread start: " + Thread.currentThread().getId());
-
+        
         while (true) {
 
             // Step 1
@@ -72,10 +74,28 @@ public class GillespieAlgorithm extends Algorithm {
             }
             updateMarkings(R_mu, currentMarkings);
 
-            // Record time and R_u
-            addPartialResult(new ReactionEvent(time, R_mu));
+            // Record time and R_u if >= threshold store result
+            deltaTau += tau;
+            if(deltaTau >= threshold){
+            	addPartialResult(new DataPoint(time, currentMarkings),index);
+            	deltaTau = 0;
+            }
+            steps ++;
+            
+            //High concentrations may lead to infinitesimal small tau values = almost infinite steps.
+            if(steps % 1000000 == 0){
+            	//Only check once in a while
+            	if(Thread.currentThread().isInterrupted()){
+            		Util.log.debug("Thread : " + Thread.currentThread().getId() +" aborted due to time-out");
+            		deletePartialResult(index);
+            		return;
+            		
+            	}
+            	Util.log.debug("Thread : " + Thread.currentThread().getId() +" at step "+steps);
+            }
+            
         }
-        Util.log.debug("Thread done: " + Thread.currentThread().getId());
+        Util.log.debug("Thread done: " + Thread.currentThread().getId() +" in "+steps+" steps");
     }
 
     // TODO determine if these should go here. They are general but Gillespie

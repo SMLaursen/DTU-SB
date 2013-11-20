@@ -23,6 +23,9 @@ public class Parameters extends Properties {
     private static final String PARAM_SIM_ITERATIONS = "simulation.iterations";
     public static final int PARAM_SIM_ITERATIONS_DEFAULT = 1;
 
+    private static final String PARAM_SIM_MAXITERTIME = "simulation.maxIterTime";
+    public static final int PARAM_SIM_MAXITERTIME_DEFAULT = 60;
+
     private static final String PARAM_SIM_NOOFTHREADS = "simulation.no_of_thread";
     public static final int PARAM_SIM_NOOFTHREADS_DEFAULT = Runtime
             .getRuntime().availableProcessors();
@@ -39,7 +42,10 @@ public class Parameters extends Properties {
     public static final boolean PARAM_OUT_RESULT_GUI_DEFAULT = false;
 
     private static final String PARAM_OUT_STEPCOUNT = "output.stepcount";
-    public static final int PARAM_OUT_STEPCOUNT_DEFAULT = 500;
+    public static final int PARAM_OUT_STEPCOUNT_DEFAULT = 1000;
+    
+    private static final String PARAM_SIM_THRESHOLD = "simulation.threshold";
+    public static final double PARAM_SIM_THRESHOLD_DEFAULT = 0.0;
 
     /**
      * Instantiates a Parameter object with default values.
@@ -148,7 +154,7 @@ public class Parameters extends Properties {
         }
         return iterations;
     }
-
+    
     /**
      * See {@link #getIterations()}.
      */
@@ -173,6 +179,32 @@ public class Parameters extends Properties {
             n = PARAM_SIM_NOOFTHREADS_DEFAULT;
         }
         return n;
+    }
+    
+    /**
+     * See {@link #getIterations()}.
+     */
+    public void setMaxIterTime(int seconds) {
+        this.setProperty(PARAM_SIM_MAXITERTIME, "" + seconds);
+    }
+
+    /**
+     * The maximum number of seconds a thread is allowed to run in simulation. Default is 60 seconds.
+     */
+    public int getMaxIterTime() {
+        int seconds;
+        try {
+            seconds = Integer.parseInt(this.getProperty(PARAM_SIM_MAXITERTIME, ""
+                    + PARAM_SIM_MAXITERTIME_DEFAULT));
+            if (seconds < 1) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            Util.log.warn(this.getProperty(PARAM_SIM_MAXITERTIME)
+                    + " is not a valid integer.");
+            seconds = PARAM_SIM_MAXITERTIME_DEFAULT;
+        }
+        return seconds;
     }
 
     /**
@@ -237,7 +269,7 @@ public class Parameters extends Properties {
         try {
             stepsize = Integer.parseInt(this.getProperty(PARAM_OUT_STEPCOUNT,
                     "" + PARAM_OUT_STEPCOUNT_DEFAULT));
-            if (stepsize < 0) {
+            if (stepsize < 2) {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
@@ -253,6 +285,34 @@ public class Parameters extends Properties {
      */
     public void setOutStepCount(int steps) {
         this.setProperty(PARAM_OUT_STEPCOUNT, "" + steps);
+    }
+    
+    
+    /**
+     * Default 0. Limits the output generated from the simulation to only save points which 
+     * delta tau > threshold. Can greatly reduce the required memory!
+     */
+    public double getSimThreshold() {
+        double threshold;
+        try {
+            threshold = Float.parseFloat(this.getProperty(PARAM_SIM_THRESHOLD,
+                    "" + PARAM_SIM_THRESHOLD_DEFAULT));
+            if (threshold < 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            Util.log.warn(this.getProperty(PARAM_SIM_THRESHOLD)
+                    + " is not a valid double.");
+            threshold = PARAM_SIM_THRESHOLD_DEFAULT;
+        }
+        return threshold;
+    }
+
+    /**
+     * See {@link #getOutStepCount()}.
+     */
+    public void setSimThreshold(double threshold) {
+        this.setProperty(PARAM_SIM_THRESHOLD, "" + threshold);
     }
 
     /**

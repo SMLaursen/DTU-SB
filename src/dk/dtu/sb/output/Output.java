@@ -1,15 +1,13 @@
 package dk.dtu.sb.output;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.data.OutputData;
 import dk.dtu.sb.data.Plot;
-import dk.dtu.sb.data.ReactionEvent;
+import dk.dtu.sb.data.DataPoint;
 
 /**
  *
@@ -23,60 +21,59 @@ public abstract class Output {
 	 * @param tempOutputData
 	 */
 	public void setData(OutputData simulationData) {
-
-		//Sort simulationData on times
-		Collections.sort(simulationData.data, new Comparator<ReactionEvent>() {
-			@Override
-			public int compare(ReactionEvent r1, ReactionEvent r2) {
-				return Double.compare(r1.time, r2.time);
-			}
-		});
-		
-		//Calculate the stepsize of data to include in output
-		int stepsize = 1;
-		if(params.getOutStepCount() > 0){
-			stepsize = simulationData.data.size() / params.getOutStepCount();
-		}
-
-		HashMap<String,Integer> currMarking = new HashMap<String,Integer>();
-		
-		// Multiply the initial marking with noOfIterations
-		for(String key : simulationData.initialMarkings.keySet()){
-			currMarking.put(key, simulationData.initialMarkings.get(key)*simulationData.iterations);
-		}
-		//Add initial marking
-		graphData.add(new Plot(0,currMarking));
-		
-		// Create PlotData from the OutputData
-		int i = 1;
+		//TODO : Add interpolating method!
 		HashMap<String,Integer> prevMarking = new HashMap<String,Integer>();
-		for(ReactionEvent reaction : simulationData.data){
+		HashMap<String,Integer> currMarking = new HashMap<String,Integer>();
+		//Count how many values in a bucket
+		HashMap<String,Integer> bucketCount = new HashMap<String,Integer>();
+
+		//Add initial marking
+		currMarking.putAll(simulationData.initialMarkings);
+		graphData.add(new Plot(currMarking));
+
+		//Put values in buckets
+		double bucketSize = simulationData.stopTime/params.getOutStepCount();
+		for(double i = bucketSize; i < simulationData.stopTime; i+=bucketSize){
 			
-			if(i % stepsize == 0){
-				prevMarking.clear();
-				prevMarking.putAll(currMarking);
+			// Bucket sizes reset
+			for(String key : simulationData.initialMarkings.keySet()){
+				bucketCount.put(key, 0);
 			}
+			prevMarking.clear();
+			prevMarking.putAll(currMarking);
 			
-			Algorithm.updateMarkings(reaction.reaction, currMarking);		
-			
-			//Enforce stepsize
-			if(i % stepsize == 0){
-				graphData.add(new Plot(reaction.time,getIntersection(currMarking,prevMarking)));
+			currMarking.clear();
+			//For each simulation set
+			for(LinkedList<DataPoint> l : simulationData.data.values()){
+				//Take all those values in the bucket (<i)
+				while(!l.isEmpty()){
+					DataPoint d=l.removeFirst();
+					if(d.time > i){
+						break;
+					}
+					for(String species : d.markings.keySet()){
+						//Calculate new markings
+						int prev = currMarking.containsKey(species)? currMarking.get(species) : 0;
+						currMarking.put(species, prev+d.markings.get(species));
+						bucketCount.put(species, bucketCount.get(species)+1);
+					}
+				}
+				
 			}
-			i++;
-		}
-		//Add last output point to ensure it will not get cut-off.
-		graphData.add(new Plot(simulationData.stopTime,currMarking));
-		
-		// Divide by no of iteration and put result in graphData
-		for(Plot p : graphData){
-			for(String s : p.markings.keySet()){
-				p.markings.put(s, p.markings.get(s) / simulationData.iterations);
+			//Store averaged intersection
+			HashMap<String,Float> d = new HashMap<>();
+			for(String species : getIntersection(currMarking,prevMarking)){
+				d.put(species,(float) (currMarking.get(species)/bucketCount.get(species)));
 			}
-	
+			graphData.add(new Plot(i,d));
 		}
 	}
 
+	
+
+
+
+	
 	/**
 	 * 
 	 * @param params
@@ -84,23 +81,23 @@ public abstract class Output {
 	public void setParameters(Parameters params) {
 		this.params = params;
 	}
-	
+
 	/**
 	 * 
 	 * @param mapOne
 	 * @param mapTwo
 	 * @return A map of those keys that have changed their values
 	 */
-	private HashMap<String,Integer> getIntersection(HashMap<String,Integer> mapOne, HashMap<String,Integer> mapTwo)
+	private HashSet<String> getIntersection(HashMap<String,Integer> mapOne, HashMap<String,Integer> mapTwo)
 	{
-		HashMap<String,Integer> intersection = new HashMap<String,Integer>();
-	    for (String key: mapOne.keySet())
-	    {
-	        if (mapOne.get(key) != (mapTwo.get(key))){
-	           intersection.put(key, mapOne.get(key));
-	        }
-	    }
-	    return intersection;
+		HashSet<String> intersection = new HashSet<String>();
+		for (String key: mapOne.keySet())
+		{
+			if (mapOne.get(key) != (mapTwo.get(key))){
+				intersection.add(key);
+			}
+		}
+		return intersection;
 	}
 
 	/**

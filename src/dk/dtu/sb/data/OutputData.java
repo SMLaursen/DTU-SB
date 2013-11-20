@@ -6,14 +6,14 @@ import java.util.Map;
 
 public class OutputData {
 
-	public LinkedList<ReactionEvent> data = new LinkedList<ReactionEvent>();
-	public HashMap<String, Integer> initialMarkings = new HashMap<String,Integer>();
+	public HashMap<Integer, LinkedList<DataPoint>> data = new HashMap<>();
+	public Map<String, Integer> initialMarkings;
 	public int iterations;
 	public double stopTime;
 	
-	public OutputData(LinkedList<ReactionEvent> plotData, Map<String, Integer> initialMarkings,int iterations, double stopTime) {
-		this.data.addAll(plotData);
-		this.initialMarkings.putAll(initialMarkings);
+	public OutputData(HashMap<Integer, LinkedList<DataPoint>> hashMap, Map<String, Integer> map,int iterations, double stopTime) {
+		data = hashMap;
+		this.initialMarkings = map;
 		this.iterations = iterations;
 		this.stopTime = stopTime;
 	}
