@@ -102,7 +102,7 @@ public class SBMLParserTest extends StdOutTester {
         System.out.println(spn.toGraphviz());         
     }
     
-    private void saveDotAsPdf(String dot, String filename) throws IOException, InterruptedException {
+    public static void saveDotAsPdf(String dot, String filename) throws IOException, InterruptedException {
         if (System.getProperty("os.name").equals("Mac OS X")) {
             File dotFile = File.createTempFile("graph", ".dot");
             FileOutputStream out = new FileOutputStream(dotFile);

@@ -23,6 +23,7 @@ public abstract class Output {
 	public void setData(OutputData simulationData) {
 		//TODO : Add interpolating method!
 		HashMap<String,Integer> prevMarking = new HashMap<String,Integer>();
+
 		HashMap<String,Integer> currMarking = new HashMap<String,Integer>();
 		//Count how many values in a bucket
 		HashMap<String,Integer> bucketCount = new HashMap<String,Integer>();
@@ -61,7 +62,7 @@ public abstract class Output {
 				
 			}
 			//Store averaged intersection
-			HashMap<String,Float> d = new HashMap<>();
+			HashMap<String,Float> d = new HashMap<String, Float>();
 			for(String species : getIntersection(currMarking,prevMarking)){
 				d.put(species,(float) (currMarking.get(species)/bucketCount.get(species)));
 			}
