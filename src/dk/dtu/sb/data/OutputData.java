@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class OutputData {
 
-	public HashMap<Integer, LinkedList<DataPoint>> data = new HashMap<>();
+	public HashMap<Integer, LinkedList<DataPoint>> data = new HashMap<Integer, LinkedList<DataPoint>>();
 	public Map<String, Integer> initialMarkings;
 	public int iterations;
 	public double stopTime;

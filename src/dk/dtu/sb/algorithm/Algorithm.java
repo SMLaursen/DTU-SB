@@ -36,7 +36,7 @@ public class Algorithm implements Runnable {
 	/**
 	 * 
 	 */
-	private volatile static HashMap<Integer,LinkedList<DataPoint>> resultData = new HashMap<>();
+	private volatile static HashMap<Integer,LinkedList<DataPoint>> resultData = new HashMap<Integer, LinkedList<DataPoint>>();
 	private static Object mapLock = new Object();
 
 	/**
