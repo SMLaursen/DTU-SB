@@ -132,8 +132,7 @@ public class Reaction {
     }
 
     /**
-     * Adds a modifier for this reaction. This is just a macro adding a reactant
-     * and a product with this speciesId and multiplicity 1.
+     * Adds a modifier for this reaction. 
      * 
      * @param speciesId
      *            An identifier for an instance of the Species-class found in
@@ -141,24 +140,17 @@ public class Reaction {
      */
     public void addModifier(String speciesId) {
         modifiers.add(speciesId);
-        addReactant(speciesId);
-        addProduct(speciesId);
     }
 
     /**
-     * Remove the modifier, meaning remove the reactant and product from
-     * this reaction.
+     * Remove the modifier
      * 
      * @param speciesId
      *            An identifier for an instance of the Species-class found in
      *            the associated {@link StochasticPetriNet}.
      */
     public void removeModifier(String speciesId) {
-        if (modifiers.contains(speciesId)) {
-            modifiers.remove(speciesId);
-            removeReactant(speciesId);
-            removeProduct(speciesId);
-        }
+        modifiers.remove(speciesId);
     }
 
     /**

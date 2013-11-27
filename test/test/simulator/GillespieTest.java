@@ -31,10 +31,12 @@ public class GillespieTest {
     public void testNegFeedbackReal() {
         Parameters p = new Parameters();
 
-        p.setIterations(1);
+        p.setIterations(2);
         p.setNoOfThreads(2);
-        p.setStoptime(36000);
+        p.setStoptime(10000);
         p.setOutStepCount(100);
+        p.setSimThreshold(0.1);
+        p.setMaxIterTime(120);
         p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/neg_feed_real.xml"), p);
@@ -46,8 +48,9 @@ public class GillespieTest {
 
         p.setIterations(4);
         p.setNoOfThreads(2);
-        p.setStoptime(1500);
+        p.setStoptime(1000);
         p.setOutStepCount(1000);
+        p.setSimThreshold(0.1);
         p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000012.xml"), p);

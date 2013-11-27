@@ -135,8 +135,8 @@ public class StochasticPetriNet {
 
         for (Reaction reaction : reactions.values()) {
 
-            graph += "\"" + reaction.getLabel() + " [" + reaction.getRateFunction()
-                    + "]\"" + " [shape=box];\n";
+            graph += "\"" + reaction.getLabel() + " ["
+                    + reaction.getRateFunction() + "]\"" + " [shape=box];\n";
 
             // Process the reactants
             for (Entry<String, Integer> reactantEntry : reaction.getReactants()
@@ -155,8 +155,8 @@ public class StochasticPetriNet {
             // Process the products
             for (Entry<String, Integer> productEntry : reaction.getProducts()
                     .entrySet()) {
-                graph += "\"" + reaction.getLabel() + " [" + reaction.getRateFunction()
-                        + "]\"" + " -> \""
+                graph += "\"" + reaction.getLabel() + " ["
+                        + reaction.getRateFunction() + "]\"" + " -> \""
                         + getSpecies(productEntry.getKey()).getLabel() + " ("
                         + getInitialMarking(productEntry.getKey()) + ")\"";
                 // Set multiplicity on edges
@@ -164,6 +164,14 @@ public class StochasticPetriNet {
                     graph += " [label = \"" + productEntry.getValue() + "\"]";
                 }
                 graph += ";\n";
+            }
+
+            // Process the modifiers
+            for (String modifier : reaction.getModifiers()) {
+                graph += "\"" + getSpecies(modifier).getLabel() + " ("
+                        + getInitialMarking(modifier) + ")\" -> \""
+                        + reaction.getLabel() + " ["
+                        + reaction.getRateFunction() + "]\" [style=dotted];\n";
             }
         }
         graph += "}";

@@ -12,16 +12,15 @@
     </listOfSpecies>
     <listOfReactions>
       <reaction id="transcription" reversible="false">
-        <listOfReactants>
-          <speciesReference species="Plac"/>
-        </listOfReactants>
         <listOfProducts>
           <speciesReference species="mRNA"/>
-          <speciesReference species="Plac"/>
         </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="Plac"/>
+        </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <cn type="integer"> 10 </cn>
+            <cn> 0.5 </cn>
           </math>
         </kineticLaw>
       </reaction>
@@ -32,29 +31,25 @@
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
-              <exp/>
-              <apply>
-                <times/>
-                <cn> 0.54 </cn>
-                <ci> mRNA </ci>
-              </apply>
+              <times/>
+              <cn> 0.00577623 </cn>
+              <ci> mRNA </ci>
             </apply>
           </math>
         </kineticLaw>
       </reaction>
       <reaction id="translation" reversible="false">
-        <listOfReactants>
-          <speciesReference species="mRNA"/>
-        </listOfReactants>
         <listOfProducts>
           <speciesReference species="lacI"/>
-          <speciesReference species="mRNA"/>
         </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="mRNA"/>
+        </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn type="integer"> 90 </cn>
+              <cn> 0.167 </cn>
               <ci> mRNA </ci>
             </apply>
           </math>
@@ -67,17 +62,9 @@
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
-              <divide/>
-              <cn type="integer"> 1080 </cn>
-              <apply>
-                <plus/>
-                <cn> 0.1 </cn>
-                <apply>
-                  <times/>
-                  <cn type="integer"> 4 </cn>
-                  <ci> lacI </ci>
-                </apply>
-              </apply>
+              <times/>
+              <cn> 0.00115525 </cn>
+              <ci> lacI </ci>
             </apply>
           </math>
         </kineticLaw>
@@ -85,47 +72,18 @@
       <reaction id="regulation" reversible="false">
         <listOfReactants>
           <speciesReference species="Plac"/>
-          <speciesReference species="lacI"/>
         </listOfReactants>
         <listOfProducts>
           <speciesReference species="Plac_lacI"/>
-          <speciesReference species="lacI"/>
         </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="lacI"/>
+        </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn type="integer"> 3 </cn>
-              <cn> 1.8 </cn>
-              <apply>
-                <plus/>
-                <apply>
-                  <times/>
-                  <apply>
-                    <minus/>
-                    <cn> 0.2 </cn>
-                    <cn> 0.01 </cn>
-                  </apply>
-                  <apply>
-                    <divide/>
-                    <cn type="integer"> 1 </cn>
-                    <apply>
-                      <plus/>
-                      <cn type="integer"> 1 </cn>
-                      <apply>
-                        <power/>
-                        <apply>
-                          <divide/>
-                          <cn> 2 </cn>
-                          <cn> 0.0035 </cn>
-                        </apply>
-                        <cn type="integer"> 2 </cn>
-                      </apply>
-                    </apply>
-                  </apply>
-                </apply>
-                <cn> 0.01 </cn>
-              </apply>
+              <cn type="integer"> 1 </cn>
               <ci> Plac </ci>
               <ci> lacI </ci>
             </apply>
@@ -143,7 +101,7 @@
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn> 0.006 </cn>
+              <cn type="integer"> 233 </cn>
               <ci> Plac_lacI </ci>
             </apply>
           </math>
