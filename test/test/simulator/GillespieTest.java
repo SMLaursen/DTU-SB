@@ -174,19 +174,6 @@ public class GillespieTest {
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000325.xml"), p);      
     }
     
-    @Test
-    public void test_Min_Feedback() {
-        Parameters p = new Parameters();
-
-        p.setIterations(50);
-        p.setNoOfThreads(2);
-        p.setStoptime(1000);
-        p.setOutStepCount(10000);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
-
-        simulateAndOutput(parse("test/test/simulator/BIOMD0000000325.xml"), p);      
-    }
-    
     public StochasticPetriNet parse(String filename) {
         StochasticPetriNet spn = null;
         SBMLParser parser = new SBMLParser();
