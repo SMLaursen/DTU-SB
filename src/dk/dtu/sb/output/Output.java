@@ -24,6 +24,7 @@ public abstract class Output {
 		//TODO : Add interpolating method!
 		HashMap<String,Integer> prevMarking = new HashMap<String,Integer>();
 
+
 		HashMap<String,Integer> currMarking = new HashMap<String,Integer>();
 		//Count how many values in a bucket
 		HashMap<String,Integer> bucketCount = new HashMap<String,Integer>();
