@@ -142,8 +142,9 @@ public class StochasticPetriNet {
             for (Entry<String, Integer> reactantEntry : reaction.getReactants()
                     .entrySet()) {
                 graph += "\"" + getSpecies(reactantEntry.getKey()).getLabel()
-                        + " (" + getInitialMarking(reactantEntry.getKey())
-                        + ")\" -> " + "\"" + reaction.getLabel() + " ["
+                        + "[" + reactantEntry.getKey() + "]" + " ("
+                        + getInitialMarking(reactantEntry.getKey()) + ")\" -> "
+                        + "\"" + reaction.getLabel() + " ["
                         + reaction.getRateFunction() + "]\"";
                 // Set multiplicity on edges
                 if (reactantEntry.getValue() > 1) {
@@ -157,7 +158,8 @@ public class StochasticPetriNet {
                     .entrySet()) {
                 graph += "\"" + reaction.getLabel() + " ["
                         + reaction.getRateFunction() + "]\"" + " -> \""
-                        + getSpecies(productEntry.getKey()).getLabel() + " ("
+                        + getSpecies(productEntry.getKey()).getLabel() + "["
+                        + productEntry.getKey() + "]" + " ("
                         + getInitialMarking(productEntry.getKey()) + ")\"";
                 // Set multiplicity on edges
                 if (productEntry.getValue() > 1) {
@@ -168,9 +170,9 @@ public class StochasticPetriNet {
 
             // Process the modifiers
             for (String modifier : reaction.getModifiers()) {
-                graph += "\"" + getSpecies(modifier).getLabel() + " ("
-                        + getInitialMarking(modifier) + ")\" -> \""
-                        + reaction.getLabel() + " ["
+                graph += "\"" + getSpecies(modifier).getLabel() + "["
+                        + modifier + "]" + " (" + getInitialMarking(modifier)
+                        + ")\" -> \"" + reaction.getLabel() + " ["
                         + reaction.getRateFunction() + "]\" [style=dotted];\n";
             }
         }
