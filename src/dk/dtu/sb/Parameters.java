@@ -9,7 +9,12 @@ import java.util.Properties;
  * Container of Parameters used in simulation, algorithms and loading of input
  * files.
  */
-public class Parameters extends Properties {
+public class Parameters {
+
+    /**
+     * The object holding all the parameters.
+     */
+    private Properties holder = new Properties();
 
     private static final String PARAM_INPUT_FILENAME = "input.file";
     public static final String PARAM_INPUT_FILENAME_DEFAULT = "input.xml";
@@ -43,7 +48,7 @@ public class Parameters extends Properties {
 
     private static final String PARAM_OUT_STEPCOUNT = "output.stepcount";
     public static final int PARAM_OUT_STEPCOUNT_DEFAULT = 1000;
-    
+
     private static final String PARAM_SIM_THRESHOLD = "simulation.threshold";
     public static final double PARAM_SIM_THRESHOLD_DEFAULT = 0.0005;
 
@@ -64,7 +69,7 @@ public class Parameters extends Properties {
     public Parameters(String filename) {
         this.setDefaults();
         try {
-            this.load(new FileInputStream(filename));
+            holder.load(new FileInputStream(filename));
         } catch (IOException e) {
             Util.log.fatal("An error occured when loading the properties file "
                     + filename + ". Using defaults.");
@@ -89,7 +94,7 @@ public class Parameters extends Properties {
      */
     public void saveAsFile(String filename) {
         try {
-            this.store(new FileOutputStream(filename), null);
+            holder.store(new FileOutputStream(filename), null);
         } catch (Exception e) {
             Util.log.fatal(e);
         }
@@ -99,7 +104,7 @@ public class Parameters extends Properties {
      * The fully qualified class name of the algorithm impl.
      */
     public String getAlgorithmClassName() {
-        return this.getProperty(PARAM_SIM_ALGORITHM,
+        return holder.getProperty(PARAM_SIM_ALGORITHM,
                 PARAM_SIM_ALGORITHM_DEFAULT);
     }
 
@@ -107,28 +112,29 @@ public class Parameters extends Properties {
      * See {@link #getAlgorithmClassName()}.
      */
     public void setAlgorithmClassName(String className) {
-        this.setProperty(PARAM_SIM_ALGORITHM, className);
+        holder.setProperty(PARAM_SIM_ALGORITHM, className);
     }
 
     /**
      * The fully qualified class name of the parser impl.
      */
     public String getParserClassName() {
-        return this.getProperty(PARAM_INPUT_PARSER, PARAM_INPUT_PARSER_DEFAULT);
+        return holder.getProperty(PARAM_INPUT_PARSER,
+                PARAM_INPUT_PARSER_DEFAULT);
     }
 
     /**
      * See {@link #getParserClassName()}.
      */
     public void setParserClassName(String className) {
-        this.setProperty(PARAM_INPUT_PARSER, className);
+        holder.setProperty(PARAM_INPUT_PARSER, className);
     }
 
     /**
      * The name of the input file to the simulator
      */
     public String getFilename() {
-        return this.getProperty(PARAM_INPUT_FILENAME,
+        return holder.getProperty(PARAM_INPUT_FILENAME,
                 PARAM_INPUT_FILENAME_DEFAULT);
     }
 
@@ -136,7 +142,7 @@ public class Parameters extends Properties {
      * See {@link #getFilename()}.
      */
     public void setFilename(String filename) {
-        this.setProperty(PARAM_INPUT_FILENAME, filename);
+        holder.setProperty(PARAM_INPUT_FILENAME, filename);
     }
 
     /**
@@ -145,21 +151,21 @@ public class Parameters extends Properties {
     public int getIterations() {
         int iterations;
         try {
-            iterations = Integer.parseInt(this.getProperty(
+            iterations = Integer.parseInt(holder.getProperty(
                     PARAM_SIM_ITERATIONS, "" + PARAM_SIM_ITERATIONS_DEFAULT));
         } catch (NumberFormatException e) {
-            Util.log.warn(this.getProperty(PARAM_SIM_ITERATIONS)
+            Util.log.warn(holder.getProperty(PARAM_SIM_ITERATIONS)
                     + " is not a valid integer.");
             iterations = PARAM_SIM_ITERATIONS_DEFAULT;
         }
         return iterations;
     }
-    
+
     /**
      * See {@link #getIterations()}.
      */
     public void setIterations(int iterations) {
-        this.setProperty(PARAM_SIM_ITERATIONS, "" + iterations);
+        holder.setProperty(PARAM_SIM_ITERATIONS, "" + iterations);
     }
 
     /**
@@ -168,39 +174,40 @@ public class Parameters extends Properties {
     public int getNoOfThreads() {
         int n;
         try {
-            n = Integer.parseInt(this.getProperty(PARAM_SIM_NOOFTHREADS, ""
+            n = Integer.parseInt(holder.getProperty(PARAM_SIM_NOOFTHREADS, ""
                     + PARAM_SIM_NOOFTHREADS_DEFAULT));
             if (n < 1) {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            Util.log.warn(this.getProperty(PARAM_SIM_NOOFTHREADS)
+            Util.log.warn(holder.getProperty(PARAM_SIM_NOOFTHREADS)
                     + " is not a valid integer.");
             n = PARAM_SIM_NOOFTHREADS_DEFAULT;
         }
         return n;
     }
-    
+
     /**
      * See {@link #getIterations()}.
      */
     public void setMaxIterTime(int seconds) {
-        this.setProperty(PARAM_SIM_MAXITERTIME, "" + seconds);
+        holder.setProperty(PARAM_SIM_MAXITERTIME, "" + seconds);
     }
 
     /**
-     * The maximum number of seconds a thread is allowed to run in simulation. Default is 60 seconds.
+     * The maximum number of seconds a thread is allowed to run in simulation.
+     * Default is 60 seconds.
      */
     public int getMaxIterTime() {
         int seconds;
         try {
-            seconds = Integer.parseInt(this.getProperty(PARAM_SIM_MAXITERTIME, ""
-                    + PARAM_SIM_MAXITERTIME_DEFAULT));
+            seconds = Integer.parseInt(holder.getProperty(
+                    PARAM_SIM_MAXITERTIME, "" + PARAM_SIM_MAXITERTIME_DEFAULT));
             if (seconds < 1) {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            Util.log.warn(this.getProperty(PARAM_SIM_MAXITERTIME)
+            Util.log.warn(holder.getProperty(PARAM_SIM_MAXITERTIME)
                     + " is not a valid integer.");
             seconds = PARAM_SIM_MAXITERTIME_DEFAULT;
         }
@@ -211,7 +218,7 @@ public class Parameters extends Properties {
      * See {@link #getNoOfThreads()}.
      */
     public void setNoOfThreads(int n) {
-        this.setProperty(PARAM_SIM_NOOFTHREADS, "" + n);
+        holder.setProperty(PARAM_SIM_NOOFTHREADS, "" + n);
     }
 
     /**
@@ -220,10 +227,10 @@ public class Parameters extends Properties {
     public int getStoptime() {
         int stoptime;
         try {
-            stoptime = Integer.parseInt(this.getProperty(PARAM_SIM_STOPTIME, ""
-                    + PARAM_SIM_STOPTIME_DEFAULT));
+            stoptime = Integer.parseInt(holder.getProperty(PARAM_SIM_STOPTIME,
+                    "" + PARAM_SIM_STOPTIME_DEFAULT));
         } catch (NumberFormatException e) {
-            Util.log.warn(this.getProperty(PARAM_SIM_STOPTIME)
+            Util.log.warn(holder.getProperty(PARAM_SIM_STOPTIME)
                     + " is not a valid integer.");
             stoptime = PARAM_SIM_STOPTIME_DEFAULT;
         }
@@ -234,7 +241,7 @@ public class Parameters extends Properties {
      * See {@link #getStoptime()}.
      */
     public void setStoptime(int stoptime) {
-        this.setProperty(PARAM_SIM_STOPTIME, "" + stoptime);
+        holder.setProperty(PARAM_SIM_STOPTIME, "" + stoptime);
     }
 
     /**
@@ -243,10 +250,10 @@ public class Parameters extends Properties {
     public boolean getResultGUI() {
         boolean result;
         try {
-            result = Boolean.parseBoolean(this.getProperty(
+            result = Boolean.parseBoolean(holder.getProperty(
                     PARAM_OUT_RESULT_GUI, "" + PARAM_OUT_RESULT_GUI_DEFAULT));
         } catch (NumberFormatException e) {
-            Util.log.warn(this.getProperty(PARAM_OUT_RESULT_GUI)
+            Util.log.warn(holder.getProperty(PARAM_OUT_RESULT_GUI)
                     + " is not valid.");
             result = PARAM_OUT_RESULT_GUI_DEFAULT;
         }
@@ -257,7 +264,7 @@ public class Parameters extends Properties {
      * See {@link #getResultGUI()}.
      */
     public void setResultGUI(boolean result) {
-        this.setProperty(PARAM_OUT_RESULT_GUI, "" + result);
+        holder.setProperty(PARAM_OUT_RESULT_GUI, "" + result);
     }
 
     /**
@@ -267,13 +274,13 @@ public class Parameters extends Properties {
     public int getOutStepCount() {
         int stepsize;
         try {
-            stepsize = Integer.parseInt(this.getProperty(PARAM_OUT_STEPCOUNT,
+            stepsize = Integer.parseInt(holder.getProperty(PARAM_OUT_STEPCOUNT,
                     "" + PARAM_OUT_STEPCOUNT_DEFAULT));
             if (stepsize < 2) {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            Util.log.warn(this.getProperty(PARAM_OUT_STEPCOUNT)
+            Util.log.warn(holder.getProperty(PARAM_OUT_STEPCOUNT)
                     + " is not a valid integer.");
             stepsize = PARAM_OUT_STEPCOUNT_DEFAULT;
         }
@@ -284,24 +291,24 @@ public class Parameters extends Properties {
      * See {@link #getOutStepCount()}.
      */
     public void setOutStepCount(int steps) {
-        this.setProperty(PARAM_OUT_STEPCOUNT, "" + steps);
+        holder.setProperty(PARAM_OUT_STEPCOUNT, "" + steps);
     }
-    
-    
+
     /**
-     * Default 0. Limits the output generated from the simulation to only save points which 
-     * delta tau > threshold. Can greatly reduce the required memory!
+     * Default 0. Limits the output generated from the simulation to only save
+     * points which delta tau > threshold. Can greatly reduce the required
+     * memory!
      */
     public double getSimThreshold() {
         double threshold;
         try {
-            threshold = Float.parseFloat(this.getProperty(PARAM_SIM_THRESHOLD,
-                    "" + PARAM_SIM_THRESHOLD_DEFAULT));
+            threshold = Float.parseFloat(holder.getProperty(
+                    PARAM_SIM_THRESHOLD, "" + PARAM_SIM_THRESHOLD_DEFAULT));
             if (threshold < 0) {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            Util.log.warn(this.getProperty(PARAM_SIM_THRESHOLD)
+            Util.log.warn(holder.getProperty(PARAM_SIM_THRESHOLD)
                     + " is not a valid double.");
             threshold = PARAM_SIM_THRESHOLD_DEFAULT;
         }
@@ -312,7 +319,7 @@ public class Parameters extends Properties {
      * See {@link #getOutStepCount()}.
      */
     public void setSimThreshold(double threshold) {
-        this.setProperty(PARAM_SIM_THRESHOLD, "" + threshold);
+        holder.setProperty(PARAM_SIM_THRESHOLD, "" + threshold);
     }
 
     /**
@@ -331,14 +338,14 @@ public class Parameters extends Properties {
     public int getRateMode() {
         int mode;
         try {
-            mode = Integer.parseInt(this.getProperty(PARAM_SIM_RATE_MODE, ""
+            mode = Integer.parseInt(holder.getProperty(PARAM_SIM_RATE_MODE, ""
                     + PARAM_SIM_RATE_MODE_DEFAULT));
             if (mode < PARAM_SIM_RATE_MODE_CONSTANT
                     || mode > PARAM_SIM_RATE_MODE_CUSTOM) {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            Util.log.warn(this.getProperty(PARAM_SIM_RATE_MODE)
+            Util.log.warn(holder.getProperty(PARAM_SIM_RATE_MODE)
                     + " is not valid.");
             mode = PARAM_SIM_RATE_MODE_DEFAULT;
         }
@@ -353,7 +360,36 @@ public class Parameters extends Properties {
                 || mode > PARAM_SIM_RATE_MODE_CUSTOM) {
             Util.log.warn(mode + " is not valid.");
         } else {
-            this.setProperty(PARAM_SIM_RATE_MODE, "" + mode);
+            holder.setProperty(PARAM_SIM_RATE_MODE, "" + mode);
         }
+    }
+
+    /**
+     * See {@link #getCustom(String, String)}.
+     */
+    public String getCustom(String key) {
+        return getCustom(key, "");
+    }
+
+    /**
+     * If the parameter don't have a static field in this class, the parameter
+     * can be retrieved with this method. This should mainly be used in custom
+     * implementations of parsers, algorithms, etc.
+     * 
+     * @param key
+     *            The parameter.
+     * @param value
+     *            The default value if the parameter is not present.
+     * @return The value of the parameter.
+     */
+    public String getCustom(String key, String value) {
+        return holder.getProperty(key, value);
+    }
+
+    /**
+     * See {@link #getCustom(String, String)}.
+     */
+    public void setCustom(String key, String value) {
+        holder.setProperty(key, value);
     }
 }
