@@ -75,7 +75,7 @@ public class RateFunctionTest extends StdOutTester {
     @Test
     public void testWrongExpression() {
         new RateFunction("func(2)");
-        assertTrue(err.toString().contains("An error occurred. Using default. Unable to parse character 'f' at position 1 in expression 'func(2)'"));
+        assertTrue(err.toString().contains("An error occurred when building the Calculable object. Using default. Unable to parse character 'f' at position 1 in expression 'func(2)'"));
     }
 
 }

@@ -46,11 +46,11 @@ public class GillespieTest {
     public void testRepressilator() {
         Parameters p = new Parameters();
 
-        p.setIterations(4);
+        p.setIterations(2);
         p.setNoOfThreads(2);
-        p.setStoptime(1000);
+        p.setStoptime(6000);
         p.setOutStepCount(1000);
-        p.setSimThreshold(0.1);
+        p.setSimThreshold(1);
         p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000012.xml"), p);
