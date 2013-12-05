@@ -41,9 +41,9 @@ public class Compiler {
         String currentCompiler = "";
 
         try {
+            AbstractCompiler compiler;
             if (params != null) {
-                Class<?> compilerClass;
-                AbstractCompiler compiler;
+                Class<?> compilerClass;                
                 for (String compilerName : params.getCompilers()) {
                     currentCompiler = compilerName;
                     compilerClass = Class.forName(compilerName);
@@ -52,9 +52,10 @@ public class Compiler {
                     spn = compiler.compile(spn);
                 }
             }
-
-            currentCompiler = getClass().getCanonicalName();
-            verifySPN();
+            // Use framework compiler
+            compiler = new VerifyCompiler();
+            currentCompiler = compiler.getClass().getCanonicalName();
+            spn = compiler.compile(spn);
 
         } catch (CompilerException e) {
             Util.log.error("An error occurred while the compiler: "
@@ -67,9 +68,5 @@ public class Compiler {
         }
 
         return spn;
-    }
-
-    private void verifySPN() throws CompilerException {
-
     }
 }
