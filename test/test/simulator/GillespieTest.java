@@ -2,9 +2,9 @@ package test.simulator;
 
 import java.io.IOException;
 
-import org.apache.commons.logging.impl.SimpleLog;
 import org.junit.Test;
 
+import ch.qos.logback.classic.Level;
 import test.parser.SBMLParserTest;
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
@@ -189,7 +189,7 @@ public class GillespieTest {
     public void simulateAndOutput(StochasticPetriNet spn, Parameters p) {
         System.out.println(spn.toGraphviz());
         
-        Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+        Util.log.setLevel(Level.DEBUG);
         Simulator simulator = new Simulator(spn, p);
         simulator.simulate();
 

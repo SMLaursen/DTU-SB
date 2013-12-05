@@ -121,9 +121,9 @@ public class Simulator {
             Util.log.info("Simulation ended in: " + simulationTime + "ms");
 
         } catch (InterruptedException e) {
-            Util.log.fatal("Something went wrong when simulating: ", e);
+            Util.log.error("Something went wrong when simulating: ", e);
         } catch (Exception e) {
-            Util.log.fatal("The algorithm class: " + algorithmName
+            Util.log.error("The algorithm class: " + algorithmName
                     + " could not be found. Using default.");
         }
     }

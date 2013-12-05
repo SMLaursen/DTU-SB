@@ -57,11 +57,11 @@ public class Compiler {
             verifySPN();
 
         } catch (CompilerException e) {
-            Util.log.fatal("An error occurred while the compiler: "
+            Util.log.error("An error occurred while the compiler: "
                     + currentCompiler + " compiled the SPN: " + e.getMessage());
             spn = null;
         } catch (Exception e) {
-            Util.log.fatal("The compiler class: " + currentCompiler
+            Util.log.error("The compiler class: " + currentCompiler
                     + " could not be found.");
             spn = null;
         }

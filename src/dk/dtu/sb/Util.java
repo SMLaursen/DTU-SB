@@ -1,6 +1,8 @@
 package dk.dtu.sb;
 
-import org.apache.commons.logging.impl.SimpleLog;
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.Logger;
 
 /**
  * Utility class with common methods.
@@ -10,7 +12,7 @@ public class Util {
     /**
      * 
      */
-    public static  SimpleLog log = new SimpleLog("DTU-SB");
+    public static Logger log = (Logger) LoggerFactory.getLogger("DTU-SB");
 
     /**
      * Returns the number of combinations for (n k)

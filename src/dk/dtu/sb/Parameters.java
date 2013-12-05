@@ -77,7 +77,7 @@ public class Parameters {
         try {
             holder.load(new FileInputStream(filename));
         } catch (IOException e) {
-            Util.log.fatal("An error occured when loading the properties file "
+            Util.log.error("An error occured when loading the properties file "
                     + filename + ". Using defaults.");
         }
     }
@@ -102,7 +102,7 @@ public class Parameters {
         try {
             holder.store(new FileOutputStream(filename), null);
         } catch (Exception e) {
-            Util.log.fatal(e);
+            Util.log.error("An error occurred when saving the parameters.");
         }
     }
 

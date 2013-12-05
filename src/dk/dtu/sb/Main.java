@@ -10,8 +10,10 @@ import dk.dtu.sb.output.GraphGUI;
 import dk.dtu.sb.parser.Parser;
 import dk.dtu.sb.parser.SBMLParser;
 import dk.dtu.sb.simulator.Simulator;
+
 import org.apache.commons.cli.*;
-import org.apache.commons.logging.impl.SimpleLog;
+
+import ch.qos.logback.classic.Level;
 
 /**
  * 
@@ -46,7 +48,7 @@ public class Main {
      * @param args From command line.
      */
     public static void main(String[] args) {
-        Util.log.setLevel(SimpleLog.LOG_LEVEL_INFO);
+        Util.log.setLevel(Level.INFO);
         setupCli(args);
     }
     //https://github.com/NanoHttpd/nanohttpd
@@ -75,7 +77,7 @@ public class Main {
         options.addOption(OptionBuilder
                 .hasArg()
                 .withArgName("level")
-                .withDescription("0: all, 1: trace, 2: debug, 3: info [default], 4: warnings, 5: errors, 6: fatal errors")
+                .withDescription("0: all, 1: trace, 2: debug, 3: info [default], 4: warnings, 5: errors")
                 .withLongOpt(OPT_VERBOSITY_LONG)
                 .create(OPT_VERBOSITY_SHORT));
         options.addOption(OptionBuilder
@@ -123,10 +125,13 @@ public class Main {
      */
     private static void setVerbosity(CommandLine line) throws NumberFormatException {
         if (line.hasOption(OPT_VERBOSITY_SHORT)) {
-            Util.log.setLevel(Integer.parseInt(line.getOptionValue(OPT_VERBOSITY_SHORT)));
+            int levelNum = (Integer.parseInt(line.getOptionValue(OPT_VERBOSITY_SHORT)) - 1) * 10000;
+            Level level = Level.ALL;
+            level = (levelNum == 0) ? Level.TRACE : Level.toLevel(levelNum);            
+            Util.log.setLevel(level);
         }            
         if (line.hasOption(OPT_DEBUG_SHORT)) {
-            Util.log.setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+            Util.log.setLevel(Level.DEBUG);
         }
     }
 
@@ -232,9 +237,9 @@ public class Main {
                 gui.process();
             }
         } catch (FileNotFoundException e) {
-            Util.log.fatal("Input file: " + filename + " was not found.");
+            Util.log.error("Input file: " + filename + " was not found.");
         } catch (IOException e) {
-            Util.log.fatal("An error occurred when reading the content of " + filename);
+            Util.log.error("An error occurred when reading the content of " + filename);
         }
     }
 
@@ -255,9 +260,9 @@ public class Main {
             
             return parser;
         } catch (ClassNotFoundException e) {
-            Util.log.fatal("The parser class: " + className + " could not be found. Using default.");
+            Util.log.error("The parser class: " + className + " could not be found. Using default.");
         } catch (Exception e) {
-            Util.log.fatal("Using default parser.", e);
+            Util.log.error("Using default parser.", e);
         }
         return new SBMLParser();
     }

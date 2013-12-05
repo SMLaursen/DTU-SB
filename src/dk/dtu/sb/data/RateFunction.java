@@ -120,7 +120,7 @@ public class RateFunction {
         try {
             this.calc = expr.build();
         } catch (Exception e) {
-            Util.log.fatal("An error occurred when building the Calculable object. Using default. "
+            Util.log.error("An error occurred when building the Calculable object. Using default. "
                     + e.getMessage());
         }
     }
@@ -146,7 +146,7 @@ public class RateFunction {
                     return cache.get(key);
                 }
             } catch (Exception e) {
-                Util.log.fatal("An error occurred. Using default. " + e.getMessage());
+                Util.log.error("An error occurred. Using default. " + e.getMessage());
             }
         }
 

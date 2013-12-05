@@ -78,7 +78,7 @@ public class SBMLParser extends Parser {
                 model = document.getModel();
                 return true;
             } catch (XMLStreamException e) {
-                Util.log.fatal("An error occurred when parsing the SBML file: "
+                Util.log.error("An error occurred when parsing the SBML file: "
                         + e.getMessage()
                         + ". Expect the StochasticPetriNet to be incomplete.");
             }
