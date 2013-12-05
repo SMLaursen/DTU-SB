@@ -3,7 +3,10 @@ package dk.dtu.sb;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
+
+import dk.dtu.sb.compiler.AbstractCompiler;
 
 /**
  * Container of Parameters used in simulation, algorithms and loading of input
@@ -51,6 +54,9 @@ public class Parameters {
 
     private static final String PARAM_SIM_THRESHOLD = "simulation.threshold";
     public static final double PARAM_SIM_THRESHOLD_DEFAULT = 0.0005;
+
+    private static final String PARAM_COMPILERS = "compilers";
+    public static final String[] PARAM_COMPILERS_DEFAULT = new String[] { "" };
 
     /**
      * Instantiates a Parameter object with default values.
@@ -362,6 +368,23 @@ public class Parameters {
         } else {
             holder.setProperty(PARAM_SIM_RATE_MODE, "" + mode);
         }
+    }
+
+    /**
+     * A list of fully qualified compilers extending {@link AbstractCompiler}.
+     */
+    public String[] getCompilers() {
+        String compilersString = holder.getProperty(PARAM_COMPILERS, "");
+        return compilersString.split(", ");
+    }
+
+    /**
+     * See {@link #getCompilers()}.
+     */
+    public void setCompilers(String[] compilers) {
+        String compilersString = Arrays.toString(compilers);
+        compilersString = compilersString.substring(1, compilersString.length()-1);        
+        holder.setProperty(PARAM_COMPILERS, compilersString);
     }
 
     /**
