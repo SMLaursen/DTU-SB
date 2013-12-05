@@ -145,7 +145,7 @@ public class GillespieAlgorithm extends Algorithm {
     }
 
     /**
-     * Returns the propensity a_r = rate * PROD binom(m_i,f_i) forall i in
+     * Returns the propensity a_r = rate * PROD m_i forall i in
      * Reaction reaction
      * 
      * @param reaction
@@ -165,8 +165,8 @@ public class GillespieAlgorithm extends Algorithm {
         default:
             for (Entry<String, Integer> reactant : reaction.getReactants()
                     .entrySet()) {
-                h *= Util.binom(currentMarkings.get(reactant.getKey()),
-                        reactant.getValue());
+                //h *= Util.binom(currentMarkings.get(reactant.getKey()),reactant.getValue());
+            	h*=currentMarkings.get(reactant.getKey());
             }
             h *= reaction.getRate(currentMarkings);
             break;
