@@ -13,6 +13,60 @@ import dk.dtu.sb.data.StochasticPetriNet;
 
 public class CompilerTest {
 
+    @Test
+    public void testCompilerWOChain() {
+        Compiler compiler = new Compiler(dummySPN());
+        StochasticPetriNet spn = compiler.compile();
+        assertNotNull(spn);
+    }
+
+    @Test
+    public void testCompilerChain1() {
+        Parameters params = new Parameters();
+        params.setCompilers(new String[] { "stub.NewCompiler" });
+        Compiler compiler = new Compiler(dummySPN(), params);
+        StochasticPetriNet spn = compiler.compile();
+
+        assertNotNull(spn);
+    }
+    
+    @Test
+    public void testCompilerChain2() {
+        Parameters params = new Parameters();
+        params.setCompilers(new String[] { "stub.NewCompiler", "stub.NewCompiler2" });
+        
+        StochasticPetriNet spn = dummySPN();
+                
+        assertNull(spn.getReaction("compiler_r"));
+        
+        Compiler compiler = new Compiler(dummySPN(), params);
+        spn = compiler.compile();
+
+        assertNotNull(spn);
+        
+        assertNotNull(spn.getReaction("compiler_r"));
+    }
+
+    @Test
+    public void testCompilerWrongCompiler() {
+        Parameters params = new Parameters();
+        params.setCompilers(new String[] { "stub.Dummy" });
+        Compiler compiler = new Compiler(dummySPN(), params);
+        StochasticPetriNet spn = compiler.compile();
+
+        assertNull(spn);
+    }
+
+    @Test
+    public void testCompilerChainWithError() {
+        Parameters params = new Parameters();
+        params.setCompilers(new String[] { "stub.ErrorCompiler" });
+        Compiler compiler = new Compiler(dummySPN(), params);
+        StochasticPetriNet spn = compiler.compile();
+
+        assertNull(spn);
+    }
+
     private StochasticPetriNet dummySPN() {
         StochasticPetriNet spn = new StochasticPetriNet();
 
@@ -42,42 +96,4 @@ public class CompilerTest {
         spn.setInitialMarking("AB", 0);
         return spn;
     }
-
-    @Test
-    public void testCompilerWOChain() {
-        Compiler compiler = new Compiler(dummySPN());
-        StochasticPetriNet spn = compiler.compile();
-        assertNotNull(spn);
-    }
-    
-    @Test
-    public void testCompilerChain1() {
-        Parameters params = new Parameters();
-        params.setCompilers(new String[]{"stub.NewCompiler"});
-        Compiler compiler = new Compiler(dummySPN(), params);
-        StochasticPetriNet spn = compiler.compile();
-        
-        assertNotNull(spn);
-    }
-    
-    @Test
-    public void testCompilerWrongCompiler() {
-        Parameters params = new Parameters();
-        params.setCompilers(new String[]{"stub.Dummy"});
-        Compiler compiler = new Compiler(dummySPN(), params);
-        StochasticPetriNet spn = compiler.compile();
-        
-        assertNull(spn);
-    }
-    
-    @Test
-    public void testCompilerChain2WithError() {
-        Parameters params = new Parameters();
-        params.setCompilers(new String[]{"stub.ErrorCompiler"});
-        Compiler compiler = new Compiler(dummySPN(), params);
-        StochasticPetriNet spn = compiler.compile();
-        
-        assertNull(spn);
-    }
-
 }
