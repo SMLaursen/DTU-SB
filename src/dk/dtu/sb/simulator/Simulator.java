@@ -41,7 +41,7 @@ public class Simulator {
      * 
      * @param spn
      *            The input {@link StochasticPetriNet}.
-     * @param algorithm
+     * @param algorithmName
      *            The fully qualified name for the algorithm to use. Should
      *            extend {@link Algorithm}.
      */
@@ -75,7 +75,7 @@ public class Simulator {
      * 
      * @param spn
      *            The input {@link StochasticPetriNet}.
-     * @param algorithm
+     * @param algorithmName
      *            The fully qualified name for the algorithm to use. Should
      *            extend {@link Algorithm}.
      * @param params
