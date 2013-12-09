@@ -15,7 +15,14 @@ import dk.dtu.sb.data.StochasticPetriNet;
  */
 public class Algorithm implements Runnable {
 
+    /**
+     * 
+     */
 	protected volatile static int i = 0;
+	
+	/**
+	 * 
+	 */
 	protected static final Object iLock = new Object();
 
 	/**
@@ -37,6 +44,10 @@ public class Algorithm implements Runnable {
 	 * 
 	 */
 	private volatile static HashMap<Integer,LinkedList<DataPoint>> resultData = new HashMap<Integer, LinkedList<DataPoint>>();
+	
+	/**
+	 * 
+	 */
 	private static Object mapLock = new Object();
 
 	/**
@@ -45,6 +56,7 @@ public class Algorithm implements Runnable {
 	 * {@link StochasticPetriNet}.
 	 */
 	protected HashMap<String, Integer> currentMarkings = new HashMap<String, Integer>();
+	
 	/**
 	 * The iteration index, for determining where to store output data
 	 * */
@@ -119,7 +131,7 @@ public class Algorithm implements Runnable {
 	 * 
 	 * @return
 	 */
-	public static HashMap<Integer, LinkedList<DataPoint>> getOutput(){
+	public static HashMap<Integer, LinkedList<DataPoint>> getOutput() {
 		synchronized(mapLock){
 			return resultData;
 		}

@@ -1,7 +1,8 @@
 package dk.dtu.sb.compiler;
 
 /**
- * 
+ * Compiler-exception to use when an error occurs in a compiler implementing
+ * {@link CompilerInterface}.
  */
 public class CompilerException extends Exception {
 
@@ -10,11 +11,11 @@ public class CompilerException extends Exception {
     public CompilerException(String message) {
         super(message);
     }
-    
+
     public CompilerException(String message, Throwable t) {
         super(message, t);
     }
-    
+
     public CompilerException(Throwable t) {
         super(t);
     }

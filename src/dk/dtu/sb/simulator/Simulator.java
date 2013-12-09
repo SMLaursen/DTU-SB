@@ -7,11 +7,13 @@ import java.util.concurrent.TimeUnit;
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.algorithm.Algorithm;
+import dk.dtu.sb.algorithm.GillespieAlgorithm;
 import dk.dtu.sb.data.OutputData;
 import dk.dtu.sb.data.StochasticPetriNet;
 
 /**
- * 
+ * This class simulates the given {@link StochasticPetriNet} using the
+ * {@link Algorithm} specified.
  */
 public class Simulator {
 
@@ -21,8 +23,11 @@ public class Simulator {
     private long simulationTime = 0;
 
     /**
+     * This constructor simulates the {@link StochasticPetriNet} using the
+     * default algorithm {@link GillespieAlgorithm}.
      * 
      * @param spn
+     *            The input {@link StochasticPetriNet}.
      */
     public Simulator(StochasticPetriNet spn) {
         this.spn = spn;
@@ -31,20 +36,31 @@ public class Simulator {
     }
 
     /**
+     * This constructor simulates the {@link StochasticPetriNet} using the
+     * algorithm defined.
      * 
      * @param spn
+     *            The input {@link StochasticPetriNet}.
      * @param algorithm
+     *            The fully qualified name for the algorithm to use. Should
+     *            extend {@link Algorithm}.
      */
     public Simulator(StochasticPetriNet spn, String algorithmName) {
         this.spn = spn;
-        this.algorithmName = algorithmName;
         this.params = new Parameters();
+        this.algorithmName = algorithmName;
     }
 
     /**
+     * This constructor simulates the {@link StochasticPetriNet} using the
+     * algorithm and simulation parameters defined in the {@link Parameters}
+     * object.
      * 
      * @param spn
-     * @param p
+     *            The input {@link StochasticPetriNet}.
+     * @param params
+     *            The {@link Parameters} with the algorithm specified in
+     *            {@link Parameters#getAlgorithmClassName()}.
      */
     public Simulator(StochasticPetriNet spn, Parameters params) {
         this.spn = spn;
@@ -53,10 +69,18 @@ public class Simulator {
     }
 
     /**
+     * This constructor simulates the {@link StochasticPetriNet} using the
+     * simulator parameters defined in the {@link Parameters} object and the
+     * algorithm defined.
      * 
      * @param spn
+     *            The input {@link StochasticPetriNet}.
      * @param algorithm
+     *            The fully qualified name for the algorithm to use. Should
+     *            extend {@link Algorithm}.
      * @param params
+     *            The {@link Parameters} with additional simulator parameters
+     *            specified.
      */
     public Simulator(StochasticPetriNet spn, String algorithmName,
             Parameters params) {
@@ -66,21 +90,33 @@ public class Simulator {
     }
 
     /**
+     * Used to set the input {@link StochasticPetriNet} after instantiation.
      * 
      * @param spn
+     *            The input {@link StochasticPetriNet}.
      */
     public void setSPN(StochasticPetriNet spn) {
         this.spn = spn;
     }
 
     /**
+     * Used to set the {@link Parameters} object after instantiation.
      * 
      * @param params
+     *            The {@link Parameters} with additional simulator parameters
+     *            specified.
      */
     public void setParams(Parameters params) {
         this.params = params;
     }
 
+    /**
+     * Used to set the algorithm to use after instantiation.
+     * 
+     * @param algorithmName
+     *            The fully qualified name for the algorithm to use. Should
+     *            extend {@link Algorithm}.
+     */
     public void setAlgorithmName(String algorithmName) {
         this.algorithmName = algorithmName;
     }
@@ -110,11 +146,12 @@ public class Simulator {
             executor.shutdown();
             executor.awaitTermination(params.getMaxIterTime(), TimeUnit.SECONDS);
             executor.shutdownNow();
-            
-            //Wait additional 5sec to ensure the thread has been shutdown entirely due to timeout 
-            if(!executor.awaitTermination(5, TimeUnit.SECONDS)){
-            	Util.log.info("Aborting : Thread timedout but could not be shutdown");
-            	System.exit(1);
+
+            // Wait additionally 5sec to ensure the thread has been shutdown
+            // entirely due to timeout
+            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                Util.log.info("Aborting : Thread timedout but could not be shutdown");
+                System.exit(1);
             }
 
             simulationTime = System.currentTimeMillis() - startTime;
@@ -141,8 +178,10 @@ public class Simulator {
     }
 
     /**
+     * Get the output after simulation has ended.
      * 
-     * @return
+     * @return The result of the simulation wrapped in an {@link OutputData}
+     *         object.
      */
     public OutputData getOutputData() {
         return new OutputData(Algorithm.getOutput(), spn.getInitialMarkings(),

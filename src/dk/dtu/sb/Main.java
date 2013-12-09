@@ -16,7 +16,7 @@ import org.apache.commons.cli.*;
 import ch.qos.logback.classic.Level;
 
 /**
- * 
+ * Main-class used for CLI-usage of the framework.
  */
 public class Main {
 

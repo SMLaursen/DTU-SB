@@ -10,9 +10,9 @@ import ch.qos.logback.classic.Logger;
 public class Util {
 	
     /**
-     * 
+     * Logger-class, used for debugging and error-reporting.
      */
-    public static Logger log = (Logger) LoggerFactory.getLogger("DTU-SB");
+    public static final Logger log = (Logger) LoggerFactory.getLogger("DTU-SB");
 
     /**
      * Returns the number of combinations for (n k)
