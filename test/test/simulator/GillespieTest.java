@@ -1,11 +1,8 @@
 package test.simulator;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import ch.qos.logback.classic.Level;
-import test.parser.SBMLParserTest;
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.data.StochasticPetriNet;
@@ -19,12 +16,13 @@ public class GillespieTest {
     public void testNegFeedback() {
         Parameters p = new Parameters();
 
-        p.setIterations(5);
+        p.setIterations(1);
         p.setNoOfThreads(2);
-        p.setStoptime(100000);
+        p.setStoptime(10000);
+        p.setOutStepCount(100);
         p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
-        simulateAndOutput(parse("test/test/simulator/neg_feedback_wo_read.xml"), p);
+        simulateAndOutput(parse("test/test/simulator/neg_feedback.xml"), p);
     }
     
     @Test
