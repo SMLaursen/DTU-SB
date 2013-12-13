@@ -1,5 +1,7 @@
 package dk.dtu.sb.simulator;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -9,6 +11,7 @@ import dk.dtu.sb.Util;
 import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.algorithm.GillespieAlgorithm;
 import dk.dtu.sb.output.data.OutputData;
+import dk.dtu.sb.output.data.SimulationPoint;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
@@ -21,6 +24,7 @@ public class Simulator {
     private Parameters params;
     private StochasticPetriNet spn;
     private long simulationTime = 0;
+    private ExecutorService executor;
 
     /**
      * This constructor simulates the {@link StochasticPetriNet} using the
@@ -30,9 +34,7 @@ public class Simulator {
      *            The input {@link StochasticPetriNet}.
      */
     public Simulator(StochasticPetriNet spn) {
-        this.spn = spn;
-        this.params = new Parameters();
-        this.algorithmName = this.params.getAlgorithmClassName();
+        this(spn, new Parameters());
     }
 
     /**
@@ -46,9 +48,7 @@ public class Simulator {
      *            extend {@link Algorithm}.
      */
     public Simulator(StochasticPetriNet spn, String algorithmName) {
-        this.spn = spn;
-        this.params = new Parameters();
-        this.algorithmName = algorithmName;
+        this(spn, new Parameters(), algorithmName);
     }
 
     /**
@@ -63,9 +63,7 @@ public class Simulator {
      *            {@link Parameters#getAlgorithmClassName()}.
      */
     public Simulator(StochasticPetriNet spn, Parameters params) {
-        this.spn = spn;
-        this.params = params;
-        this.algorithmName = this.params.getAlgorithmClassName();
+        this(spn, params, params.getAlgorithmClassName());
     }
 
     /**
@@ -82,11 +80,12 @@ public class Simulator {
      *            The {@link Parameters} with additional simulator parameters
      *            specified.
      */
-    public Simulator(StochasticPetriNet spn, String algorithmName,
-            Parameters params) {
+    public Simulator(StochasticPetriNet spn, Parameters params,
+            String algorithmName) {
         this.spn = spn;
         this.algorithmName = algorithmName;
         this.params = params;
+        this.executor = Executors.newFixedThreadPool(params.getNoOfThreads());
     }
 
     /**
@@ -130,18 +129,15 @@ public class Simulator {
         try {
             long startTime = System.currentTimeMillis();
 
-            ExecutorService executor = Executors.newFixedThreadPool(params
-                    .getNoOfThreads());
-
             Class<?> algorithmClass = Class.forName(algorithmName);
             Algorithm worker;
 
             Util.log.debug("Algorithm class: " + algorithmName);
 
-            for (int i = 0; i < params.getIterations(); i++) {
+            for (int iteration = 0; iteration < params.getIterations(); iteration++) {
                 worker = (Algorithm) algorithmClass.newInstance();
+                worker.setIteration(iteration);
                 executor.execute(worker);
-
             }
             executor.shutdown();
             executor.awaitTermination(params.getMaxIterTime(), TimeUnit.SECONDS);
@@ -183,9 +179,14 @@ public class Simulator {
      * @return The result of the simulation wrapped in an {@link OutputData}
      *         object.
      */
-    public OutputData getOutputData() {
-        return new OutputData(Algorithm.getOutput(), spn.getInitialMarkings(),
-                params.getIterations(), params.getStoptime());
+    public HashMap<Integer, LinkedList<SimulationPoint>> getOutput() {
+        if (!executor.isTerminated()) {
+            throw new RuntimeException(
+                    "The result cannot be used before all iterations of the algorithm run has finished.");
+        }
+        return Algorithm.getOutput();
+        //return new OutputData(Algorithm.getOutput(), spn.getInitialMarkings(),
+        //        params.getIterations(), params.getStoptime());
     }
 
 }

@@ -26,7 +26,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import dk.dtu.sb.output.data.Plot;
+import dk.dtu.sb.output.data.PlotPoint;
 
 public class GraphGUI extends AbstractOutput {
 
@@ -35,17 +35,17 @@ public class GraphGUI extends AbstractOutput {
             XYSeriesCollection dataset = new XYSeriesCollection();
             HashMap<String, XYSeries> graph = new HashMap<String, XYSeries>();
             // Create a XYSeries for each species
-            for (String s : graphData.peekFirst().markings.keySet()) {
+            for (String s : graphData.peekFirst().getMarkings().keySet()) {
                 graph.put(s, new XYSeries(s));
             }
             // Run through all plots and add their value
-            for (Plot d : graphData) {
-                for (String s : d.markings.keySet()) {
-                    graph.get(s).add(d.time, d.markings.get(s));
+            for (PlotPoint d : graphData) {
+                for (String s : d.getMarkings().keySet()) {
+                    graph.get(s).add(d.getTime(), d.getMarkings().get(s));
                 }
             }
             // Add all series
-            for (String s : graphData.peekFirst().markings.keySet()) {
+            for (String s : graphData.peekFirst().getMarkings().keySet()) {
                 dataset.addSeries(graph.get(s));
             }
             final JFreeChart chart = ChartFactory.createXYLineChart("DTU-SB",
@@ -63,7 +63,7 @@ public class GraphGUI extends AbstractOutput {
             jPanel.add(chartpanel, BorderLayout.CENTER);
 
             final JList list = new JList(
-                    createData(graphData.peekFirst().markings.keySet()));
+                    createData(graphData.peekFirst().getMarkings().keySet()));
             list.setCellRenderer(new CheckListRenderer());
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             list.setBorder(new EmptyBorder(0, 3, 0, 0));

@@ -16,10 +16,10 @@ public class GillespieTest {
     public void testNegFeedback() {
         Parameters p = new Parameters();
 
-        p.setIterations(1);
-        p.setNoOfThreads(2);
+        p.setIterations(10);
+        p.setNoOfThreads(4);
         p.setStoptime(10000);
-        p.setOutStepCount(100);
+        p.setOutStepCount(1000);
         p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/neg_feedback.xml"), p);
@@ -193,7 +193,7 @@ public class GillespieTest {
 
         GraphGUI graph = new GraphGUI();
         graph.setParameters(p);
-        graph.setData(simulator.getOutputData());
+        graph.setData(simulator.getOutput());
         graph.process();  
     }
     

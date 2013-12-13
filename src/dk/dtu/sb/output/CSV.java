@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import dk.dtu.sb.Util;
-import dk.dtu.sb.output.data.Plot;
+import dk.dtu.sb.output.data.PlotPoint;
 
 /**
  *
@@ -37,7 +37,7 @@ public class CSV extends AbstractOutput {
 
                 // Write header
                 bw.write("time");
-                for (String i : graphData.peekFirst().markings.keySet()) {
+                for (String i : graphData.peekFirst().getMarkings().keySet()) {
                     bw.write("," + i);
                     h.put(index, i);
                     index++;
@@ -45,9 +45,9 @@ public class CSV extends AbstractOutput {
                 bw.write("\n");
                 
                 // Write Content
-                for (Plot pl : graphData) {
-                	currValues.putAll(pl.markings);
-                	bw.write(String.valueOf(pl.time));
+                for (PlotPoint pl : graphData) {
+                	currValues.putAll(pl.getMarkings());
+                	bw.write(String.valueOf(pl.getTime()));
                     for (int i = 0; i < h.size(); i++) {
                         bw.write("," + currValues.get(h.get(i)));
                     }

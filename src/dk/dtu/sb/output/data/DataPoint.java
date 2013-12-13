@@ -1,36 +1,41 @@
 package dk.dtu.sb.output.data;
 
 import java.util.HashMap;
-
-import dk.dtu.sb.spn.Reaction;
+import java.util.Map;
 
 /**
  * 
  */
-public class DataPoint {
+public class DataPoint<T> {
+
+    private double time;
+    private Map<String, T> markings = new HashMap<String, T>();
+    
+    public DataPoint(double time, Map<String, T> markings) {
+        this.time = time;
+        this.markings.putAll(markings);
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public Map<String, T> getMarkings() {
+        return markings;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public double getTime() {
+        return time;
+    }
 
     /**
      * 
      */
-	public double time;
-	
-	/**
-	 * 
-	 */
-	public HashMap<String,Integer> markings = new HashMap<String,Integer>();
-	
-	/**
-	 * Default constructor.
-	 * 
-	 * @param time
-	 * @param reaction See {@link Reaction}.
-	 */
-	public DataPoint(double time, HashMap<String, Integer> currMarking){
-		this.time = time;		
-		this.markings.putAll(currMarking);
-	}
-	
-	public String toString(){
-		return "[" + time + "] : " + markings;
-	}
+    public String toString() {
+        return "[" + time + "] : " + markings;
+    }
 }

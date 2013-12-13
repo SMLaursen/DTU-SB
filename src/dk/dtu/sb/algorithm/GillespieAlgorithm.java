@@ -7,7 +7,7 @@ import java.util.Random;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
-import dk.dtu.sb.output.data.DataPoint;
+import dk.dtu.sb.output.data.SimulationPoint;
 import dk.dtu.sb.spn.Reaction;
 
 /**
@@ -69,7 +69,7 @@ public class GillespieAlgorithm extends Algorithm {
             // Record time and R_u if >= threshold store result
             deltaTau += tau;
             if(deltaTau >= threshold){
-            	addPartialResult(new DataPoint(time, currentMarkings),index);
+            	addPartialResult(new SimulationPoint(time, currentMarkings));
             	deltaTau = 0;
             }
             steps ++;
@@ -79,7 +79,7 @@ public class GillespieAlgorithm extends Algorithm {
             	//Only check once in a while
             	if(Thread.currentThread().isInterrupted()){
             		Util.log.debug("Thread : " + Thread.currentThread().getId() +" aborted due to time-out");
-            		deletePartialResult(index);
+            		deletePartialResult();
             		return;
             		
             	}
