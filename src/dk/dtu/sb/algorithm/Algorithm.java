@@ -1,22 +1,20 @@
 package dk.dtu.sb.algorithm;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.data.AlgorithmResult;
 import dk.dtu.sb.data.SimulationPoint;
-import dk.dtu.sb.spn.Reaction;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
- * 
+ * This class implements a bunch of helper methods that can be used in the
+ * method {@link #run()} that should be implemented when this class is extended.
  */
 public class Algorithm implements Runnable {
 
     /**
-     * 
+     * The current time. This is typically incremented in {@link #run()}.
      */
     protected double time = 0.0;
 
@@ -28,10 +26,21 @@ public class Algorithm implements Runnable {
     protected HashMap<String, Integer> currentMarkings = new HashMap<String, Integer>(
             spn.getInitialMarkings());
 
+    /**
+     * 
+     */
     protected static Parameters params = new Parameters();
+
+    /**
+     * 
+     */
     protected static StochasticPetriNet spn = new StochasticPetriNet();
 
-    private AlgorithmResult algorithmResult = new AlgorithmResult(spn.getInitialMarkings());
+    /**
+     * 
+     */
+    protected AlgorithmResult algorithmResult = new AlgorithmResult(
+            spn.getInitialMarkings());
 
     /**
      * This method will initiate the algorithm run. This is the only method that
@@ -43,42 +52,17 @@ public class Algorithm implements Runnable {
 
     /**
      * Sets the shared input. This is used for all sub-classes of this class.
-     * The output is cleared when this method is invoked.
      * 
      * @param spn
+     *            The shared {@link StochasticPetriNet} to be used by all
+     *            iterations of the simulations.
      * @param params
+     *            The shared {@link Parameters} to be used by all iterations of
+     *            the simulations.
      */
     public static void setInput(StochasticPetriNet spn, Parameters params) {
         Algorithm.spn = spn;
         Algorithm.params = params;
-    }
-
-    /**
-     * Executes the reaction and updates the markings with reaction
-     * 
-     * @param reaction
-     * @param previousMarkings
-     */
-    public static void updateMarkings(Reaction reaction,
-            Map<String, Integer> markings) {
-        int multiplicity, oldMarking;
-        for (Entry<String, Integer> reactantEntry : reaction.getReactants()
-                .entrySet()) {
-            multiplicity = reactantEntry.getValue();
-            oldMarking = markings.get(reactantEntry.getKey());
-            if (oldMarking < multiplicity) {
-                throw new RuntimeException(
-                        "Performing update with fewer tokens than required.");
-            }
-            markings.put(reactantEntry.getKey(), oldMarking - multiplicity);
-        }
-
-        for (Entry<String, Integer> productEntry : reaction.getProducts()
-                .entrySet()) {
-            multiplicity = productEntry.getValue();
-            oldMarking = markings.get(productEntry.getKey());
-            markings.put(productEntry.getKey(), oldMarking + multiplicity);
-        }
     }
 
     /**
@@ -87,7 +71,7 @@ public class Algorithm implements Runnable {
     public AlgorithmResult getOutput() {
         return algorithmResult;
     }
-    
+
     /**
      * Add the result so far. Usually this method is used in
      * {@link Algorithm#run()} implemented by a sub-class of this class.

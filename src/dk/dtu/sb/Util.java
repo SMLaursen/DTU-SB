@@ -1,14 +1,18 @@
 package dk.dtu.sb;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Logger;
+import dk.dtu.sb.spn.Reaction;
 
 /**
  * Utility class with common methods.
  */
 public class Util {
-	
+
     /**
      * Logger-class, used for debugging and error-reporting.
      */
@@ -31,6 +35,36 @@ public class Util {
             coeff /= i;
         }
         return (int) coeff;
+    }
+
+    /**
+     * Executes the reaction and updates the markings with reaction.
+     * 
+     * @param reaction
+     *            The input reaction manipulating the markings.
+     * @param markings
+     *            The markings to change.
+     */
+    public static void updateMarkings(Reaction reaction,
+            Map<String, Integer> markings) {
+        int multiplicity, oldMarking;
+        for (Entry<String, Integer> reactantEntry : reaction.getReactants()
+                .entrySet()) {
+            multiplicity = reactantEntry.getValue();
+            oldMarking = markings.get(reactantEntry.getKey());
+            if (oldMarking < multiplicity) {
+                throw new RuntimeException(
+                        "Performing update with fewer tokens than required.");
+            }
+            markings.put(reactantEntry.getKey(), oldMarking - multiplicity);
+        }
+
+        for (Entry<String, Integer> productEntry : reaction.getProducts()
+                .entrySet()) {
+            multiplicity = productEntry.getValue();
+            oldMarking = markings.get(productEntry.getKey());
+            markings.put(productEntry.getKey(), oldMarking + multiplicity);
+        }
     }
 
 }

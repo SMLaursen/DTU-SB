@@ -8,13 +8,10 @@ import java.util.List;
 import dk.dtu.sb.Parameters;
 
 /**
- * 
+ *  
  */
 public class SimulationResult extends LinkedList<PlotPoint> {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
     /**

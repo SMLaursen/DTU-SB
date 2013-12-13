@@ -61,7 +61,7 @@ public class GillespieAlgorithm extends Algorithm {
             if (time > params.getStoptime()) {
                 break;
             }
-            updateMarkings(R_mu, currentMarkings);
+            Util.updateMarkings(R_mu, currentMarkings);
 
             // Record time and R_u if >= threshold store result
             deltaTau += tau;
