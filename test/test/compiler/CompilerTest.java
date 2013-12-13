@@ -6,10 +6,10 @@ import org.junit.Test;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.compiler.Compiler;
-import dk.dtu.sb.data.RateFunction;
-import dk.dtu.sb.data.Reaction;
-import dk.dtu.sb.data.Species;
-import dk.dtu.sb.data.StochasticPetriNet;
+import dk.dtu.sb.spn.RateFunction;
+import dk.dtu.sb.spn.Reaction;
+import dk.dtu.sb.spn.Species;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 public class CompilerTest {
 

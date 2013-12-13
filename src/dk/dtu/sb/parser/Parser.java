@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import dk.dtu.sb.data.StochasticPetriNet;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
  * Extend this Class to create your own parser. The {@link #parse()} method is the only

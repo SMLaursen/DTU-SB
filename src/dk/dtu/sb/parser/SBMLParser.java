@@ -34,9 +34,9 @@ import de.congrace.exp4j.ExpressionBuilder;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 import dk.dtu.sb.Util;
-import dk.dtu.sb.data.RateFunction;
-import dk.dtu.sb.data.Reaction;
-import dk.dtu.sb.data.StochasticPetriNet;
+import dk.dtu.sb.spn.RateFunction;
+import dk.dtu.sb.spn.Reaction;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
  * A parser for SBML. The different elements in the SBML will be parsed as
@@ -134,7 +134,7 @@ public class SBMLParser extends Parser {
         // 1. Get initial marking from initialAmount or initialConcentration
         // attr.
         for (Species species : model.getListOfSpecies()) {
-            spn.addSpecies(new dk.dtu.sb.data.Species(species.getId(), species
+            spn.addSpecies(new dk.dtu.sb.spn.Species(species.getId(), species
                     .getName()));
             spn.setInitialMarking(species.getId(), getInitialAmount(species));
         }

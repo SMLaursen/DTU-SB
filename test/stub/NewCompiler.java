@@ -2,7 +2,7 @@ package stub;
 
 import dk.dtu.sb.compiler.CompilerException;
 import dk.dtu.sb.compiler.CompilerInterface;
-import dk.dtu.sb.data.StochasticPetriNet;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 public class NewCompiler implements CompilerInterface {
 

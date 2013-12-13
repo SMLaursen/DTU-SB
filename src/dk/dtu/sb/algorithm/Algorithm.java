@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.data.Reaction;
-import dk.dtu.sb.data.DataPoint;
-import dk.dtu.sb.data.StochasticPetriNet;
+import dk.dtu.sb.output.data.DataPoint;
+import dk.dtu.sb.spn.Reaction;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
  * 

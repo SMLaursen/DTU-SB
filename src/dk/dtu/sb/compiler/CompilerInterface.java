@@ -1,7 +1,7 @@
 package dk.dtu.sb.compiler;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.data.StochasticPetriNet;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
  * An interface defining what compilers specified in

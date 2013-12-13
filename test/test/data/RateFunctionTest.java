@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.sbml.jsbml.ASTNode;
 
 import test.StdOutTester;
-import dk.dtu.sb.data.RateFunction;
+import dk.dtu.sb.spn.RateFunction;
 
 public class RateFunctionTest extends StdOutTester {
 

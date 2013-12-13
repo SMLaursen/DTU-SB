@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.data.OutputData;
-import dk.dtu.sb.data.Plot;
-import dk.dtu.sb.data.DataPoint;
+import dk.dtu.sb.output.data.DataPoint;
+import dk.dtu.sb.output.data.OutputData;
+import dk.dtu.sb.output.data.Plot;
 
 /**
  *
@@ -70,11 +70,6 @@ public abstract class Output {
 			graphData.add(new Plot(i,d));
 		}
 	}
-
-	
-
-
-
 	
 	/**
 	 * 

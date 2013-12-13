@@ -7,8 +7,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import dk.dtu.sb.data.StochasticPetriNet;
 import dk.dtu.sb.parser.Parser;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 public class ParserTest {
 

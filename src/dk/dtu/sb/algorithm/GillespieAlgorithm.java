@@ -7,8 +7,8 @@ import java.util.Random;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
-import dk.dtu.sb.data.Reaction;
-import dk.dtu.sb.data.DataPoint;
+import dk.dtu.sb.output.data.DataPoint;
+import dk.dtu.sb.spn.Reaction;
 
 /**
  * Concrete implementation of the Algorithm class, specifically Gillespie's

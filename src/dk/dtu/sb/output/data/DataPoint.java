@@ -1,6 +1,8 @@
-package dk.dtu.sb.data;
+package dk.dtu.sb.output.data;
 
 import java.util.HashMap;
+
+import dk.dtu.sb.spn.Reaction;
 
 /**
  * 

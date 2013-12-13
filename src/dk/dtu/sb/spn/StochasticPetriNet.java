@@ -1,4 +1,4 @@
-package dk.dtu.sb.data;
+package dk.dtu.sb.spn;
 
 import java.io.File;
 import java.util.HashMap;

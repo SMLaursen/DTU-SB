@@ -1,4 +1,4 @@
-package dk.dtu.sb.data;
+package dk.dtu.sb.spn;
 
 import java.util.ArrayList;
 import java.util.List;

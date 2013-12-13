@@ -8,8 +8,8 @@ import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.algorithm.GillespieAlgorithm;
-import dk.dtu.sb.data.OutputData;
-import dk.dtu.sb.data.StochasticPetriNet;
+import dk.dtu.sb.output.data.OutputData;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
  * This class simulates the given {@link StochasticPetriNet} using the

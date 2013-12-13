@@ -10,8 +10,8 @@ import java.io.IOException;
 import org.junit.Test;
 
 import test.StdOutTester;
-import dk.dtu.sb.data.StochasticPetriNet;
 import dk.dtu.sb.parser.SBMLParser;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 public class SBMLParserTest extends StdOutTester {
     

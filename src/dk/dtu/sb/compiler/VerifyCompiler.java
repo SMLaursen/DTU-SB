@@ -1,6 +1,6 @@
 package dk.dtu.sb.compiler;
 
-import dk.dtu.sb.data.StochasticPetriNet;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
  * This compiler will verify that the input {@link StochasticPetriNet} is valid

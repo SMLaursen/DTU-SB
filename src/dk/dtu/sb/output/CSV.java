@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import dk.dtu.sb.Util;
-import dk.dtu.sb.data.Plot;
+import dk.dtu.sb.output.data.Plot;
 
 /**
  *

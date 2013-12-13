@@ -2,7 +2,7 @@ package dk.dtu.sb.compiler;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
-import dk.dtu.sb.data.StochasticPetriNet;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
  * This class compiles a {@link StochasticPetriNet} with the chain of compilers

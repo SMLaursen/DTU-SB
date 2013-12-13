@@ -2,9 +2,9 @@ package stub;
 
 import dk.dtu.sb.compiler.CompilerException;
 import dk.dtu.sb.compiler.CompilerInterface;
-import dk.dtu.sb.data.RateFunction;
-import dk.dtu.sb.data.Reaction;
-import dk.dtu.sb.data.StochasticPetriNet;
+import dk.dtu.sb.spn.RateFunction;
+import dk.dtu.sb.spn.Reaction;
+import dk.dtu.sb.spn.StochasticPetriNet;
 
 public class NewCompiler2 implements CompilerInterface {
 

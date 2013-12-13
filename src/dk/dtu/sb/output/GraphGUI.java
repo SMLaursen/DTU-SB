@@ -26,7 +26,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import dk.dtu.sb.data.Plot;
+import dk.dtu.sb.output.data.Plot;
 
 public class GraphGUI extends Output {
 
