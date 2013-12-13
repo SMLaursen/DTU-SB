@@ -26,11 +26,12 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.data.PlotPoint;
 
 public class GraphGUI extends AbstractOutput {
 
-    public void process() {
+    public void process(SimulationResult plotData) {
         if (!plotData.isEmpty()) {
             XYSeriesCollection dataset = new XYSeriesCollection();
             HashMap<String, XYSeries> graph = new HashMap<String, XYSeries>();

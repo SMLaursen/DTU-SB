@@ -16,7 +16,7 @@ public class GillespieTest {
     public void testNegFeedback() {
         Parameters p = new Parameters();
 
-        p.setIterations(10);
+        p.setIterations(1);
         p.setNoOfThreads(4);
         p.setStoptime(10000);
         p.setOutStepCount(1000);
@@ -192,9 +192,7 @@ public class GillespieTest {
         simulator.simulate();
 
         GraphGUI graph = new GraphGUI();
-        graph.setParameters(p);
-        graph.setPlotData(simulator.getOutput());
-        graph.process();  
+        graph.process(simulator.getOutput(), p);  
     }
     
    

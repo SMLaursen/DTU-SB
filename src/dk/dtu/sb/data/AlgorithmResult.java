@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * 
  */
-public class SimulationData {
+public class AlgorithmResult {
 
     private HashMap<Integer, LinkedList<SimulationPoint>> data = new HashMap<Integer, LinkedList<SimulationPoint>>();
 

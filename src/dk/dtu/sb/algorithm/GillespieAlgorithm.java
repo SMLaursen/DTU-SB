@@ -58,14 +58,14 @@ public class GillespieAlgorithm extends Algorithm {
 
             // Step 3
             time += tau;
-            if (time > stoptime) {
+            if (time > params.getStoptime()) {
                 break;
             }
             updateMarkings(R_mu, currentMarkings);
 
             // Record time and R_u if >= threshold store result
             deltaTau += tau;
-            if(deltaTau >= threshold){
+            if(deltaTau >= params.getSimThreshold()){
             	addPartialResult(new SimulationPoint(time, currentMarkings));
             	deltaTau = 0;
             }
@@ -142,7 +142,7 @@ public class GillespieAlgorithm extends Algorithm {
      */
     private double calculatePropensity(Reaction reaction) {
         double h = 1.0;
-        switch (rateMode) {
+        switch (params.getRateMode()) {
         case Parameters.PARAM_SIM_RATE_MODE_CUSTOM:
             if (!reaction.canReact(currentMarkings)) {
                 h = 0;

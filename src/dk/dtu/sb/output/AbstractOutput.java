@@ -1,34 +1,28 @@
 package dk.dtu.sb.output;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.data.OutputData;
+import dk.dtu.sb.data.SimulationResult;
 
 /**
  *
  */
 public abstract class AbstractOutput {
-
-    protected OutputData plotData;
+    
     protected Parameters params = new Parameters();
 
     /**
      * 
-     * @param plotData
+     * @param data
      */
-    public void setPlotData(OutputData plotData) {
-        this.plotData = plotData;
-    }
-
+    public abstract void process(SimulationResult data);
+    
     /**
      * 
+     * @param data
      * @param params
      */
-    public void setParameters(Parameters params) {
+    public void process(SimulationResult data, Parameters params) {
         this.params = params;
+        process(data);
     }
-
-    /**
-	 * 
-	 */
-    public abstract void process();
 }

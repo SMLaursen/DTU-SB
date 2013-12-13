@@ -233,9 +233,7 @@ public class Main {
             // show graph
             if (params.getResultGUI()) {
                 GraphGUI gui = new GraphGUI();
-                gui.setPlotData(simulator.getOutput());
-                gui.setParameters(params);
-                gui.process();
+                gui.process(simulator.getOutput(), params);
             }
         } catch (FileNotFoundException e) {
             Util.log.error("Input file: " + filename + " was not found.");

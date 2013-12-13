@@ -10,7 +10,7 @@ import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.algorithm.GillespieAlgorithm;
-import dk.dtu.sb.data.OutputData;
+import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
@@ -175,15 +175,15 @@ public class Simulator {
     /**
      * Get the output after simulation has ended.
      * 
-     * @return The result of the simulation wrapped in an {@link OutputData}
+     * @return The result of the simulation wrapped in an {@link SimulationResult}
      *         object.
      */
-    public OutputData getOutput() {
+    public SimulationResult getOutput() {
         if (!executor.isTerminated()) {
             throw new RuntimeException(
                     "The result cannot be used before all iterations of the algorithm run has finished.");
         }
-        return new OutputData(Algorithm.getOutput(), params);
+        return new SimulationResult(Algorithm.getOutput(), params);
     }
 
 }

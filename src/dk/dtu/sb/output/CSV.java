@@ -7,22 +7,24 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import dk.dtu.sb.Util;
+import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.data.PlotPoint;
 
 /**
  *
  */
 public class CSV extends AbstractOutput {
-    
+
     /**
      * Outputs the simulation results in CSV format to fileURL.
      */
-    public void process() {
+    public void process(SimulationResult plotData) {
         if (plotData.isEmpty()) {
             Util.log.error("No data to write");
         } else {
             try {
-                String fileURL = "out.csv";//params.getProperty("OUTPUT_FILENAME", "out.csv");
+                String fileURL = "out.csv";// params.getProperty("OUTPUT_FILENAME",
+                                           // "out.csv");
                 File f = new File(fileURL);
                 if (!f.exists()) {
                     f.createNewFile();
@@ -31,8 +33,9 @@ public class CSV extends AbstractOutput {
                 BufferedWriter bw = new BufferedWriter(fw);
                 // Mappings between index and name
                 HashMap<Integer, String> h = new HashMap<Integer, String>();
-                HashMap<String, Float> currValues = new HashMap<String,Float>();
-               //Index to ensure consistent lookups (Hashmaps do not guarantee ordering)
+                HashMap<String, Float> currValues = new HashMap<String, Float>();
+                // Index to ensure consistent lookups (Hashmaps do not guarantee
+                // ordering)
                 int index = 0;
 
                 // Write header
@@ -43,11 +46,11 @@ public class CSV extends AbstractOutput {
                     index++;
                 }
                 bw.write("\n");
-                
+
                 // Write Content
                 for (PlotPoint pl : plotData) {
-                	currValues.putAll(pl.getMarkings());
-                	bw.write(String.valueOf(pl.getTime()));
+                    currValues.putAll(pl.getMarkings());
+                    bw.write(String.valueOf(pl.getTime()));
                     for (int i = 0; i < h.size(); i++) {
                         bw.write("," + currValues.get(h.get(i)));
                     }

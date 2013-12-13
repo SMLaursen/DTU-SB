@@ -9,21 +9,19 @@ import dk.dtu.sb.Parameters;
 /**
  * 
  */
-public class OutputData extends LinkedList<PlotPoint> {
+public class SimulationResult extends LinkedList<PlotPoint> {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
 
-
-
     /**
      * 
-     * @param simulationData
+     * @param algorithmResult
      * @param params
      */
-    public OutputData(SimulationData simulationData, Parameters params) {
+    public SimulationResult(AlgorithmResult algorithmResult, Parameters params) {
 
         // TODO : Add interpolating method!
         HashMap<String, Integer> prevMarking = new HashMap<String, Integer>();
@@ -38,7 +36,7 @@ public class OutputData extends LinkedList<PlotPoint> {
         // currMarking.putAll(simulationData.initialMarkings);
         // graphData.add(0, new DataPoint(currMarking));
 
-        for (String key : simulationData.getSpecies()) {
+        for (String key : algorithmResult.getSpecies()) {
             emptyBucketCount.put(key, 0);
         }
 
@@ -57,7 +55,7 @@ public class OutputData extends LinkedList<PlotPoint> {
             currMarking.clear();
 
             // For each simulation set
-            for (LinkedList<SimulationPoint> l : simulationData.getAllSimulationPoints()) {
+            for (LinkedList<SimulationPoint> l : algorithmResult.getAllSimulationPoints()) {
                 // Take all those values in the bucket (<i)
                 while (!l.isEmpty()) {
                     DataPoint<Integer> dp = l.removeFirst();
@@ -85,8 +83,6 @@ public class OutputData extends LinkedList<PlotPoint> {
         }
     }
     
-    
-
     /**
      * 
      * @param mapOne

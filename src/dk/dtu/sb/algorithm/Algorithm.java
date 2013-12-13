@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.data.SimulationData;
+import dk.dtu.sb.data.AlgorithmResult;
 import dk.dtu.sb.data.SimulationPoint;
 import dk.dtu.sb.spn.Reaction;
 import dk.dtu.sb.spn.StochasticPetriNet;
@@ -14,14 +14,6 @@ import dk.dtu.sb.spn.StochasticPetriNet;
  * 
  */
 public class Algorithm implements Runnable {
-
-    /**
-     * This method will initiate the algorithm run. This is the only method that
-     * needs to be overridden in order to implement a new algorithm.
-     */
-    public void run() {
-        throw new UnsupportedOperationException("Not implemented yet.");
-    }
 
     /**
      * The iteration index, for determining where to store output data
@@ -41,15 +33,20 @@ public class Algorithm implements Runnable {
     protected HashMap<String, Integer> currentMarkings = new HashMap<String, Integer>(
             spn.getInitialMarkings());
 
-    protected static double stoptime;
-    protected static int rateMode;
-    protected static double threshold;
     protected static Parameters params = new Parameters();
     protected static StochasticPetriNet spn = new StochasticPetriNet();
 
-    private volatile static SimulationData simulationData = new SimulationData();
+    private volatile static AlgorithmResult algorithmResult = new AlgorithmResult();
     private static Object resultLock = new Object();
 
+    /**
+     * This method will initiate the algorithm run. This is the only method that
+     * needs to be overridden in order to implement a new algorithm.
+     */
+    public void run() {
+        throw new UnsupportedOperationException("Not implemented yet.");
+    }
+    
     /**
      * 
      * 
@@ -67,13 +64,10 @@ public class Algorithm implements Runnable {
      * @param params
      */
     public static void setInput(StochasticPetriNet spn, Parameters params) {
-        stoptime = params.getStoptime();
-        rateMode = params.getRateMode();
-        threshold = params.getSimThreshold();
         Algorithm.spn = spn;
         Algorithm.params = params;
 
-        simulationData.reset(params.getIterations(), spn.getInitialMarkings());
+        algorithmResult.reset(params.getIterations(), spn.getInitialMarkings());
     }
 
     /**
@@ -107,9 +101,9 @@ public class Algorithm implements Runnable {
     /**
      * Get the final result of several runs of the algorithm.
      */
-    public static SimulationData getOutput() {
+    public static AlgorithmResult getOutput() {
         synchronized (resultLock) {
-            return simulationData;
+            return algorithmResult;
         }
     }
 
@@ -122,7 +116,7 @@ public class Algorithm implements Runnable {
      */
     protected void addPartialResult(SimulationPoint state) {
         synchronized (resultLock) {
-            simulationData.add(iterationIndex, state);
+            algorithmResult.add(iterationIndex, state);
         }
     }
 
@@ -133,7 +127,7 @@ public class Algorithm implements Runnable {
      */
     protected void addPartialResult() {
         synchronized (resultLock) {
-            simulationData.add(iterationIndex, time, currentMarkings);
+            algorithmResult.add(iterationIndex, time, currentMarkings);
         }
     }
 
@@ -143,7 +137,7 @@ public class Algorithm implements Runnable {
      */
     protected void deletePartialResult() {
         synchronized (resultLock) {
-            simulationData.clear(iterationIndex);
+            algorithmResult.clear(iterationIndex);
         }
     }
 }
