@@ -76,7 +76,6 @@ public class GillespieAlgorithm extends Algorithm {
             	//Only check once in a while
             	if(Thread.currentThread().isInterrupted()){
             		Util.log.debug("Thread : " + Thread.currentThread().getId() +" aborted due to time-out");
-            		deletePartialResult();
             		return;
             		
             	}

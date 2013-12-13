@@ -11,15 +11,15 @@ import java.util.Set;
  */
 public class AlgorithmResult {
 
-    private HashMap<Integer, LinkedList<SimulationPoint>> data = new HashMap<Integer, LinkedList<SimulationPoint>>();
+    private LinkedList<SimulationPoint> data = new LinkedList<SimulationPoint>();
 
     /**
      * 
      * @param iteration
      * @param state
      */
-    public void add(int iteration, SimulationPoint state) {
-        data.get(iteration).add(state);
+    public void add(SimulationPoint state) {
+        data.add(state);
     }
 
     /**
@@ -28,18 +28,8 @@ public class AlgorithmResult {
      * @param time
      * @param markings
      */
-    public void add(int iteration, double time, Map<String, Integer> markings) {
-        data.get(iteration).add(new SimulationPoint(time, markings));
-    }
-
-    /**
-     * 
-     * @param iteration
-     */
-    public void clear(int iteration) {
-        if (data.containsKey(iteration)) {
-            data.remove(iteration);
-        }
+    public void add(double time, Map<String, Integer> markings) {
+        data.add(new SimulationPoint(time, markings));
     }
 
     /**
@@ -50,8 +40,7 @@ public class AlgorithmResult {
     public void reset(int iterations, Map<String, Integer> initialMarkings) {
         data.clear();
         for (int iteration = 0; iteration < iterations; iteration++) {
-            data.put(iteration, new LinkedList<SimulationPoint>());
-            data.get(iteration).add(new SimulationPoint(0, initialMarkings));
+            data.add(new SimulationPoint(0, initialMarkings));
         }
     }
 
@@ -60,15 +49,14 @@ public class AlgorithmResult {
      * @return
      */
     public Set<String> getSpecies() {
-        return data.values().iterator().next().peekFirst().getMarkings()
-                .keySet();
+        return data.getFirst().getMarkings().keySet();
     }
 
     /**
      * 
      * @return
      */
-    public Collection<LinkedList<SimulationPoint>> getAllSimulationPoints() {
-        return data.values();
+    public LinkedList<SimulationPoint> getSimulationPoints() {
+        return data;
     }
 }

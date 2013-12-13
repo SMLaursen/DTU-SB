@@ -16,7 +16,7 @@ public class GillespieTest {
     public void testNegFeedback() {
         Parameters p = new Parameters();
 
-        p.setIterations(1);
+        p.setIterations(10);
         p.setNoOfThreads(4);
         p.setStoptime(10000);
         p.setOutStepCount(1000);

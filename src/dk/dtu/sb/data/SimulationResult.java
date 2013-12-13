@@ -3,6 +3,7 @@ package dk.dtu.sb.data;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 import dk.dtu.sb.Parameters;
 
@@ -21,7 +22,8 @@ public class SimulationResult extends LinkedList<PlotPoint> {
      * @param algorithmResult
      * @param params
      */
-    public SimulationResult(AlgorithmResult algorithmResult, Parameters params) {
+    public SimulationResult(List<AlgorithmResult> algorithmResults,
+            Parameters params) {
 
         // TODO : Add interpolating method!
         HashMap<String, Integer> prevMarking = new HashMap<String, Integer>();
@@ -32,11 +34,7 @@ public class SimulationResult extends LinkedList<PlotPoint> {
         HashMap<String, Integer> bucketCount = new HashMap<String, Integer>();
         HashMap<String, Integer> emptyBucketCount = new HashMap<String, Integer>();
 
-        // Add initial marking
-        // currMarking.putAll(simulationData.initialMarkings);
-        // graphData.add(0, new DataPoint(currMarking));
-
-        for (String key : algorithmResult.getSpecies()) {
+        for (String key : algorithmResults.get(0).getSpecies()) {
             emptyBucketCount.put(key, 0);
         }
 
@@ -55,7 +53,10 @@ public class SimulationResult extends LinkedList<PlotPoint> {
             currMarking.clear();
 
             // For each simulation set
-            for (LinkedList<SimulationPoint> l : algorithmResult.getAllSimulationPoints()) {
+            for (AlgorithmResult algorithmResult : algorithmResults) {
+
+                LinkedList<SimulationPoint> l = algorithmResult
+                        .getSimulationPoints();
                 // Take all those values in the bucket (<i)
                 while (!l.isEmpty()) {
                     DataPoint<Integer> dp = l.removeFirst();
@@ -71,8 +72,8 @@ public class SimulationResult extends LinkedList<PlotPoint> {
                         bucketCount.put(species, bucketCount.get(species) + 1);
                     }
                 }
-
             }
+
             // Store averaged intersection
             HashMap<String, Float> d = new HashMap<String, Float>();
             for (String species : getIntersection(currMarking, prevMarking)) {
@@ -82,7 +83,7 @@ public class SimulationResult extends LinkedList<PlotPoint> {
             this.add(new PlotPoint(i, d));
         }
     }
-    
+
     /**
      * 
      * @param mapOne

@@ -16,11 +16,6 @@ import dk.dtu.sb.spn.StochasticPetriNet;
 public class Algorithm implements Runnable {
 
     /**
-     * The iteration index, for determining where to store output data
-     */
-    protected int iterationIndex;
-
-    /**
      * 
      */
     protected double time = 0.0;
@@ -36,8 +31,7 @@ public class Algorithm implements Runnable {
     protected static Parameters params = new Parameters();
     protected static StochasticPetriNet spn = new StochasticPetriNet();
 
-    private volatile static AlgorithmResult algorithmResult = new AlgorithmResult();
-    private static Object resultLock = new Object();
+    private AlgorithmResult algorithmResult = new AlgorithmResult();
 
     /**
      * This method will initiate the algorithm run. This is the only method that
@@ -45,15 +39,6 @@ public class Algorithm implements Runnable {
      */
     public void run() {
         throw new UnsupportedOperationException("Not implemented yet.");
-    }
-    
-    /**
-     * 
-     * 
-     * @param iteration
-     */
-    public void setIteration(int iteration) {
-        iterationIndex = iteration;
     }
 
     /**
@@ -66,8 +51,6 @@ public class Algorithm implements Runnable {
     public static void setInput(StochasticPetriNet spn, Parameters params) {
         Algorithm.spn = spn;
         Algorithm.params = params;
-
-        algorithmResult.reset(params.getIterations(), spn.getInitialMarkings());
     }
 
     /**
@@ -101,12 +84,10 @@ public class Algorithm implements Runnable {
     /**
      * Get the final result of several runs of the algorithm.
      */
-    public static AlgorithmResult getOutput() {
-        synchronized (resultLock) {
-            return algorithmResult;
-        }
+    public AlgorithmResult getOutput() {
+        return algorithmResult;
     }
-
+    
     /**
      * Add the result so far. Usually this method is used in
      * {@link Algorithm#run()} implemented by a sub-class of this class.
@@ -115,9 +96,7 @@ public class Algorithm implements Runnable {
      *            See {@link SimulationPoint}.
      */
     protected void addPartialResult(SimulationPoint state) {
-        synchronized (resultLock) {
-            algorithmResult.add(iterationIndex, state);
-        }
+        algorithmResult.add(state);
     }
 
     /**
@@ -126,18 +105,6 @@ public class Algorithm implements Runnable {
      * the {@link SimulationPoint} is automatically created.
      */
     protected void addPartialResult() {
-        synchronized (resultLock) {
-            algorithmResult.add(iterationIndex, time, currentMarkings);
-        }
-    }
-
-    /**
-     * Clears data from a single iteration. Can be used to cleanup timeouted
-     * threads.
-     */
-    protected void deletePartialResult() {
-        synchronized (resultLock) {
-            algorithmResult.clear(iterationIndex);
-        }
+        algorithmResult.add(time, currentMarkings);
     }
 }
