@@ -45,9 +45,6 @@ public class Algorithm implements Runnable {
 	 */
 	private volatile static HashMap<Integer,LinkedList<DataPoint>> resultData = new HashMap<Integer, LinkedList<DataPoint>>();
 	
-	/**
-	 * 
-	 */
 	private static Object mapLock = new Object();
 
 	/**
@@ -55,29 +52,17 @@ public class Algorithm implements Runnable {
 	 * I.e. the places is the reactants and the products of the reactions in the
 	 * {@link StochasticPetriNet}.
 	 */
-	protected HashMap<String, Integer> currentMarkings = new HashMap<String, Integer>();
+	protected HashMap<String, Integer> currentMarkings = new HashMap<String, Integer>(Algorithm.spn.getInitialMarkings());
 	
 	/**
 	 * The iteration index, for determining where to store output data
-	 * */
+	 */
 	protected int index;
 
 	/**
 	 * 
 	 */
-	protected static StochasticPetriNet spn;
-
-	/**
-	 * Default constructor initialising current markings with initial markings 
-	 * from the {@link StochasticPetriNet}.
-	 */
-	public Algorithm() {
-		currentMarkings.putAll(Algorithm.spn.getInitialMarkings());
-		//Get iteration index and increment i for next iteration.
-		synchronized(iLock){
-			index = i++;
-		}
-	}
+	protected static StochasticPetriNet spn = new StochasticPetriNet();
 
 	/**
 	 * Set the input.

@@ -19,14 +19,6 @@ public class GillespieAlgorithm extends Algorithm {
     private Map<String, Double> propensities = new HashMap<String, Double>();
 
     /**
-     * 
-     */
-    public GillespieAlgorithm() {
-        currentMarkings = new HashMap<String, Integer>();
-        currentMarkings.putAll(spn.getInitialMarkings());
-    }
-
-    /**
      * Direct Method (First reaction may be faster)
      */
     public void run() {

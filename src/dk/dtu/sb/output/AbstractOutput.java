@@ -12,7 +12,7 @@ import dk.dtu.sb.output.data.Plot;
 /**
  *
  */
-public abstract class Output {
+public abstract class AbstractOutput {
 	protected LinkedList<Plot> graphData = new LinkedList<Plot>();
 	protected Parameters params = new Parameters();
 

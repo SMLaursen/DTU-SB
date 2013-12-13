@@ -12,7 +12,7 @@ import dk.dtu.sb.output.data.Plot;
 /**
  *
  */
-public class CSV extends Output {
+public class CSV extends AbstractOutput {
     
     /**
      * Outputs the simulation results in CSV format to fileURL.

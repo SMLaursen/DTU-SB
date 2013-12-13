@@ -28,7 +28,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import dk.dtu.sb.output.data.Plot;
 
-public class GraphGUI extends Output {
+public class GraphGUI extends AbstractOutput {
 
     public void process() {
         if (!graphData.isEmpty()) {

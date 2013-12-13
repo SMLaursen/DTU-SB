@@ -150,7 +150,7 @@ public class Simulator {
             // Wait additionally 5sec to ensure the thread has been shutdown
             // entirely due to timeout
             if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
-                Util.log.info("Aborting : Thread timedout but could not be shutdown");
+                Util.log.info("Aborting: Thread timed out but could not be shutdown");
                 System.exit(1);
             }
 
