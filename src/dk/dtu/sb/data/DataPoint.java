@@ -38,4 +38,11 @@ public class DataPoint<T> {
     public String toString() {
         return "[" + time + "] : " + markings;
     }
+    
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (!(other instanceof DataPoint)) return false;
+        DataPoint<T> that = (DataPoint<T>)other;
+        return time == that.getTime() && markings.equals(that.getMarkings());
+    }
 }

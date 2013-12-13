@@ -1,7 +1,5 @@
 package dk.dtu.sb.data;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +11,20 @@ public class AlgorithmResult {
 
     private LinkedList<SimulationPoint> data = new LinkedList<SimulationPoint>();
 
+    /**
+     * 
+     */
+    public AlgorithmResult() {
+        
+    }
+    /**
+     * 
+     * @param initialMarkings
+     */
+    public AlgorithmResult(Map<String, Integer> initialMarkings) {
+        add(0, initialMarkings);
+    }
+    
     /**
      * 
      * @param iteration
@@ -34,18 +46,6 @@ public class AlgorithmResult {
 
     /**
      * 
-     * @param iterations
-     * @param initialMarkings
-     */
-    public void reset(int iterations, Map<String, Integer> initialMarkings) {
-        data.clear();
-        for (int iteration = 0; iteration < iterations; iteration++) {
-            data.add(new SimulationPoint(0, initialMarkings));
-        }
-    }
-
-    /**
-     * 
      * @return
      */
     public Set<String> getSpecies() {
@@ -58,5 +58,9 @@ public class AlgorithmResult {
      */
     public LinkedList<SimulationPoint> getSimulationPoints() {
         return data;
+    }
+    
+    public String toString() {
+        return data.toString();
     }
 }

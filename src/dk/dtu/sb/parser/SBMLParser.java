@@ -2,12 +2,7 @@ package dk.dtu.sb.parser;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 
 import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
@@ -16,7 +11,6 @@ import org.sbml.jsbml.ASTNode;
 import org.sbml.jsbml.AssignmentRule;
 import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.ExplicitRule;
-import org.sbml.jsbml.FunctionDefinition;
 import org.sbml.jsbml.InitialAssignment;
 import org.sbml.jsbml.KineticLaw;
 import org.sbml.jsbml.LocalParameter;
@@ -29,10 +23,7 @@ import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.Species;
 import org.sbml.jsbml.SpeciesReference;
 
-import de.congrace.exp4j.Calculable;
 import de.congrace.exp4j.ExpressionBuilder;
-import de.congrace.exp4j.UnknownFunctionException;
-import de.congrace.exp4j.UnparsableExpressionException;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.spn.RateFunction;
 import dk.dtu.sb.spn.Reaction;

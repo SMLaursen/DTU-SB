@@ -1,19 +1,26 @@
 package test.simulator;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import ch.qos.logback.classic.Level;
-import dk.dtu.sb.Parameters;
-import dk.dtu.sb.Util;
-import dk.dtu.sb.output.GraphGUI;
-import dk.dtu.sb.parser.SBMLParser;
-import dk.dtu.sb.simulator.Simulator;
-import dk.dtu.sb.spn.StochasticPetriNet;
+import dk.dtu.sb.data.AlgorithmResult;
+import dk.dtu.sb.data.Markings;
 
 public class OutputDataTest {
 
     @Test
-    public void testNegFeedback() {
+    public void testAlgorithmResult() {
+        AlgorithmResult result = new AlgorithmResult();
         
+        Markings markings = new Markings();
+        markings.put("S", 2);        
+        result.add(1, markings);
+        
+        markings.put("S", 3);
+        result.add(1.2, markings);
+        
+        Assert.assertTrue(result.getSpecies().contains("S"));
+        Assert.assertEquals(1.0, result.getSimulationPoints().getFirst().getTime(), 0);
+        Assert.assertEquals(1.2, result.getSimulationPoints().getLast().getTime(), 0);
     } 
 }

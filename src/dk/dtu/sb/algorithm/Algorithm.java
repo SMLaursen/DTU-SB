@@ -31,7 +31,7 @@ public class Algorithm implements Runnable {
     protected static Parameters params = new Parameters();
     protected static StochasticPetriNet spn = new StochasticPetriNet();
 
-    private AlgorithmResult algorithmResult = new AlgorithmResult();
+    private AlgorithmResult algorithmResult = new AlgorithmResult(spn.getInitialMarkings());
 
     /**
      * This method will initiate the algorithm run. This is the only method that

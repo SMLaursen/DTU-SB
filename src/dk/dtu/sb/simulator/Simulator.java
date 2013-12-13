@@ -1,7 +1,6 @@
 package dk.dtu.sb.simulator;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,7 +11,6 @@ import dk.dtu.sb.Util;
 import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.algorithm.GillespieAlgorithm;
 import dk.dtu.sb.data.AlgorithmResult;
-import dk.dtu.sb.data.SimulationPoint;
 import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
@@ -27,6 +25,7 @@ public class Simulator {
     private StochasticPetriNet spn;
     private long simulationTime = 0;
     private ExecutorService executor;
+
     private List<AlgorithmResult> finalResult = new ArrayList<AlgorithmResult>();
 
     /**
@@ -128,6 +127,7 @@ public class Simulator {
      */
     public void simulate() {
         Algorithm.setInput(spn, params);
+        Util.log.debug("Algorithm class: " + algorithmName);
 
         try {
             long startTime = System.currentTimeMillis();
@@ -135,36 +135,45 @@ public class Simulator {
             Class<?> algorithmClass = Class.forName(algorithmName);
             Algorithm[] worker = new Algorithm[params.getIterations()];
 
-            Util.log.debug("Algorithm class: " + algorithmName);
-
-            for (int iteration = 0; iteration < params.getIterations(); iteration++) {
-                worker[iteration] = (Algorithm) algorithmClass.newInstance();
-                executor.execute(worker[iteration]);
-            }
-            executor.shutdown();
-            executor.awaitTermination(params.getMaxIterTime(), TimeUnit.SECONDS);
-            executor.shutdownNow();
-
-            // Wait additionally 5sec to ensure the thread has been shutdown
-            // entirely due to timeout
-            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
-                Util.log.info("Aborting: Thread timed out but could not be shutdown");
-                System.exit(1);
-            }
+            startSimulations(worker, algorithmClass);
 
             simulationTime = System.currentTimeMillis() - startTime;
             Util.log.info("Simulation ended in: " + simulationTime + "ms");
-            
-            // build output
-            for (int iteration = 0; iteration < params.getIterations(); iteration++) {
-                finalResult.add(worker[iteration].getOutput());
-                worker[iteration] = null;
-            }
+
+            buildOutput(worker);
         } catch (InterruptedException e) {
             Util.log.error("Something went wrong when simulating: ", e);
         } catch (Exception e) {
             Util.log.error("The algorithm class: " + algorithmName
                     + " could not be found. Using default.");
+        }
+    }
+
+    private void startSimulations(Algorithm[] worker, Class<?> algorithmClass)
+            throws InstantiationException, IllegalAccessException,
+            InterruptedException {
+        for (int iteration = 0; iteration < params.getIterations(); iteration++) {
+            worker[iteration] = (Algorithm) algorithmClass.newInstance();
+            executor.execute(worker[iteration]);
+        }
+        executor.shutdown();
+        executor.awaitTermination(params.getMaxIterTime(), TimeUnit.SECONDS);
+        executor.shutdownNow();
+
+        // Wait additionally 5sec to ensure the thread has been shutdown
+        // entirely due to timeout
+        if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+            Util.log.info("Aborting: Thread timed out but could not be shutdown");
+            System.exit(1);
+        }
+
+    }
+
+    private void buildOutput(Algorithm[] worker) {
+        // build output
+        for (int iteration = 0; iteration < params.getIterations(); iteration++) {
+            finalResult.add(worker[iteration].getOutput());
+            worker[iteration] = null;
         }
     }
 
@@ -183,8 +192,8 @@ public class Simulator {
     /**
      * Get the output after simulation has ended.
      * 
-     * @return The result of the simulation wrapped in an {@link SimulationResult}
-     *         object.
+     * @return The result of the simulation wrapped in an
+     *         {@link SimulationResult} object.
      */
     public SimulationResult getOutput() {
         if (!executor.isTerminated()) {
