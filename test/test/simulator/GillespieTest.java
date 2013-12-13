@@ -193,7 +193,7 @@ public class GillespieTest {
 
         GraphGUI graph = new GraphGUI();
         graph.setParameters(p);
-        graph.setData(simulator.getOutput());
+        graph.setPlotData(simulator.getOutput());
         graph.process();  
     }
     

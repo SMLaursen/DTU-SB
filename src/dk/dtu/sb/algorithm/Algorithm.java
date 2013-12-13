@@ -1,12 +1,12 @@
 package dk.dtu.sb.algorithm;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.output.data.SimulationPoint;
+import dk.dtu.sb.data.SimulationData;
+import dk.dtu.sb.data.SimulationPoint;
 import dk.dtu.sb.spn.Reaction;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
@@ -28,22 +28,27 @@ public class Algorithm implements Runnable {
      */
     protected int iterationIndex;
 
+    /**
+     * 
+     */
+    protected double time = 0.0;
+
+    /**
+     * The current markings of the places in the {@link StochasticPetriNet},
+     * i.e. the places is the reactants and the products of the reactions in the
+     * {@link StochasticPetriNet}.
+     */
+    protected HashMap<String, Integer> currentMarkings = new HashMap<String, Integer>(
+            spn.getInitialMarkings());
+
     protected static double stoptime;
     protected static int rateMode;
     protected static double threshold;
     protected static Parameters params = new Parameters();
     protected static StochasticPetriNet spn = new StochasticPetriNet();
 
-    private volatile static HashMap<Integer, LinkedList<SimulationPoint>> resultData = new HashMap<Integer, LinkedList<SimulationPoint>>();
+    private volatile static SimulationData simulationData = new SimulationData();
     private static Object resultLock = new Object();
-
-    /**
-     * The current markings of the places in the {@link StochasticPetriNet}.
-     * I.e. the places is the reactants and the products of the reactions in the
-     * {@link StochasticPetriNet}.
-     */
-    protected HashMap<String, Integer> currentMarkings = new HashMap<String, Integer>(
-            spn.getInitialMarkings());
 
     /**
      * 
@@ -68,19 +73,7 @@ public class Algorithm implements Runnable {
         Algorithm.spn = spn;
         Algorithm.params = params;
 
-        resetResult();
-    }
-
-    /**
-     * 
-     */
-    public static void resetResult() {
-        resultData.clear();
-        for (int iteration = 0; iteration < params.getIterations(); iteration++) {
-            resultData.put(iteration, new LinkedList<SimulationPoint>());
-            resultData.get(iteration).add(
-                    new SimulationPoint(0, spn.getInitialMarkings()));
-        }
+        simulationData.reset(params.getIterations(), spn.getInitialMarkings());
     }
 
     /**
@@ -114,9 +107,9 @@ public class Algorithm implements Runnable {
     /**
      * Get the final result of several runs of the algorithm.
      */
-    public static HashMap<Integer, LinkedList<SimulationPoint>> getOutput() {
+    public static SimulationData getOutput() {
         synchronized (resultLock) {
-            return resultData;
+            return simulationData;
         }
     }
 
@@ -129,7 +122,18 @@ public class Algorithm implements Runnable {
      */
     protected void addPartialResult(SimulationPoint state) {
         synchronized (resultLock) {
-            resultData.get(iterationIndex).add(state);
+            simulationData.add(iterationIndex, state);
+        }
+    }
+
+    /**
+     * See {@link #addPartialResult(SimulationPoint)}. Here the current
+     * {@link #time} and {@link #currentMarkings} is automatically used, i.e.
+     * the {@link SimulationPoint} is automatically created.
+     */
+    protected void addPartialResult() {
+        synchronized (resultLock) {
+            simulationData.add(iterationIndex, time, currentMarkings);
         }
     }
 
@@ -139,9 +143,7 @@ public class Algorithm implements Runnable {
      */
     protected void deletePartialResult() {
         synchronized (resultLock) {
-            if (resultData.containsKey(iterationIndex)) {
-                resultData.remove(iterationIndex);
-            }
+            simulationData.clear(iterationIndex);
         }
     }
 }

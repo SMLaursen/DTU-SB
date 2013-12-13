@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import dk.dtu.sb.Util;
-import dk.dtu.sb.output.data.PlotPoint;
+import dk.dtu.sb.data.PlotPoint;
 
 /**
  *
@@ -18,7 +18,7 @@ public class CSV extends AbstractOutput {
      * Outputs the simulation results in CSV format to fileURL.
      */
     public void process() {
-        if (graphData.isEmpty()) {
+        if (plotData.isEmpty()) {
             Util.log.error("No data to write");
         } else {
             try {
@@ -37,7 +37,7 @@ public class CSV extends AbstractOutput {
 
                 // Write header
                 bw.write("time");
-                for (String i : graphData.peekFirst().getMarkings().keySet()) {
+                for (String i : plotData.peekFirst().getMarkings().keySet()) {
                     bw.write("," + i);
                     h.put(index, i);
                     index++;
@@ -45,7 +45,7 @@ public class CSV extends AbstractOutput {
                 bw.write("\n");
                 
                 // Write Content
-                for (PlotPoint pl : graphData) {
+                for (PlotPoint pl : plotData) {
                 	currValues.putAll(pl.getMarkings());
                 	bw.write(String.valueOf(pl.getTime()));
                     for (int i = 0; i < h.size(); i++) {

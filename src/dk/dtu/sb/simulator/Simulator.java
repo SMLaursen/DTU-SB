@@ -10,8 +10,7 @@ import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.algorithm.GillespieAlgorithm;
-import dk.dtu.sb.output.data.OutputData;
-import dk.dtu.sb.output.data.SimulationPoint;
+import dk.dtu.sb.data.OutputData;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
@@ -162,7 +161,7 @@ public class Simulator {
     }
 
     /**
-     * Mainly used for debugging purposes
+     * Mainly used for debugging purposes.
      * 
      * @return The simulation time in [ms].
      */
@@ -179,14 +178,12 @@ public class Simulator {
      * @return The result of the simulation wrapped in an {@link OutputData}
      *         object.
      */
-    public HashMap<Integer, LinkedList<SimulationPoint>> getOutput() {
+    public OutputData getOutput() {
         if (!executor.isTerminated()) {
             throw new RuntimeException(
                     "The result cannot be used before all iterations of the algorithm run has finished.");
         }
-        return Algorithm.getOutput();
-        //return new OutputData(Algorithm.getOutput(), spn.getInitialMarkings(),
-        //        params.getIterations(), params.getStoptime());
+        return new OutputData(Algorithm.getOutput(), params);
     }
 
 }

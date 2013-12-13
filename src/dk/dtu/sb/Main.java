@@ -233,7 +233,8 @@ public class Main {
             // show graph
             if (params.getResultGUI()) {
                 GraphGUI gui = new GraphGUI();
-                gui.setData(simulator.getOutput());
+                gui.setPlotData(simulator.getOutput());
+                gui.setParameters(params);
                 gui.process();
             }
         } catch (FileNotFoundException e) {

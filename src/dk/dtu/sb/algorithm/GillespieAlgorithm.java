@@ -7,7 +7,7 @@ import java.util.Random;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
-import dk.dtu.sb.output.data.SimulationPoint;
+import dk.dtu.sb.data.SimulationPoint;
 import dk.dtu.sb.spn.Reaction;
 
 /**
@@ -23,9 +23,6 @@ public class GillespieAlgorithm extends Algorithm {
      */
     public void run() {
     	
-        // Initialize
-        double time = 0.0;
-
         double a_0;
         double r_1;
         double r_2;

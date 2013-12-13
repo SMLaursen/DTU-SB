@@ -1,4 +1,4 @@
-package dk.dtu.sb.output.data;
+package dk.dtu.sb.data;
 
 import java.util.Map;
 
