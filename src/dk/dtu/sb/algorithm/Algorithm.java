@@ -42,7 +42,7 @@ public class Algorithm implements Runnable {
     /**
      * 
      */
-    private static final HashMap<Integer, AlgorithmResult> result = new HashMap<Integer, AlgorithmResult>();
+    private static volatile HashMap<Integer, AlgorithmResult> result = new HashMap<Integer, AlgorithmResult>();
 
     /**
      * Default constructor generating the uniqueid and creating the

@@ -75,9 +75,12 @@ public class SimulationResult {
                 currMarking.clear();
 
                 // For each simulation set
-                for (AlgorithmResult algorithmResult : algorithmResults) {                    
-                    for (SimulationPoint simulationPoint : algorithmResult
-                            .getSimulationPoints()) {
+                for (AlgorithmResult algorithmResult : algorithmResults) {
+                    LinkedList<SimulationPoint> list = algorithmResult.getSimulationPoints();
+                    //for (SimulationPoint simulationPoint : algorithmResult
+                    //        .getSimulationPoints()) {
+                    while(!list.isEmpty()) {
+                        SimulationPoint simulationPoint = list.removeFirst();
                         // Take all those values in the bucket (<i)
                         if (simulationPoint.getTime() > time) {
                             break;
