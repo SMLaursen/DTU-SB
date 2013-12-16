@@ -59,7 +59,7 @@ public class RateFunctionTest extends StdOutTester {
         
         assertEquals(1, rate.getRate(vars), 0);
         
-        assertTrue(err.toString().contains("An error occurred. Using default. The variable x is missing. Cannot calculate the expression 1/x"));
+        assertTrue(out.toString().contains("An error occurred. Using default. The variable x is missing. Cannot calculate the expression 1/x"));
     }
     
     @Test
@@ -75,7 +75,7 @@ public class RateFunctionTest extends StdOutTester {
     @Test
     public void testWrongExpression() {
         new RateFunction("func(2)");
-        assertTrue(err.toString().contains("An error occurred when building the Calculable object. Using default. Unable to parse character 'f' at position 1 in expression 'func(2)'"));
+        assertTrue(out.toString().contains("An error occurred when building the Calculable object. Using default. Unable to parse character 'f' at position 1 in expression 'func(2)'"));
     }
 
 }

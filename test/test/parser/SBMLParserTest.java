@@ -65,7 +65,7 @@ public class SBMLParserTest extends StdOutTester {
         parser.readFile("test/test/parser/malformed.xml");
         parser.parse();
         
-        assertTrue(err.toString().contains("An error occurred when parsing the SBML file:"));
+        assertTrue(out.toString().contains("An error occurred when parsing the SBML file:"));
     }
     
     @Test
