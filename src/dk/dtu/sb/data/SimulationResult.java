@@ -1,5 +1,6 @@
 package dk.dtu.sb.data;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ public class SimulationResult {
     /**
      * See {@link #SimulationResult(List, Parameters)}.
      */
-    public SimulationResult(List<AlgorithmResult> algorithmResults) {
+    public SimulationResult(Collection<AlgorithmResult> algorithmResults) {
         this(algorithmResults, new Parameters());
     }
 
@@ -34,21 +35,21 @@ public class SimulationResult {
      * @param params
      *            An optional parameters object.
      */
-    public SimulationResult(List<AlgorithmResult> algorithmResults,
+    public SimulationResult(Collection<AlgorithmResult> algorithmResults,
             Parameters params) {
         this.params = params;
         generatePlots(algorithmResults);
     }
 
-    private void generatePlots(List<AlgorithmResult> algorithmResults) {
+    private void generatePlots(Collection<AlgorithmResult> algorithmResults) {
         if (algorithmResults.size() == 0) {
             throw new RuntimeException("The input was empty.");
         } else {
-            species = algorithmResults.get(0).getSpecies();
+            species = ((AlgorithmResult) algorithmResults.toArray()[0])
+                    .getSpecies();
 
             // TODO : Add interpolating method!
             HashMap<String, Integer> prevMarking = new HashMap<String, Integer>();
-
             HashMap<String, Integer> currMarking = new HashMap<String, Integer>();
 
             // Count how many values in a bucket
@@ -62,7 +63,7 @@ public class SimulationResult {
             // Put values in buckets
             double bucketSize = params.getStoptime() / params.getOutStepCount();
 
-            for (double i = bucketSize; i < params.getStoptime(); i += bucketSize) {
+            for (double time = bucketSize; time < params.getStoptime(); time += bucketSize) {
                 // Bucket sizes reset
                 bucketCount.clear();
                 bucketCount.putAll(emptyBucketCount);
@@ -74,22 +75,19 @@ public class SimulationResult {
                 currMarking.clear();
 
                 // For each simulation set
-                for (AlgorithmResult algorithmResult : algorithmResults) {
-
-                    LinkedList<SimulationPoint> l = algorithmResult
-                            .getSimulationPoints();
-                    // Take all those values in the bucket (<i)
-                    while (!l.isEmpty()) {
-                        DataPoint<Integer> dp = l.removeFirst();
-                        if (dp.getTime() > i) {
+                for (AlgorithmResult algorithmResult : algorithmResults) {                    
+                    for (SimulationPoint simulationPoint : algorithmResult
+                            .getSimulationPoints()) {
+                        // Take all those values in the bucket (<i)
+                        if (simulationPoint.getTime() > time) {
                             break;
                         }
-                        for (String species : dp.getMarkings().keySet()) {
+                        for (String species : simulationPoint.getSpecies()) {
                             // Calculate new markings
                             int prev = currMarking.containsKey(species) ? currMarking
                                     .get(species) : 0;
-                            currMarking.put(species, prev
-                                    + dp.getMarkings().get(species));
+                            currMarking.put(species,
+                                    prev + simulationPoint.getMarking(species));
                             bucketCount.put(species,
                                     bucketCount.get(species) + 1);
                         }
@@ -97,13 +95,13 @@ public class SimulationResult {
                 }
 
                 // Store averaged intersection
-                HashMap<String, Float> d = new HashMap<String, Float>();
+                HashMap<String, Float> avg = new HashMap<String, Float>();
                 for (String species : getDifference(currMarking, prevMarking)) {
-                    d.put(species,
+                    avg.put(species,
                             (float) (currMarking.get(species) / bucketCount
                                     .get(species)));
                 }
-                plotPoints.add(new PlotPoint(i, d));
+                add(time, avg);
             }
         }
     }
@@ -142,5 +140,22 @@ public class SimulationResult {
      */
     public LinkedList<PlotPoint> getPlotPoints() {
         return plotPoints;
+    }
+
+    /**
+     * 
+     * @param plotPoint
+     */
+    public void add(PlotPoint plotPoint) {
+        plotPoints.add(plotPoint);
+    }
+
+    /**
+     * 
+     * @param time
+     * @param markings
+     */
+    public void add(double time, HashMap<String, Float> markings) {
+        plotPoints.add(new PlotPoint(time, markings));
     }
 }

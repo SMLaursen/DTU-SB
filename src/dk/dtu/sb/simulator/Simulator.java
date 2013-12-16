@@ -1,7 +1,5 @@
 package dk.dtu.sb.simulator;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -10,7 +8,6 @@ import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.algorithm.Algorithm;
 import dk.dtu.sb.algorithm.GillespieAlgorithm;
-import dk.dtu.sb.data.AlgorithmResult;
 import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
@@ -25,8 +22,6 @@ public class Simulator {
     private StochasticPetriNet spn;
     private long simulationTime = 0;
     private ExecutorService executor;
-
-    private List<AlgorithmResult> finalResult = new ArrayList<AlgorithmResult>();
 
     /**
      * This constructor simulates the {@link StochasticPetriNet} using the
@@ -132,15 +127,10 @@ public class Simulator {
         try {
             long startTime = System.currentTimeMillis();
 
-            Class<?> algorithmClass = Class.forName(algorithmName);
-            Algorithm[] worker = new Algorithm[params.getIterations()];
-
-            startSimulations(worker, algorithmClass);
+            startSimulations(algorithmName);
 
             simulationTime = System.currentTimeMillis() - startTime;
             Util.log.info("Simulation ended in: " + simulationTime + "ms");
-
-            buildOutput(worker);
         } catch (InterruptedException e) {
             Util.log.error("Something went wrong when simulating: ", e);
         } catch (Exception e) {
@@ -149,13 +139,18 @@ public class Simulator {
         }
     }
 
-    private void startSimulations(Algorithm[] worker, Class<?> algorithmClass)
+    private void startSimulations(String algorithmName)
             throws InstantiationException, IllegalAccessException,
-            InterruptedException {
+            InterruptedException, ClassNotFoundException {
+        
+        Class<?> algorithmClass = Class.forName(algorithmName);
+        Algorithm worker;
+        
         for (int iteration = 0; iteration < params.getIterations(); iteration++) {
-            worker[iteration] = (Algorithm) algorithmClass.newInstance();
-            executor.execute(worker[iteration]);
+            worker = (Algorithm) algorithmClass.newInstance();
+            executor.execute(worker);
         }
+        
         executor.shutdown();
         executor.awaitTermination(params.getMaxIterTime(), TimeUnit.SECONDS);
         executor.shutdownNow();
@@ -167,14 +162,6 @@ public class Simulator {
             System.exit(1);
         }
 
-    }
-
-    private void buildOutput(Algorithm[] worker) {
-        // build output
-        for (int iteration = 0; iteration < params.getIterations(); iteration++) {
-            finalResult.add(worker[iteration].getOutput());
-            worker[iteration] = null;
-        }
     }
 
     /**
@@ -200,7 +187,7 @@ public class Simulator {
             throw new RuntimeException(
                     "The result cannot be used before all iterations of the algorithm run has finished.");
         }
-        return new SimulationResult(finalResult, params);
+        return new SimulationResult(Algorithm.getOutput(), params);
     }
 
 }

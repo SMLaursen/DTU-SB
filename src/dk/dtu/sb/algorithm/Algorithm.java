@@ -1,5 +1,6 @@
 package dk.dtu.sb.algorithm;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import dk.dtu.sb.Parameters;
@@ -12,6 +13,8 @@ import dk.dtu.sb.spn.StochasticPetriNet;
  * method {@link #run()} that should be implemented when this class is extended.
  */
 public class Algorithm implements Runnable {
+
+    private final int uniqueId;
 
     /**
      * The current time. This is typically incremented in {@link #run()}.
@@ -39,8 +42,16 @@ public class Algorithm implements Runnable {
     /**
      * 
      */
-    protected AlgorithmResult algorithmResult = new AlgorithmResult(
-            spn.getInitialMarkings());
+    private static final HashMap<Integer, AlgorithmResult> result = new HashMap<Integer, AlgorithmResult>();
+
+    /**
+     * Default constructor generating the uniqueid and creating the
+     * {@link AlgorithmResult} of this run.
+     */
+    public Algorithm() {
+        uniqueId = hashCode();
+        result.put(uniqueId, new AlgorithmResult(spn.getInitialMarkings()));
+    }
 
     /**
      * This method will initiate the algorithm run. This is the only method that
@@ -68,8 +79,8 @@ public class Algorithm implements Runnable {
     /**
      * Get the final result of several runs of the algorithm.
      */
-    public AlgorithmResult getOutput() {
-        return algorithmResult;
+    public static Collection<AlgorithmResult> getOutput() {
+        return result.values();
     }
 
     /**
@@ -80,7 +91,7 @@ public class Algorithm implements Runnable {
      *            See {@link SimulationPoint}.
      */
     protected void addPartialResult(SimulationPoint state) {
-        algorithmResult.add(state);
+        result.get(uniqueId).add(state);
     }
 
     /**
@@ -89,6 +100,6 @@ public class Algorithm implements Runnable {
      * the {@link SimulationPoint} is automatically created.
      */
     protected void addPartialResult() {
-        algorithmResult.add(time, currentMarkings);
+        result.get(uniqueId).add(time, currentMarkings);
     }
 }

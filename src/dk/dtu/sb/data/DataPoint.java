@@ -2,6 +2,7 @@ package dk.dtu.sb.data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class represents markings, or concentrations, of a time point.
@@ -37,7 +38,27 @@ public class DataPoint<T> {
     public double getTime() {
         return time;
     }
-    
+
+    /**
+     * Get the species involved in this point.
+     */
+    public Set<String> getSpecies() {
+        return markings.keySet();
+    }
+
+    /**
+     * Get the value of the species for this time point.
+     * 
+     * @param species
+     *            The name of the species to find.
+     */
+    public T getMarking(String species) {
+        if (!markings.containsKey(species)) {
+            throw new RuntimeException("No species with this name: " + species);
+        }
+        return markings.get(species);
+    }
+
     public String toString() {
         return "[" + time + "] : " + markings;
     }
