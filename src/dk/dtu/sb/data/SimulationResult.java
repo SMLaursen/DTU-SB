@@ -7,26 +7,40 @@ import java.util.List;
 import java.util.Set;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.Util;
 
 /**
- *  
+ * This class will produce the final plots for the output of the algorithm runs.
  */
 public class SimulationResult {
 
-    private static final long serialVersionUID = 1L;
-
     private Set<String> species;
-    
     private LinkedList<PlotPoint> plotPoints = new LinkedList<PlotPoint>();
+    private Parameters params;
 
     /**
+     * See {@link #SimulationResult(List, Parameters)}.
+     */
+    public SimulationResult(List<AlgorithmResult> algorithmResults) {
+        this(algorithmResults, new Parameters());
+    }
+
+    /**
+     * This constructor takes input from algorithm runs and produces the return
+     * values for the methods {@link #getPlotPoints()} and {@link #getSpecies()}
+     * .
      * 
      * @param algorithmResults
+     *            A list of {@link AlgorithmResult}.
      * @param params
+     *            An optional parameters object.
      */
     public SimulationResult(List<AlgorithmResult> algorithmResults,
             Parameters params) {
+        this.params = params;
+        generatePlots(algorithmResults);
+    }
+
+    private void generatePlots(List<AlgorithmResult> algorithmResults) {
         if (algorithmResults.size() == 0) {
             throw new RuntimeException("The input was empty.");
         } else {
@@ -95,6 +109,7 @@ public class SimulationResult {
     }
 
     /**
+     * Get the keys with different values of the two maps.
      * 
      * @param mapOne
      * @param mapTwo
@@ -102,26 +117,28 @@ public class SimulationResult {
      */
     private HashSet<String> getDifference(HashMap<String, Integer> mapOne,
             HashMap<String, Integer> mapTwo) {
-        HashSet<String> intersection = new HashSet<String>();
+        HashSet<String> difference = new HashSet<String>();
         for (String key : mapOne.keySet()) {
-            if (mapOne.get(key) != (mapTwo.get(key))) {
-                intersection.add(key);
+            if (!mapTwo.containsKey(key) || mapOne.get(key) != mapTwo.get(key)) {
+                difference.add(key);
             }
         }
-        return intersection;
+        return difference;
     }
 
     /**
+     * Get all the species found in this result.
      * 
-     * @return
+     * @return A {@link Set} of species IDs.
      */
     public Set<String> getSpecies() {
         return species;
     }
-    
+
     /**
+     * Get the raw plot points.
      * 
-     * @return
+     * @return A {@link LinkedList} of {@link PlotPoint}.
      */
     public LinkedList<PlotPoint> getPlotPoints() {
         return plotPoints;
