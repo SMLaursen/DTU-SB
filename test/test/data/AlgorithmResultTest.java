@@ -1,4 +1,4 @@
-package test.simulator;
+package test.data;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -6,7 +6,7 @@ import org.junit.Test;
 import dk.dtu.sb.data.AlgorithmResult;
 import dk.dtu.sb.data.Markings;
 
-public class OutputDataTest {
+public class AlgorithmResultTest {
 
     @Test
     public void testAlgorithmResult() {

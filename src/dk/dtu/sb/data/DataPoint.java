@@ -68,7 +68,7 @@ public class DataPoint<T> {
             return true;
         if (!(other instanceof DataPoint))
             return false;
-        DataPoint<T> that = (DataPoint<T>) other;
+        DataPoint<?> that = (DataPoint<?>) other;
         return time == that.getTime() && markings.equals(that.getMarkings());
     }
 }
