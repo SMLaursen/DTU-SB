@@ -19,11 +19,9 @@ public class Util {
     public static final Logger log = (Logger) LoggerFactory.getLogger("DTU-SB");
 
     /**
-     * Returns the number of combinations for (n k)
+     * Implementation of binomial coefficient.
      * 
-     * @param n
-     * @param k
-     * @return
+     * @return Returns the number of combinations for (n k)
      */
     public static int binom(int n, int k) {
         // Avoid factorial calculations

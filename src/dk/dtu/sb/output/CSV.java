@@ -7,60 +7,58 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import dk.dtu.sb.Util;
-import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.data.PlotPoint;
+import dk.dtu.sb.data.SimulationResult;
 
 /**
- *
+ * Concrete implementation of {@link AbstractOutputFormatter}. Outputs
+ * simulation result as CSV.
  */
-public class CSV extends AbstractOutput {
+public class CSV extends AbstractOutputFormatter {
 
-    /**
-     * Outputs the simulation results in CSV format to fileURL.
-     */
-    public void process(SimulationResult plotData) {
-        if (plotData.isEmpty()) {
-            Util.log.error("No data to write");
-        } else {
-            try {
-                String fileURL = "out.csv";// params.getProperty("OUTPUT_FILENAME",
-                                           // "out.csv");
-                File f = new File(fileURL);
-                if (!f.exists()) {
-                    f.createNewFile();
-                }
-                FileWriter fw = new FileWriter(f.getAbsolutePath());
-                BufferedWriter bw = new BufferedWriter(fw);
-                // Mappings between index and name
-                HashMap<Integer, String> h = new HashMap<Integer, String>();
-                HashMap<String, Float> currValues = new HashMap<String, Float>();
-                // Index to ensure consistent lookups (Hashmaps do not guarantee
-                // ordering)
-                int index = 0;
+    public void process(SimulationResult result) {
+        try {
+            String fileName = "out.csv";// params.getProperty("OUTPUT_FILENAME",
+                                        // "out.csv");
 
-                // Write header
-                bw.write("time");
-                for (String i : plotData.peekFirst().getMarkings().keySet()) {
-                    bw.write("," + i);
-                    h.put(index, i);
-                    index++;
-                }
-                bw.write("\n");
+            BufferedWriter writer = getWriter(fileName);
 
-                // Write Content
-                for (PlotPoint pl : plotData) {
-                    currValues.putAll(pl.getMarkings());
-                    bw.write(String.valueOf(pl.getTime()));
-                    for (int i = 0; i < h.size(); i++) {
-                        bw.write("," + currValues.get(h.get(i)));
-                    }
-                    bw.write("\n");
-                }
-                bw.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            HashMap<Integer, String> header = new HashMap<Integer, String>();
+
+            // Index to ensure consistent lookups (Hashmaps do not guarantee
+            // ordering)
+            int index = 0;
+
+            // Write header
+            writer.write("time");
+            for (String species : result.getSpecies()) {
+                writer.write("," + species);
+                header.put(index, species);
+                index++;
             }
+            writer.write("\n");
+
+            // Write content
+            for (PlotPoint plot : result.getPlotPoints()) {
+                writer.write("" + plot.getTime());
+                for (int i = 0; i < header.size(); i++) {
+                    writer.write("," + plot.getMarkings().get(header.get(i)));
+                }
+                writer.write("\n");
+            }
+            writer.close();
+
+        } catch (IOException e) {
+            Util.log.error("An error occurred", e);
         }
+    }
+
+    private BufferedWriter getWriter(String fileName) throws IOException {
+        File file = new File(fileName);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileWriter fw = new FileWriter(file.getAbsolutePath());
+        return new BufferedWriter(fw);
     }
 }

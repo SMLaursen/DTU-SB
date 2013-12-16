@@ -4,80 +4,93 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import dk.dtu.sb.Parameters;
+import dk.dtu.sb.Util;
 
 /**
  *  
  */
-public class SimulationResult extends LinkedList<PlotPoint> {
+public class SimulationResult {
 
     private static final long serialVersionUID = 1L;
 
+    private Set<String> species;
+    
+    private LinkedList<PlotPoint> plotPoints = new LinkedList<PlotPoint>();
+
     /**
      * 
-     * @param algorithmResult
+     * @param algorithmResults
      * @param params
      */
     public SimulationResult(List<AlgorithmResult> algorithmResults,
             Parameters params) {
+        if (algorithmResults.size() == 0) {
+            throw new RuntimeException("The input was empty.");
+        } else {
+            species = algorithmResults.get(0).getSpecies();
 
-        // TODO : Add interpolating method!
-        HashMap<String, Integer> prevMarking = new HashMap<String, Integer>();
+            // TODO : Add interpolating method!
+            HashMap<String, Integer> prevMarking = new HashMap<String, Integer>();
 
-        HashMap<String, Integer> currMarking = new HashMap<String, Integer>();
+            HashMap<String, Integer> currMarking = new HashMap<String, Integer>();
 
-        // Count how many values in a bucket
-        HashMap<String, Integer> bucketCount = new HashMap<String, Integer>();
-        HashMap<String, Integer> emptyBucketCount = new HashMap<String, Integer>();
+            // Count how many values in a bucket
+            HashMap<String, Integer> bucketCount = new HashMap<String, Integer>();
+            HashMap<String, Integer> emptyBucketCount = new HashMap<String, Integer>();
 
-        for (String key : algorithmResults.get(0).getSpecies()) {
-            emptyBucketCount.put(key, 0);
-        }
+            for (String key : species) {
+                emptyBucketCount.put(key, 0);
+            }
 
-        // Put values in buckets
-        double bucketSize = params.getStoptime() / params.getOutStepCount();
+            // Put values in buckets
+            double bucketSize = params.getStoptime() / params.getOutStepCount();
 
-        for (double i = bucketSize; i < params.getStoptime(); i += bucketSize) {
-            // Bucket sizes reset
-            bucketCount.clear();
-            bucketCount.putAll(emptyBucketCount);
+            for (double i = bucketSize; i < params.getStoptime(); i += bucketSize) {
+                // Bucket sizes reset
+                bucketCount.clear();
+                bucketCount.putAll(emptyBucketCount);
 
-            // clear prevmarking
-            prevMarking.clear();
-            prevMarking.putAll(currMarking);
+                // clear prevmarking
+                prevMarking.clear();
+                prevMarking.putAll(currMarking);
 
-            currMarking.clear();
+                currMarking.clear();
 
-            // For each simulation set
-            for (AlgorithmResult algorithmResult : algorithmResults) {
+                // For each simulation set
+                for (AlgorithmResult algorithmResult : algorithmResults) {
 
-                LinkedList<SimulationPoint> l = algorithmResult
-                        .getSimulationPoints();
-                // Take all those values in the bucket (<i)
-                while (!l.isEmpty()) {
-                    DataPoint<Integer> dp = l.removeFirst();
-                    if (dp.getTime() > i) {
-                        break;
-                    }
-                    for (String species : dp.getMarkings().keySet()) {
-                        // Calculate new markings
-                        int prev = currMarking.containsKey(species) ? currMarking
-                                .get(species) : 0;
-                        currMarking.put(species,
-                                prev + dp.getMarkings().get(species));
-                        bucketCount.put(species, bucketCount.get(species) + 1);
+                    LinkedList<SimulationPoint> l = algorithmResult
+                            .getSimulationPoints();
+                    // Take all those values in the bucket (<i)
+                    while (!l.isEmpty()) {
+                        DataPoint<Integer> dp = l.removeFirst();
+                        if (dp.getTime() > i) {
+                            break;
+                        }
+                        for (String species : dp.getMarkings().keySet()) {
+                            // Calculate new markings
+                            int prev = currMarking.containsKey(species) ? currMarking
+                                    .get(species) : 0;
+                            currMarking.put(species, prev
+                                    + dp.getMarkings().get(species));
+                            bucketCount.put(species,
+                                    bucketCount.get(species) + 1);
+                        }
                     }
                 }
-            }
 
-            // Store averaged intersection
-            HashMap<String, Float> d = new HashMap<String, Float>();
-            for (String species : getIntersection(currMarking, prevMarking)) {
-                d.put(species, (float) (currMarking.get(species) / bucketCount
-                        .get(species)));
+                // Store averaged intersection
+                HashMap<String, Float> d = new HashMap<String, Float>();
+                for (String species : getDifference(currMarking, prevMarking)) {
+                    d.put(species,
+                            (float) (currMarking.get(species) / bucketCount
+                                    .get(species)));
+                }
+                plotPoints.add(new PlotPoint(i, d));
             }
-            this.add(new PlotPoint(i, d));
         }
     }
 
@@ -87,7 +100,7 @@ public class SimulationResult extends LinkedList<PlotPoint> {
      * @param mapTwo
      * @return A map of those keys that have changed their values
      */
-    private HashSet<String> getIntersection(HashMap<String, Integer> mapOne,
+    private HashSet<String> getDifference(HashMap<String, Integer> mapOne,
             HashMap<String, Integer> mapTwo) {
         HashSet<String> intersection = new HashSet<String>();
         for (String key : mapOne.keySet()) {
@@ -96,5 +109,21 @@ public class SimulationResult extends LinkedList<PlotPoint> {
             }
         }
         return intersection;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Set<String> getSpecies() {
+        return species;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public LinkedList<PlotPoint> getPlotPoints() {
+        return plotPoints;
     }
 }

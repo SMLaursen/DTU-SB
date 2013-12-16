@@ -5,7 +5,10 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JCheckBox;
@@ -29,112 +32,122 @@ import org.jfree.data.xy.XYSeriesCollection;
 import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.data.PlotPoint;
 
-public class GraphGUI extends AbstractOutput {
+public class GraphGUI extends AbstractOutputFormatter {
 
     public void process(SimulationResult plotData) {
-        if (!plotData.isEmpty()) {
-            XYSeriesCollection dataset = new XYSeriesCollection();
-            HashMap<String, XYSeries> graph = new HashMap<String, XYSeries>();
-            // Create a XYSeries for each species
-            for (String s : plotData.peekFirst().getMarkings().keySet()) {
-                graph.put(s, new XYSeries(s));
-            }
-            // Run through all plots and add their value
-            for (PlotPoint d : plotData) {
-                for (String s : d.getMarkings().keySet()) {
-                    graph.get(s).add(d.getTime(), d.getMarkings().get(s));
-                }
-            }
-            // Add all series
-            for (String s : plotData.peekFirst().getMarkings().keySet()) {
-                dataset.addSeries(graph.get(s));
-            }
-            final JFreeChart chart = ChartFactory.createXYLineChart("DTU-SB",
-                    "time [s]", "Concentration [molecules]", dataset,
-                    PlotOrientation.VERTICAL, true, true, true);
 
-            // Draw smooth lines :
-            // chart.getXYPlot().setRenderer(new XYSplineRenderer());
+        XYSeriesCollection dataset = getDataSet(plotData);
 
-            ChartPanel chartpanel = new ChartPanel(chart);
-            chartpanel.setDomainZoomable(true);
+        final JFreeChart chart = ChartFactory.createXYLineChart("DTU-SB",
+                "time [s]", "Concentration [molecules]", dataset,
+                PlotOrientation.VERTICAL, true, true, true);
 
-            JPanel jPanel = new JPanel();
-            jPanel.setLayout(new BorderLayout());
-            jPanel.add(chartpanel, BorderLayout.CENTER);
+        // Draw smooth lines :
+        // chart.getXYPlot().setRenderer(new XYSplineRenderer());
 
-            final JList list = new JList(
-                    createData(plotData.peekFirst().getMarkings().keySet()));
-            list.setCellRenderer(new CheckListRenderer());
-            list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            list.setBorder(new EmptyBorder(0, 3, 0, 0));
-            list.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    int index = list.locationToIndex(e.getPoint());
-                    CheckableItem item = (CheckableItem) list.getModel()
-                            .getElementAt(index);
-                    item.setSelected(!item.isSelected());
-                    Rectangle rect = list.getCellBounds(index, index);
-                    list.repaint(rect);
-                    boolean isVisible;
+        ChartPanel chartpanel = new ChartPanel(chart);
+        chartpanel.setDomainZoomable(true);
 
-                    // Initially null
-                    if (chart.getXYPlot().getRenderer().getSeriesVisible(index) == null) {
-                        chart.getXYPlot().getRenderer()
-                                .setSeriesVisible(index, true);
-                    }
-                    isVisible = chart.getXYPlot().getRenderer()
-                            .getSeriesVisible(index);
+        JPanel jPanel = new JPanel();
+        jPanel.setLayout(new BorderLayout());
+        jPanel.add(chartpanel, BorderLayout.CENTER);
+
+        final JList list = new JList(createData(plotData.getSpecies()));
+
+        list.setCellRenderer(new CheckListRenderer());
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.setBorder(new EmptyBorder(0, 3, 0, 0));
+        list.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int index = list.locationToIndex(e.getPoint());
+                CheckableItem item = (CheckableItem) list.getModel()
+                        .getElementAt(index);
+                item.setSelected(!item.isSelected());
+                Rectangle rect = list.getCellBounds(index, index);
+                list.repaint(rect);
+                boolean isVisible;
+
+                // Initially null
+                if (chart.getXYPlot().getRenderer().getSeriesVisible(index) == null) {
                     chart.getXYPlot().getRenderer()
-                            .setSeriesVisible(index, !isVisible);
-
+                            .setSeriesVisible(index, true);
                 }
-            });
-            JScrollPane sp = new JScrollPane(list);
-            JPanel checkListPanel = new JPanel();
-            checkListPanel.setLayout(new BorderLayout());
-            checkListPanel.add(sp, BorderLayout.CENTER);
-            checkListPanel.add(new JLabel("Show species :  "),
-                    BorderLayout.NORTH);
-            jPanel.add(checkListPanel, BorderLayout.EAST);
+                isVisible = chart.getXYPlot().getRenderer()
+                        .getSeriesVisible(index);
+                chart.getXYPlot().getRenderer()
+                        .setSeriesVisible(index, !isVisible);
 
-            JFrame frame = new JFrame();
-            frame.add(jPanel);
-            frame.pack();
-            frame.setVisible(true);
+            }
+        });
+        JScrollPane sp = new JScrollPane(list);
+        JPanel checkListPanel = new JPanel();
+        checkListPanel.setLayout(new BorderLayout());
+        checkListPanel.add(sp, BorderLayout.CENTER);
+        checkListPanel.add(new JLabel("Show species:  "), BorderLayout.NORTH);
+        jPanel.add(checkListPanel, BorderLayout.EAST);
 
-            // TODO FIX?
-            while (frame.isVisible()) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+        JFrame frame = new JFrame();
+        frame.add(jPanel);
+        frame.pack();
+        frame.setVisible(true);
+
+        // TODO FIX?
+        while (frame.isVisible()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
             }
         }
+    }
+
+    private XYSeriesCollection getDataSet(SimulationResult plotData) {
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        HashMap<String, XYSeries> graph = new HashMap<String, XYSeries>();
+
+        // Create a XYSeries for each species
+        for (String speciesId : plotData.getSpecies()) {
+            graph.put(speciesId, new XYSeries(speciesId));
+        }
+        // Run through all plots and add their value
+        for (PlotPoint plot : plotData.getPlotPoints()) {
+            for (String speciesId : plot.getMarkings().keySet()) {
+                graph.get(speciesId).add(plot.getTime(),
+                        plot.getMarkings().get(speciesId));
+            }
+        }
+        // Add all series
+        for (String speciesId : plotData.getSpecies()) {
+            dataset.addSeries(graph.get(speciesId));
+        }
+
+        return dataset;
     }
 
     /**
      * Converts strs to an array of CheckAbleItem
      * 
-     * @param strs
+     * @param strings
      */
-    private CheckableItem[] createData(Set<String> strs) {
+    private CheckableItem[] createData(Set<String> strings) {
+        CheckableItem[] items = new CheckableItem[strings.size()];
+
+        List<String> list = new ArrayList<String>(strings);
+        Collections.sort(list);
+
         int n = 0;
-        CheckableItem[] items = new CheckableItem[strs.size()];
-        // TODO Sort strings here
-        for (String s : strs) {
-            items[n] = new CheckableItem(s);
+        for (String row : list) {
+            items[n] = new CheckableItem(row);
             n++;
         }
+
         return items;
     }
 
 }
 
-@SuppressWarnings("serial")
 class CheckListRenderer extends JCheckBox implements ListCellRenderer {
+
+    private static final long serialVersionUID = 1L;
 
     public CheckListRenderer() {
         setBackground(UIManager.getColor("List.textBackground"));

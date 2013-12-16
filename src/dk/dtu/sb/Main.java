@@ -172,8 +172,8 @@ public class Main {
         
         try {            
             params.setFilename(prompt("Input filename", Parameters.PARAM_INPUT_FILENAME_DEFAULT));
-            params.setParserClassName(prompt("Parser class", Parameters.PARAM_INPUT_PARSER_DEFAULT));
-            params.setAlgorithmClassName(prompt("Algorithm class", Parameters.PARAM_SIM_ALGORITHM_DEFAULT));  
+            params.setParserClassName(prompt("Parser class", Parameters.PARAM_INPUT_PARSER_CLASS_DEFAULT));
+            params.setAlgorithmClassName(prompt("Algorithm class", Parameters.PARAM_SIM_ALGORITHM_CLASS_DEFAULT));  
             
             int iterations = Parameters.PARAM_SIM_ITERATIONS_DEFAULT;
             try {

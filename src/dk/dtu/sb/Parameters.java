@@ -22,11 +22,11 @@ public class Parameters {
     private static final String PARAM_INPUT_FILENAME = "input.file";
     public static final String PARAM_INPUT_FILENAME_DEFAULT = "input.xml";
 
-    private static final String PARAM_INPUT_PARSER = "input.parser";
-    public static final String PARAM_INPUT_PARSER_DEFAULT = "dk.dtu.sb.parser.SBMLParser";
+    private static final String PARAM_INPUT_PARSER_CLASS = "input.parser";
+    public static final String PARAM_INPUT_PARSER_CLASS_DEFAULT = "dk.dtu.sb.parser.SBMLParser";
 
-    private static final String PARAM_SIM_ALGORITHM = "simulation.algorithm";
-    public static final String PARAM_SIM_ALGORITHM_DEFAULT = "dk.dtu.sb.algorithm.GillespieAlgorithm";
+    private static final String PARAM_SIM_ALGORITHM_CLASS = "simulation.algorithm";
+    public static final String PARAM_SIM_ALGORITHM_CLASS_DEFAULT = "dk.dtu.sb.algorithm.GillespieAlgorithm";
 
     private static final String PARAM_SIM_ITERATIONS = "simulation.iterations";
     public static final int PARAM_SIM_ITERATIONS_DEFAULT = 1;
@@ -52,11 +52,14 @@ public class Parameters {
     private static final String PARAM_OUT_STEPCOUNT = "output.stepcount";
     public static final int PARAM_OUT_STEPCOUNT_DEFAULT = 1000;
 
+    private static final String PARAM_OUT_FORMATTER_CLASS = "output.formatter";
+    private static final String PARAM_OUT_FORMATTER_CLASS_DEFAULT = "dk.dtu.sb.output.GraphGUI";
+    
     private static final String PARAM_SIM_THRESHOLD = "simulation.threshold";
     public static final double PARAM_SIM_THRESHOLD_DEFAULT = 0.0005;
-
+    
     private static final String PARAM_COMPILERS = "compilers";
-    public static final String[] PARAM_COMPILERS_DEFAULT = new String[] { "" };
+    public static final String[] PARAM_COMPILERS_DEFAULT = new String[0];
 
     /**
      * Instantiates a Parameter object with default values.
@@ -84,9 +87,9 @@ public class Parameters {
 
     private void setDefaults() {
         this.setFilename(PARAM_INPUT_FILENAME_DEFAULT);
-        this.setParserClassName(PARAM_INPUT_PARSER_DEFAULT);
+        this.setParserClassName(PARAM_INPUT_PARSER_CLASS_DEFAULT);
 
-        this.setAlgorithmClassName(PARAM_SIM_ALGORITHM_DEFAULT);
+        this.setAlgorithmClassName(PARAM_SIM_ALGORITHM_CLASS_DEFAULT);
         this.setIterations(PARAM_SIM_ITERATIONS_DEFAULT);
         this.setStoptime(PARAM_SIM_STOPTIME_DEFAULT);
     }
@@ -110,30 +113,45 @@ public class Parameters {
      * The fully qualified class name of the algorithm impl.
      */
     public String getAlgorithmClassName() {
-        return holder.getProperty(PARAM_SIM_ALGORITHM,
-                PARAM_SIM_ALGORITHM_DEFAULT);
+        return holder.getProperty(PARAM_SIM_ALGORITHM_CLASS,
+                PARAM_SIM_ALGORITHM_CLASS_DEFAULT);
     }
 
     /**
      * See {@link #getAlgorithmClassName()}.
      */
     public void setAlgorithmClassName(String className) {
-        holder.setProperty(PARAM_SIM_ALGORITHM, className);
+        holder.setProperty(PARAM_SIM_ALGORITHM_CLASS, className);
+    }
+    
+    /**
+     * The fully qualified class name of the output formatter impl.
+     */
+    public String getOutputFormatterClassName() {
+        return holder.getProperty(PARAM_OUT_FORMATTER_CLASS,
+                PARAM_OUT_FORMATTER_CLASS_DEFAULT);
+    }
+
+    /**
+     * See {@link #getOutputFormatterClassName()}.
+     */
+    public void setOutputFormatterClassName(String className) {
+        holder.setProperty(PARAM_OUT_FORMATTER_CLASS, className);
     }
 
     /**
      * The fully qualified class name of the parser impl.
      */
     public String getParserClassName() {
-        return holder.getProperty(PARAM_INPUT_PARSER,
-                PARAM_INPUT_PARSER_DEFAULT);
+        return holder.getProperty(PARAM_INPUT_PARSER_CLASS,
+                PARAM_INPUT_PARSER_CLASS_DEFAULT);
     }
 
     /**
      * See {@link #getParserClassName()}.
      */
     public void setParserClassName(String className) {
-        holder.setProperty(PARAM_INPUT_PARSER, className);
+        holder.setProperty(PARAM_INPUT_PARSER_CLASS, className);
     }
 
     /**
@@ -371,11 +389,11 @@ public class Parameters {
     }
 
     /**
-     * A list of fully qualified compilers implementing {@link CompilerInterface}.
+     * A list of fully qualified names of compilers implementing {@link CompilerInterface}.
      */
     public String[] getCompilers() {
-        String compilersString = holder.getProperty(PARAM_COMPILERS, "");
-        return compilersString.split(", ");
+        String compilersString = holder.getProperty(PARAM_COMPILERS);
+        return compilersString != null ? compilersString.split(", ") : PARAM_COMPILERS_DEFAULT;
     }
 
     /**
