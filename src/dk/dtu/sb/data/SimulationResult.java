@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.Util;
 
 /**
  * This class will produce the final plots for the output of the algorithm runs.
@@ -100,10 +99,18 @@ public class SimulationResult {
 
                 // Store averaged intersection
                 HashMap<String, Float> avg = new HashMap<String, Float>();
-                for (String species : getDifference(currMarking, prevMarking)) {
+                /*for (String species : getDifference(currMarking, prevMarking)) {
                     avg.put(species,
                             (float) (currMarking.get(species) / bucketCount
                                     .get(species)));
+                }
+                if (avg.size() != 4) {
+                    Util.log.error("err");
+                }*/
+                for (String specie : species) {
+                    avg.put(specie,
+                            (float) (currMarking.get(specie) / bucketCount
+                                    .get(specie)));
                 }
                 add(time, avg);
             }
