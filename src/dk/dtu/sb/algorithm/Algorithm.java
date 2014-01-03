@@ -12,7 +12,7 @@ import dk.dtu.sb.spn.StochasticPetriNet;
  * This class implements a bunch of helper methods that can be used in the
  * method {@link #run()} that should be implemented when this class is extended.
  */
-public class Algorithm implements Runnable {
+public abstract class Algorithm implements Runnable {
 
     private final int uniqueId;
 

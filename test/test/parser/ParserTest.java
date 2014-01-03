@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import dk.dtu.sb.parser.Parser;
+import dk.dtu.sb.parser.AbstractParser;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 public class ParserTest {
@@ -41,7 +41,7 @@ public class ParserTest {
 
 }
 
-class StubParser extends Parser {
+class StubParser extends AbstractParser {
 
     @Override
     public StochasticPetriNet parse() {

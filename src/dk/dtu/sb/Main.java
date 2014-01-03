@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 import dk.dtu.sb.compiler.Compiler;
 import dk.dtu.sb.output.GraphGUI;
-import dk.dtu.sb.parser.Parser;
+import dk.dtu.sb.parser.AbstractParser;
 import dk.dtu.sb.parser.SBMLParser;
 import dk.dtu.sb.simulator.Simulator;
 
@@ -227,11 +227,11 @@ public class Main {
         String filename = params.getFilename();
         try {
             // instantiate parser specified in parameters file
-            Parser parser = getParser(params.getParserClassName());
-            parser.readFile(filename);
+            AbstractParser abstractParser = getParser(params.getParserClassName());
+            abstractParser.readFile(filename);
 
             // instantiate compiler
-            Compiler compiler = new Compiler(parser.parse(), params);
+            Compiler compiler = new Compiler(abstractParser.parse(), params);
 
             // input result of compilation and algorithm to the simulator and
             // run
@@ -257,17 +257,17 @@ public class Main {
      * 
      * @param className
      *            The fully qualified name of the parser extending
-     *            {@link Parser}.
+     *            {@link AbstractParser}.
      * @return An instance of the Parser specified.
      */
-    private static Parser getParser(String className) {
+    private static AbstractParser getParser(String className) {
         try {
             Class<?> parserClass = Class.forName(className);
-            Parser parser = (Parser) parserClass.newInstance();
+            AbstractParser abstractParser = (AbstractParser) parserClass.newInstance();
 
             Util.log.debug("Parser class: " + className);
 
-            return parser;
+            return abstractParser;
         } catch (ClassNotFoundException e) {
             Util.log.error("The parser class: " + className
                     + " could not be found. Using default.");

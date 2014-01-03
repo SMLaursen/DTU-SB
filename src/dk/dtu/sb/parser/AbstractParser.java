@@ -12,7 +12,7 @@ import dk.dtu.sb.spn.StochasticPetriNet;
  * Extend this Class to create your own parser. The {@link #parse()} method is the only
  * method that needs to be implemented.
  */
-public abstract class Parser {
+public abstract class AbstractParser {
     
     protected Parameters params = new Parameters();
 
@@ -64,7 +64,7 @@ public abstract class Parser {
     }
     
     /**
-     * See {@link Parser#input}.
+     * See {@link AbstractParser#input}.
      */
     public String getInput() {
         return input;
