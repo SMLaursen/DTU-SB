@@ -2,7 +2,7 @@ package dk.dtu.sb.data;
 
 import java.util.Map;
 
-import dk.dtu.sb.output.AbstractOutputFormatter;
+import dk.dtu.sb.outputformatter.AbstractOutputFormatter;
 
 /**
  * This class holds plots (concentrations) for time points of final simulation.

@@ -1,4 +1,4 @@
-package dk.dtu.sb.output;
+package dk.dtu.sb.outputformatter;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

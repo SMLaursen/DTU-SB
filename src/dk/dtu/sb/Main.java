@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import dk.dtu.sb.compiler.Compiler;
-import dk.dtu.sb.output.GraphGUI;
+import dk.dtu.sb.outputformatter.GraphGUI;
 import dk.dtu.sb.parser.AbstractParser;
 import dk.dtu.sb.parser.SBMLParser;
 import dk.dtu.sb.simulator.Simulator;

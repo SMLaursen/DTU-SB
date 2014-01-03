@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import dk.dtu.sb.Parameters;
+import dk.dtu.sb.Util;
 
 /**
  * This class will produce the final plots for the output of the algorithm runs.
@@ -118,12 +119,19 @@ public class SimulationResult {
      */
     private HashSet<String> getDifference(HashMap<String, Integer> mapOne,
             HashMap<String, Integer> mapTwo) {
+        
         HashSet<String> difference = new HashSet<String>();
         for (String key : mapOne.keySet()) {
             if (!mapTwo.containsKey(key) || mapOne.get(key) != mapTwo.get(key)) {
                 difference.add(key);
             }
         }
+        for (String key : mapTwo.keySet()) {
+            if (!mapOne.containsKey(key)) {
+                difference.add(key);
+            }
+        }
+        
         return difference;
     }
 

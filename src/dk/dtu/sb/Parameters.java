@@ -55,6 +55,9 @@ public class Parameters {
     private static final String PARAM_OUT_FORMATTER_CLASS = "output.formatter";
     private static final String PARAM_OUT_FORMATTER_CLASS_DEFAULT = "dk.dtu.sb.output.GraphGUI";
     
+    private static final String PARAM_OUT_FILENAME = "output.filename";
+    private static final String PARAM_OUT_FILENAME_DEFAULT = "output.out";
+    
     private static final String PARAM_SIM_THRESHOLD = "simulation.threshold";
     public static final double PARAM_SIM_THRESHOLD_DEFAULT = 0.0005;
     
@@ -403,6 +406,21 @@ public class Parameters {
         String compilersString = Arrays.toString(compilers);
         compilersString = compilersString.substring(1, compilersString.length()-1);        
         holder.setProperty(PARAM_COMPILERS, compilersString);
+    }
+    
+    /**
+     * The filename of the file to save the output to.
+     */
+    public String getOutputFilename() {
+        return holder.getProperty(PARAM_OUT_FILENAME,
+                PARAM_OUT_FILENAME_DEFAULT);
+    }
+
+    /**
+     * See {@link #getOutputFilename()}.
+     */
+    public void setOutputFilename(String filename) {
+        holder.setProperty(PARAM_OUT_FILENAME, filename);
     }
 
     /**

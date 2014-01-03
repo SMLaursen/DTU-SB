@@ -9,3 +9,5 @@ out.csv
 test/test/parser/BIOMD0000000012.pdf
 test/test/parser/BIOMD0000000412.pdf
 .DS_Store
+/neg_feedback_1.dat
+/neg_feedback_10.dat
