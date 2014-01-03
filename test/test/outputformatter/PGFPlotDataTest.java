@@ -87,6 +87,42 @@ public class PGFPlotDataTest {
         assertTrue(file.exists());
     }
     
+    @Test
+    public void testNegFeedbackExt1Iteration() {
+        Util.log.setLevel(Level.DEBUG);
+        
+        Parameters p = new Parameters();
+
+        p.setIterations(1);
+        p.setNoOfThreads(2);
+        p.setStoptime(10000);
+        p.setOutStepCount(1000);
+        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setOutputFilename("neg_feedback_ext_1.dat");
+        p.setSimThreshold(0.0001);
+        
+        File file = new File(p.getOutputFilename());
+        
+        if (file.exists()) {
+            file.delete();
+        }
+        
+        assertFalse(file.exists());
+
+        Simulator simulator = new Simulator(parse("test/test/outputformatter/neg_feedback_ext.xml"), p);
+        simulator.simulate();
+
+        SimulationResult result = simulator.getOutput();
+        
+        GraphGUI graph = new GraphGUI();
+        graph.process(result, p);
+        
+        PGFPlotData plot = new PGFPlotData();
+        plot.process(result, p);
+        
+        assertTrue(file.exists());
+    }
+    
     public StochasticPetriNet parse(String filename) {
         StochasticPetriNet spn = null;
         SBMLParser parser = new SBMLParser();

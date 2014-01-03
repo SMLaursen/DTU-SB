@@ -76,10 +76,11 @@ public class SimulationResult {
 
                 // For each simulation set
                 for (AlgorithmResult algorithmResult : algorithmResults) {
-                    LinkedList<SimulationPoint> list = algorithmResult.getSimulationPoints();
-                    //for (SimulationPoint simulationPoint : algorithmResult
-                    //        .getSimulationPoints()) {
-                    while(!list.isEmpty()) {
+                    LinkedList<SimulationPoint> list = algorithmResult
+                            .getSimulationPoints();
+                    // for (SimulationPoint simulationPoint : algorithmResult
+                    // .getSimulationPoints()) {
+                    while (!list.isEmpty()) {
                         SimulationPoint simulationPoint = list.removeFirst();
                         // Take all those values in the bucket (<i)
                         if (simulationPoint.getTime() > time) {
@@ -99,18 +100,16 @@ public class SimulationResult {
 
                 // Store averaged intersection
                 HashMap<String, Float> avg = new HashMap<String, Float>();
-                /*for (String species : getDifference(currMarking, prevMarking)) {
-                    avg.put(species,
-                            (float) (currMarking.get(species) / bucketCount
-                                    .get(species)));
-                }
-                if (avg.size() != 4) {
-                    Util.log.error("err");
-                }*/
+                /*
+                 * for (String species : getDifference(currMarking,
+                 * prevMarking)) { avg.put(species, (float)
+                 * (currMarking.get(species) / bucketCount .get(species))); } if
+                 * (avg.size() != 4) { Util.log.error("err"); }
+                 */
                 for (String specie : species) {
-                    avg.put(specie,
-                            (float) (currMarking.get(specie) / bucketCount
-                                    .get(specie)));
+                    float marking = currMarking.containsKey(specie) ? currMarking
+                            .get(specie) : 0;
+                    avg.put(specie, (float) (marking / bucketCount.get(specie)));
                 }
                 add(time, avg);
             }
@@ -126,7 +125,7 @@ public class SimulationResult {
      */
     private HashSet<String> getDifference(HashMap<String, Integer> mapOne,
             HashMap<String, Integer> mapTwo) {
-        
+
         HashSet<String> difference = new HashSet<String>();
         for (String key : mapOne.keySet()) {
             if (!mapTwo.containsKey(key) || mapOne.get(key) != mapTwo.get(key)) {
@@ -138,7 +137,7 @@ public class SimulationResult {
                 difference.add(key);
             }
         }
-        
+
         return difference;
     }
 
