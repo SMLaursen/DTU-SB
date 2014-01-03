@@ -2,7 +2,7 @@ package dk.dtu.sb.compiler;
 
 /**
  * Compiler-exception to use when an error occurs in a compiler implementing
- * {@link CompilerInterface}.
+ * {@link AbstractCompiler}.
  */
 public class CompilerException extends Exception {
 

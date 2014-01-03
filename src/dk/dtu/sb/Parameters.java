@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Properties;
 
-import dk.dtu.sb.compiler.CompilerInterface;
+import dk.dtu.sb.compiler.AbstractCompiler;
 
 /**
  * Container of Parameters used in simulation, algorithms and loading of input
@@ -389,7 +389,7 @@ public class Parameters {
     }
 
     /**
-     * A list of fully qualified names of compilers implementing {@link CompilerInterface}.
+     * A list of fully qualified names of compilers implementing {@link AbstractCompiler}.
      */
     public String[] getCompilers() {
         String compilersString = holder.getProperty(PARAM_COMPILERS);

@@ -6,7 +6,7 @@ import dk.dtu.sb.spn.StochasticPetriNet;
  * This compiler will verify that the input {@link StochasticPetriNet} is valid
  * and safe to simulate.
  */
-public class VerifyCompiler implements CompilerInterface {
+public class VerifyCompiler extends AbstractCompiler {
 
     /**
      * {@inheritDoc}

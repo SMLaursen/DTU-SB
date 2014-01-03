@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import dk.dtu.sb.Parameters;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
@@ -12,6 +13,8 @@ import dk.dtu.sb.spn.StochasticPetriNet;
  * method that needs to be implemented.
  */
 public abstract class Parser {
+    
+    protected Parameters params = new Parameters();
 
     /**
      * The StochasticPetriNet to modify and return in {@link #parse()}.
@@ -65,5 +68,16 @@ public abstract class Parser {
      */
     public String getInput() {
         return input;
+    }
+    
+    /**
+     * Used to set the {@link Parameters} object after instantiation.
+     * 
+     * @param params
+     *            The {@link Parameters} with additional simulator parameters
+     *            specified.
+     */
+    public void setParams(Parameters params) {
+        this.params = params;
     }
 }
