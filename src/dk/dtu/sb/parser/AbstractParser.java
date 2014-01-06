@@ -9,7 +9,7 @@ import dk.dtu.sb.Parameters;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
- * Extend this Class to create your own parser. The {@link #parse()} method is the only
+ * Extend this class to create your own parser. The {@link #parse()} method is the only
  * method that needs to be implemented.
  */
 public abstract class AbstractParser {
