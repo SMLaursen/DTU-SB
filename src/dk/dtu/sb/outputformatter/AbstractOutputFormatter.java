@@ -25,9 +25,6 @@ public abstract class AbstractOutputFormatter {
      */
     protected Parameters params = new Parameters();
 
-    /**
-     * 
-     */
     private BufferedWriter writer;
 
     /**
@@ -66,8 +63,11 @@ public abstract class AbstractOutputFormatter {
     }
 
     /**
+     * Initialise the file writer with the filename given from
+     * {@link Parameters#getOutputFilename()}.
      * 
      * @throws IOException
+     *             If something went wrong.
      */
     private void initWriter() throws IOException {
         File file = new File(params.getOutputFilename());
@@ -79,9 +79,13 @@ public abstract class AbstractOutputFormatter {
     }
 
     /**
+     * Write the given contents to the file initialised in {@link #initWriter()}
+     * .
      * 
      * @param contents
-     * @throws IOException 
+     *            The raw content to write in the file.
+     * @throws IOException
+     *             If something went wrong.
      */
     protected void writeToFile(String contents) throws IOException {
         if (writer == null) {
@@ -91,7 +95,7 @@ public abstract class AbstractOutputFormatter {
     }
 
     /**
-     * 
+     * Closes the file after no more content has to be written.
      */
     protected void closeFile() {
         if (writer != null) {

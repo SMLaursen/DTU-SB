@@ -213,12 +213,12 @@ public class Parameters {
         }
         return n;
     }
-
+    
     /**
-     * See {@link #getIterations()}.
+     * See {@link #getNoOfThreads()}.
      */
-    public void setMaxIterTime(int seconds) {
-        holder.setProperty(PARAM_SIM_MAXITERTIME, "" + seconds);
+    public void setNoOfThreads(int n) {
+        holder.setProperty(PARAM_SIM_NOOFTHREADS, "" + n);
     }
 
     /**
@@ -240,12 +240,12 @@ public class Parameters {
         }
         return seconds;
     }
-
+    
     /**
-     * See {@link #getNoOfThreads()}.
+     * See {@link #getMaxIterTime()}.
      */
-    public void setNoOfThreads(int n) {
-        holder.setProperty(PARAM_SIM_NOOFTHREADS, "" + n);
+    public void setMaxIterTime(int seconds) {
+        holder.setProperty(PARAM_SIM_MAXITERTIME, "" + seconds);
     }
 
     /**

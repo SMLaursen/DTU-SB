@@ -100,6 +100,7 @@ public class SimulationResult {
 
                 // Store averaged intersection
                 HashMap<String, Float> avg = new HashMap<String, Float>();
+                // TODO: determine whether the following can be removed
                 /*
                  * for (String species : getDifference(currMarking,
                  * prevMarking)) { avg.put(species, (float)
@@ -160,19 +161,25 @@ public class SimulationResult {
     }
 
     /**
+     * Add the given plot point to the result.
      * 
      * @param plotPoint
+     *            The plot point.
      */
     public void add(PlotPoint plotPoint) {
         plotPoints.add(plotPoint);
     }
 
     /**
+     * Add the given raw variables as a {@link PlotPoint} in
+     * {@link #add(PlotPoint)}.
      * 
      * @param time
+     *            A time point.
      * @param markings
+     *            The markings for the time point.
      */
     public void add(double time, HashMap<String, Float> markings) {
-        plotPoints.add(new PlotPoint(time, markings));
+        add(new PlotPoint(time, markings));
     }
 }

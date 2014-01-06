@@ -32,6 +32,10 @@ import org.jfree.data.xy.XYSeriesCollection;
 import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.data.PlotPoint;
 
+/**
+ * A concrete implementation of the {@link AbstractOutputFormatter}. Shows a
+ * Java Swing GUI with a graph of the simulation results.
+ */
 public class GraphGUI extends AbstractOutputFormatter {
 
     public void process(SimulationResult plotData) {

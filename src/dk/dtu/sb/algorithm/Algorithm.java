@@ -30,22 +30,22 @@ public abstract class Algorithm implements Runnable {
             spn.getInitialMarkings());
 
     /**
-     * 
+     * The shared parameters object.
      */
     protected static Parameters params = new Parameters();
 
     /**
-     * 
+     * The shared input. This should not be modified in {@link #run()}.
      */
     protected static StochasticPetriNet spn = new StochasticPetriNet();
 
     /**
-     * 
+     * The final result, a mapping from instances to their result.
      */
     private static volatile HashMap<Integer, AlgorithmResult> result = new HashMap<Integer, AlgorithmResult>();
 
     /**
-     * Default constructor generating the uniqueid and creating the
+     * Default constructor generating the {@link #uniqueId} and creating the
      * {@link AlgorithmResult} of this run.
      */
     public Algorithm() {
@@ -75,7 +75,7 @@ public abstract class Algorithm implements Runnable {
         Algorithm.spn = spn;
         Algorithm.params = params;
     }
-    
+
     /**
      * Used to set the {@link Parameters} object after instantiation.
      * 
