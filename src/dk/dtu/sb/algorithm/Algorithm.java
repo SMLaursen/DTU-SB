@@ -75,6 +75,17 @@ public abstract class Algorithm implements Runnable {
         Algorithm.spn = spn;
         Algorithm.params = params;
     }
+    
+    /**
+     * Used to set the {@link Parameters} object after instantiation.
+     * 
+     * @param params
+     *            The {@link Parameters} with additional simulator parameters
+     *            specified.
+     */
+    public static void setParams(Parameters params) {
+        Algorithm.params = params;
+    }
 
     /**
      * Get the final result of several runs of the algorithm.
