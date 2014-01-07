@@ -1,9 +1,7 @@
 package dk.dtu.sb;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import dk.dtu.sb.compiler.Compiler;
 import dk.dtu.sb.outputformatter.AbstractOutputFormatter;
@@ -55,6 +53,7 @@ public class Main {
      * @param args
      *            From command line.
      */
+    @SuppressWarnings("static-access")
     private static void setupCli(String[] args) {
         CommandLineParser parser = new GnuParser();
 
@@ -142,19 +141,20 @@ public class Main {
         if (line.hasOption(OPT_CPROP)) {
             ParametersCreator.createPropertiesFile();
         } else {
+            Parameters params = null;
             if (line.hasOption(OPT_RPROP)) {
-                simulate(new Parameters(line.getOptionValue(OPT_RPROP)));
+                params = new Parameters(line.getOptionValue(OPT_RPROP));
             } else if (line.hasOption(OPT_FILE_SHORT)) {
-                Parameters params = new Parameters();
-                params.setInputFilename(line.getOptionValue(OPT_FILE_SHORT));
-
+                params = new Parameters();
+                params.setInputFilename(line.getOptionValue(OPT_FILE_SHORT));                
+            } else {
+                Util.log.info("You have to provide either a properties file as input or specify a file as input.");
+            }
+            if (params != null) {
                 if (line.hasOption(OPT_GRAPH_SHORT)) {
                     params.setOutputResultGUI(true);
                 }
-
                 simulate(params);
-            } else {
-                Util.log.info("You have to provide either a properties file as input or specify a file as input.");
             }
         }
     }
