@@ -6,7 +6,7 @@
 	<property name="source.dir" value="src" />
 	<property name="test.dir" value="test" />
 	<property name="build.dir" value="build" />
-	<property name="javadoc.dir" value="javadoc" />
+	<property name="javadoc.dir" value="dtu-sb-docs" />
 
 	<property name="junit.lib" value="lib/junit-4.11.jar" />
 	<property name="hamcrest.libr" value="lib/hamcrest-core-1.3.jar" />
@@ -78,7 +78,7 @@
 			<classpath refid="classpath" />
 		</javadoc>
 		<echo>
-JavaDoc available in directory ${javadocDirectory}/index.html.
+JavaDoc available in directory ${javadoc.dir}/index.html.
     </echo>
 	</target>
 
