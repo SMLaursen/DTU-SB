@@ -58,7 +58,7 @@ public class GillespieAlgorithm extends Algorithm {
 
             // Step 3
             time += tau;
-            if (time > params.getStoptime()) {
+            if (time > params.getSimStoptime()) {
                 break;
             }
             Util.updateMarkings(R_mu, currentMarkings);
@@ -141,7 +141,7 @@ public class GillespieAlgorithm extends Algorithm {
      */
     private double calculatePropensity(Reaction reaction) {
         double h = 1.0;
-        switch (params.getRateMode()) {
+        switch (params.getSimRateMode()) {
         case Parameters.PARAM_SIM_RATE_MODE_CUSTOM:
             if (!reaction.canReact(currentMarkings)) {
                 h = 0;

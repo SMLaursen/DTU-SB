@@ -57,10 +57,10 @@ public class Simulator {
      *            The input {@link StochasticPetriNet}.
      * @param params
      *            The {@link Parameters} with the algorithm specified in
-     *            {@link Parameters#getAlgorithmClassName()}.
+     *            {@link Parameters#getSimAlgorithmClassName()}.
      */
     public Simulator(StochasticPetriNet spn, Parameters params) {
-        this(spn, params, params.getAlgorithmClassName());
+        this(spn, params, params.getSimAlgorithmClassName());
     }
 
     /**
@@ -82,7 +82,7 @@ public class Simulator {
         this.spn = spn;
         this.algorithmName = algorithmName;
         this.params = params;
-        this.executor = Executors.newFixedThreadPool(params.getNoOfThreads());
+        this.executor = Executors.newFixedThreadPool(params.getSimNoOfThreads());
     }
 
     /**
@@ -146,13 +146,13 @@ public class Simulator {
         Class<?> algorithmClass = Class.forName(algorithmName);
         Algorithm worker;
         
-        for (int iteration = 0; iteration < params.getIterations(); iteration++) {
+        for (int iteration = 0; iteration < params.getSimIterations(); iteration++) {
             worker = (Algorithm) algorithmClass.newInstance();
             executor.execute(worker);
         }
         
         executor.shutdown();
-        executor.awaitTermination(params.getMaxIterTime(), TimeUnit.SECONDS);
+        executor.awaitTermination(params.getSimMaxIterTime(), TimeUnit.SECONDS);
         executor.shutdownNow();
 
         // Wait additionally 5sec to ensure the thread has been shutdown

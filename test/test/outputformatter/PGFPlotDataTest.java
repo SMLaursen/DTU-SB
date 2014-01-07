@@ -23,11 +23,11 @@ public class PGFPlotDataTest {
         
         Parameters p = new Parameters();
 
-        p.setIterations(10);
-        p.setNoOfThreads(2);
-        p.setStoptime(6000);
-        p.setOutStepCount(1000);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(10);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(6000);
+        p.setOutputStepCount(1000);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
         p.setOutputFilename("neg_feedback_10.dat");
         
         File file = new File(p.getOutputFilename());
@@ -58,11 +58,11 @@ public class PGFPlotDataTest {
         
         Parameters p = new Parameters();
 
-        p.setIterations(1);
-        p.setNoOfThreads(2);
-        p.setStoptime(6000);
-        p.setOutStepCount(1000);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(1);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(6000);
+        p.setOutputStepCount(1000);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
         p.setOutputFilename("neg_feedback_1.dat");
         
         File file = new File(p.getOutputFilename());
@@ -93,11 +93,11 @@ public class PGFPlotDataTest {
         
         Parameters p = new Parameters();
 
-        p.setIterations(1);
-        p.setNoOfThreads(2);
-        p.setStoptime(10000);
-        p.setOutStepCount(1000);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(1);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(10000);
+        p.setOutputStepCount(1000);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
         p.setOutputFilename("neg_feedback_ext_1.dat");
         p.setSimThreshold(0.0001);
         

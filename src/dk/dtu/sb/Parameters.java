@@ -19,50 +19,98 @@ public class Parameters {
      */
     private Properties holder = new Properties();
 
-    private static final String PARAM_INPUT_FILENAME = "input.file";
+    /**
+     * See {@link #getInputFilename()}.
+     */
     public static final String PARAM_INPUT_FILENAME_DEFAULT = "input.xml";
+    private static final String PARAM_INPUT_FILENAME = "input.file";
 
-    private static final String PARAM_INPUT_PARSER_CLASS = "input.parser";
+    /**
+     * See {@link #getInputParserClassName()}.
+     */
     public static final String PARAM_INPUT_PARSER_CLASS_DEFAULT = "dk.dtu.sb.parser.SBMLParser";
+    private static final String PARAM_INPUT_PARSER_CLASS = "input.parser";
 
-    private static final String PARAM_SIM_ALGORITHM_CLASS = "simulation.algorithm";
+    /**
+     * See {@link #getSimAlgorithmClassName()}.
+     */
     public static final String PARAM_SIM_ALGORITHM_CLASS_DEFAULT = "dk.dtu.sb.algorithm.GillespieAlgorithm";
+    private static final String PARAM_SIM_ALGORITHM_CLASS = "simulation.algorithm";
 
-    private static final String PARAM_SIM_ITERATIONS = "simulation.iterations";
+    /**
+     * See {@link #getSimIterations()}.
+     */
     public static final int PARAM_SIM_ITERATIONS_DEFAULT = 1;
+    private static final String PARAM_SIM_ITERATIONS = "simulation.iterations";
 
-    private static final String PARAM_SIM_MAXITERTIME = "simulation.maxIterTime";
+    /**
+     * See {@link #getSimMaxIterTime()}.
+     */
     public static final int PARAM_SIM_MAXITERTIME_DEFAULT = 60;
+    private static final String PARAM_SIM_MAXITERTIME = "simulation.maxIterTime";
 
-    private static final String PARAM_SIM_NOOFTHREADS = "simulation.no_of_thread";
+    /**
+     * See {@link #getSimNoOfThreads()}.
+     */
     public static final int PARAM_SIM_NOOFTHREADS_DEFAULT = Runtime
             .getRuntime().availableProcessors();
-
-    private static final String PARAM_SIM_STOPTIME = "simulation.stoptime";
+    private static final String PARAM_SIM_NOOFTHREADS = "simulation.no_of_thread";
+    
+    /**
+     * See {@link #getSimStoptime()}.
+     */
     public static final int PARAM_SIM_STOPTIME_DEFAULT = 20;
-
-    private static final String PARAM_SIM_RATE_MODE = "simulation.rate_mode";
+    private static final String PARAM_SIM_STOPTIME = "simulation.stoptime";
+    
+    /**
+     * See {@link #getSimRateMode()}.
+     */
     public static final int PARAM_SIM_RATE_MODE_CONSTANT = 0;
+    /**
+     * See {@link #getSimRateMode()}.
+     */
     public static final int PARAM_SIM_RATE_MODE_CUSTOM = 100;
+    /**
+     * See {@link #getSimRateMode()}.
+     */
     public static final int PARAM_SIM_RATE_MODE_DEFAULT = PARAM_SIM_RATE_MODE_CUSTOM;
+    private static final String PARAM_SIM_RATE_MODE = "simulation.rate_mode";
 
-    private static final String PARAM_OUT_RESULT_GUI = "output.graph_gui";
+    /**
+     * See {@link #getOutputResultGUI()}.
+     */
     public static final boolean PARAM_OUT_RESULT_GUI_DEFAULT = false;
+    private static final String PARAM_OUT_RESULT_GUI = "output.graph_gui";
 
-    private static final String PARAM_OUT_STEPCOUNT = "output.stepcount";
+    /**
+     * See {@link #getOutputStepCount()}.
+     */
     public static final int PARAM_OUT_STEPCOUNT_DEFAULT = 1000;
+    private static final String PARAM_OUT_STEPCOUNT = "output.stepcount";
 
+    /**
+     * See {@link #getOutputFormatterClassName()}.
+     */
+    public static final String PARAM_OUT_FORMATTER_CLASS_DEFAULT = "dk.dtu.sb.output.GraphGUI";
     private static final String PARAM_OUT_FORMATTER_CLASS = "output.formatter";
-    private static final String PARAM_OUT_FORMATTER_CLASS_DEFAULT = "dk.dtu.sb.output.GraphGUI";
     
+    /**
+     * See {@link #getOutputFilename()}.
+     */
+    public static final String PARAM_OUT_FILENAME_DEFAULT = "output.out";
     private static final String PARAM_OUT_FILENAME = "output.filename";
-    private static final String PARAM_OUT_FILENAME_DEFAULT = "output.out";
     
-    private static final String PARAM_SIM_THRESHOLD = "simulation.threshold";
+    /**
+     * See {@link #getSimThreshold()}.
+     */
     public static final double PARAM_SIM_THRESHOLD_DEFAULT = 0.0005;
+    private static final String PARAM_SIM_THRESHOLD = "simulation.threshold";
     
-    private static final String PARAM_COMPILERS = "compilers";
+    /**
+     * See {@link #getCompilers()}.
+     */
     public static final String[] PARAM_COMPILERS_DEFAULT = new String[0];
+    private static final String PARAM_COMPILERS = "compilers";
 
     /**
      * Instantiates a Parameter object with default values.
@@ -89,12 +137,12 @@ public class Parameters {
     }
 
     private void setDefaults() {
-        this.setFilename(PARAM_INPUT_FILENAME_DEFAULT);
-        this.setParserClassName(PARAM_INPUT_PARSER_CLASS_DEFAULT);
+        this.setInputFilename(PARAM_INPUT_FILENAME_DEFAULT);
+        this.setInputParserClassName(PARAM_INPUT_PARSER_CLASS_DEFAULT);
 
-        this.setAlgorithmClassName(PARAM_SIM_ALGORITHM_CLASS_DEFAULT);
-        this.setIterations(PARAM_SIM_ITERATIONS_DEFAULT);
-        this.setStoptime(PARAM_SIM_STOPTIME_DEFAULT);
+        this.setSimAlgorithmClassName(PARAM_SIM_ALGORITHM_CLASS_DEFAULT);
+        this.setSimIterations(PARAM_SIM_ITERATIONS_DEFAULT);
+        this.setSimStoptime(PARAM_SIM_STOPTIME_DEFAULT);
     }
 
     /**
@@ -115,15 +163,15 @@ public class Parameters {
     /**
      * The fully qualified class name of the algorithm impl.
      */
-    public String getAlgorithmClassName() {
+    public String getSimAlgorithmClassName() {
         return holder.getProperty(PARAM_SIM_ALGORITHM_CLASS,
                 PARAM_SIM_ALGORITHM_CLASS_DEFAULT);
     }
 
     /**
-     * See {@link #getAlgorithmClassName()}.
+     * See {@link #getSimAlgorithmClassName()}.
      */
-    public void setAlgorithmClassName(String className) {
+    public void setSimAlgorithmClassName(String className) {
         holder.setProperty(PARAM_SIM_ALGORITHM_CLASS, className);
     }
     
@@ -145,37 +193,37 @@ public class Parameters {
     /**
      * The fully qualified class name of the parser impl.
      */
-    public String getParserClassName() {
+    public String getInputParserClassName() {
         return holder.getProperty(PARAM_INPUT_PARSER_CLASS,
                 PARAM_INPUT_PARSER_CLASS_DEFAULT);
     }
 
     /**
-     * See {@link #getParserClassName()}.
+     * See {@link #getInputParserClassName()}.
      */
-    public void setParserClassName(String className) {
+    public void setInputParserClassName(String className) {
         holder.setProperty(PARAM_INPUT_PARSER_CLASS, className);
     }
 
     /**
      * The name of the input file to the simulator
      */
-    public String getFilename() {
+    public String getInputFilename() {
         return holder.getProperty(PARAM_INPUT_FILENAME,
                 PARAM_INPUT_FILENAME_DEFAULT);
     }
 
     /**
-     * See {@link #getFilename()}.
+     * See {@link #getInputFilename()}.
      */
-    public void setFilename(String filename) {
+    public void setInputFilename(String filename) {
         holder.setProperty(PARAM_INPUT_FILENAME, filename);
     }
 
     /**
      * The number of times to run the simulation
      */
-    public int getIterations() {
+    public int getSimIterations() {
         int iterations;
         try {
             iterations = Integer.parseInt(holder.getProperty(
@@ -189,16 +237,16 @@ public class Parameters {
     }
 
     /**
-     * See {@link #getIterations()}.
+     * See {@link #getSimIterations()}.
      */
-    public void setIterations(int iterations) {
+    public void setSimIterations(int iterations) {
         holder.setProperty(PARAM_SIM_ITERATIONS, "" + iterations);
     }
 
     /**
      * The maximum number of threads to run the simulation concurrently.
      */
-    public int getNoOfThreads() {
+    public int getSimNoOfThreads() {
         int n;
         try {
             n = Integer.parseInt(holder.getProperty(PARAM_SIM_NOOFTHREADS, ""
@@ -215,9 +263,9 @@ public class Parameters {
     }
     
     /**
-     * See {@link #getNoOfThreads()}.
+     * See {@link #getSimNoOfThreads()}.
      */
-    public void setNoOfThreads(int n) {
+    public void setSimNoOfThreads(int n) {
         holder.setProperty(PARAM_SIM_NOOFTHREADS, "" + n);
     }
 
@@ -225,7 +273,7 @@ public class Parameters {
      * The maximum number of seconds a thread is allowed to run in simulation.
      * Default is 60 seconds.
      */
-    public int getMaxIterTime() {
+    public int getSimMaxIterTime() {
         int seconds;
         try {
             seconds = Integer.parseInt(holder.getProperty(
@@ -242,16 +290,16 @@ public class Parameters {
     }
     
     /**
-     * See {@link #getMaxIterTime()}.
+     * See {@link #getSimMaxIterTime()}.
      */
-    public void setMaxIterTime(int seconds) {
+    public void setSimMaxIterTime(int seconds) {
         holder.setProperty(PARAM_SIM_MAXITERTIME, "" + seconds);
     }
 
     /**
      * The maximum of the last time point.
      */
-    public int getStoptime() {
+    public int getSimStoptime() {
         int stoptime;
         try {
             stoptime = Integer.parseInt(holder.getProperty(PARAM_SIM_STOPTIME,
@@ -265,16 +313,16 @@ public class Parameters {
     }
 
     /**
-     * See {@link #getStoptime()}.
+     * See {@link #getSimStoptime()}.
      */
-    public void setStoptime(int stoptime) {
+    public void setSimStoptime(int stoptime) {
         holder.setProperty(PARAM_SIM_STOPTIME, "" + stoptime);
     }
 
     /**
      * Whether to show a graph after simulation
      */
-    public boolean getResultGUI() {
+    public boolean getOutputResultGUI() {
         boolean result;
         try {
             result = Boolean.parseBoolean(holder.getProperty(
@@ -288,9 +336,9 @@ public class Parameters {
     }
 
     /**
-     * See {@link #getResultGUI()}.
+     * See {@link #getOutputResultGUI()}.
      */
-    public void setResultGUI(boolean result) {
+    public void setOutputResultGUI(boolean result) {
         holder.setProperty(PARAM_OUT_RESULT_GUI, "" + result);
     }
 
@@ -298,7 +346,7 @@ public class Parameters {
      * The number of data-points for output representation. A value of zero will
      * output all generated data-points.
      */
-    public int getOutStepCount() {
+    public int getOutputStepCount() {
         int stepsize;
         try {
             stepsize = Integer.parseInt(holder.getProperty(PARAM_OUT_STEPCOUNT,
@@ -315,9 +363,9 @@ public class Parameters {
     }
 
     /**
-     * See {@link #getOutStepCount()}.
+     * See {@link #getOutputStepCount()}.
      */
-    public void setOutStepCount(int steps) {
+    public void setOutputStepCount(int steps) {
         holder.setProperty(PARAM_OUT_STEPCOUNT, "" + steps);
     }
 
@@ -343,7 +391,7 @@ public class Parameters {
     }
 
     /**
-     * See {@link #getOutStepCount()}.
+     * See {@link #getOutputStepCount()}.
      */
     public void setSimThreshold(double threshold) {
         holder.setProperty(PARAM_SIM_THRESHOLD, "" + threshold);
@@ -362,7 +410,7 @@ public class Parameters {
      * will typically depend on one or more species in the system.</li>
      * </ul>
      */
-    public int getRateMode() {
+    public int getSimRateMode() {
         int mode;
         try {
             mode = Integer.parseInt(holder.getProperty(PARAM_SIM_RATE_MODE, ""
@@ -380,9 +428,9 @@ public class Parameters {
     }
 
     /**
-     * See {@link #getRateMode()}.
+     * See {@link #getSimRateMode()}.
      */
-    public void setRateMode(int mode) {
+    public void setSimRateMode(int mode) {
         if (mode < PARAM_SIM_RATE_MODE_CONSTANT
                 || mode > PARAM_SIM_RATE_MODE_CUSTOM) {
             Util.log.warn(mode + " is not valid.");

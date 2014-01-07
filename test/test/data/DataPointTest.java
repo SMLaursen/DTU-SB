@@ -2,18 +2,18 @@ package test.data;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
 
-import dk.dtu.sb.data.Markings;
 import dk.dtu.sb.data.SimulationPoint;
 
 public class DataPointTest {
     
     private SimulationPoint dummyPoint(double time) {
-        Markings markings = new Markings();
+        HashMap<String, Integer> markings = new HashMap<String, Integer>();
         markings.put("S", 1);
         markings.put("T", 4);
         return new SimulationPoint(time, markings);

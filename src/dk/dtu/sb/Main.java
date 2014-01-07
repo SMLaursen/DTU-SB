@@ -152,10 +152,10 @@ public class Main {
                 simulate(new Parameters(line.getOptionValue(OPT_RPROP)));
             } else if (line.hasOption(OPT_FILE_SHORT)) {
                 Parameters params = new Parameters();
-                params.setFilename(line.getOptionValue(OPT_FILE_SHORT));
+                params.setInputFilename(line.getOptionValue(OPT_FILE_SHORT));
 
                 if (line.hasOption(OPT_GRAPH_SHORT)) {
-                    params.setResultGUI(true);
+                    params.setOutputResultGUI(true);
                 }
 
                 simulate(params);
@@ -176,27 +176,27 @@ public class Main {
         Parameters params = new Parameters();
 
         try {
-            params.setFilename(prompt("Input filename",
+            params.setInputFilename(prompt("Input filename",
                     Parameters.PARAM_INPUT_FILENAME_DEFAULT));
-            params.setParserClassName(prompt("Parser class",
+            params.setInputParserClassName(prompt("Parser class",
                     Parameters.PARAM_INPUT_PARSER_CLASS_DEFAULT));
-            params.setAlgorithmClassName(prompt("Algorithm class",
+            params.setSimAlgorithmClassName(prompt("Algorithm class",
                     Parameters.PARAM_SIM_ALGORITHM_CLASS_DEFAULT));
 
             int iterations = createIntProperty("Number of iterations", Parameters.PARAM_SIM_ITERATIONS_DEFAULT);
-            params.setIterations(iterations);
+            params.setSimIterations(iterations);
 
             int stoptime = createIntProperty("Stoptime", Parameters.PARAM_SIM_ITERATIONS_DEFAULT);
-            params.setStoptime(stoptime);
+            params.setSimStoptime(stoptime);
 
             boolean resultGUI = Parameters.PARAM_OUT_RESULT_GUI_DEFAULT;
             if (prompt("Show graph after simulation?", "no").equals("yes")) {
                 resultGUI = true;
             }
-            params.setResultGUI(resultGUI);
+            params.setOutputResultGUI(resultGUI);
 
             int stepsize = createIntProperty("Output stepsize", Parameters.PARAM_OUT_STEPCOUNT_DEFAULT);
-            params.setOutStepCount(stepsize);
+            params.setOutputStepCount(stepsize);
 
             String filename = prompt("Save as", "sim.properties");
 
@@ -224,10 +224,10 @@ public class Main {
      *            object.
      */
     private static void simulate(Parameters params) {
-        String filename = params.getFilename();
+        String filename = params.getInputFilename();
         try {
             // instantiate parser specified in parameters file
-            AbstractParser abstractParser = getParser(params.getParserClassName());
+            AbstractParser abstractParser = getParser(params.getInputParserClassName());
             abstractParser.readFile(filename);
 
             // instantiate compiler
@@ -239,7 +239,7 @@ public class Main {
             simulator.simulate();
 
             // show graph
-            if (params.getResultGUI()) {
+            if (params.getOutputResultGUI()) {
                 GraphGUI gui = new GraphGUI();
                 gui.process(simulator.getOutput(), params);
             }

@@ -16,11 +16,11 @@ public class GillespieTest {
     public void testNegFeedback() {
         Parameters p = new Parameters();
 
-        p.setIterations(10);
-        p.setNoOfThreads(2);
-        p.setStoptime(10000);
-        p.setOutStepCount(1000);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(10);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(10000);
+        p.setOutputStepCount(1000);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/neg_feedback.xml"), p);
     }
@@ -29,13 +29,13 @@ public class GillespieTest {
     public void testNegFeedbackReal() {
         Parameters p = new Parameters();
 
-        p.setIterations(2);
-        p.setNoOfThreads(2);
-        p.setStoptime(10000);
-        p.setOutStepCount(100);
+        p.setSimIterations(2);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(10000);
+        p.setOutputStepCount(100);
         p.setSimThreshold(0.1);
-        p.setMaxIterTime(120);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimMaxIterTime(120);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/neg_feed_real.xml"), p);
     }
@@ -44,12 +44,12 @@ public class GillespieTest {
     public void testRepressilator() {
         Parameters p = new Parameters();
 
-        p.setIterations(2);
-        p.setNoOfThreads(2);
-        p.setStoptime(6000);
-        p.setOutStepCount(1000);
+        p.setSimIterations(2);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(6000);
+        p.setOutputStepCount(1000);
         p.setSimThreshold(1);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000012.xml"), p);
     }
@@ -59,11 +59,11 @@ public class GillespieTest {
         // TODO: EmptySet is never used, maybe remove in a Compilation phase
         Parameters p = new Parameters();
 
-        p.setIterations(2);
-        p.setNoOfThreads(2);
-        p.setStoptime(200);
-        p.setOutStepCount(1000);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(2);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(200);
+        p.setOutputStepCount(1000);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000035.xml"), p);
     }
@@ -72,11 +72,11 @@ public class GillespieTest {
     public void testBioModel_MetThr_synthesis() {
         Parameters p = new Parameters();
 
-        p.setIterations(1);
-        p.setNoOfThreads(2);
-        p.setStoptime(1000);
-        p.setOutStepCount(1000);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(1);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(1000);
+        p.setOutputStepCount(1000);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000068.xml"), p);
     }
@@ -85,11 +85,11 @@ public class GillespieTest {
     public void testBioModel_TCell_receptor_activation() {
         Parameters p = new Parameters();
 
-        p.setIterations(5);
-        p.setNoOfThreads(4);
-        p.setStoptime(50000);
-        p.setOutStepCount(1000);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(5);
+        p.setSimNoOfThreads(4);
+        p.setSimStoptime(50000);
+        p.setOutputStepCount(1000);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000120.xml"), p);     
     }
@@ -98,10 +98,10 @@ public class GillespieTest {
     public void testBioModel_BistableReaction() {
         Parameters p = new Parameters();
 
-        p.setIterations(10);
-        p.setNoOfThreads(2);
-        p.setStoptime(2);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(10);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(2);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000233.xml"), p);       
     }
@@ -110,11 +110,11 @@ public class GillespieTest {
     public void testBioModel_SpontaneousOscillations() {
         Parameters p = new Parameters();
 
-        p.setIterations(1);
-        p.setNoOfThreads(2);
-        p.setStoptime(10);
-        p.setOutStepCount(1000);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(1);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(10);
+        p.setOutputStepCount(1000);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000099.xml"), p);       
     }
@@ -123,11 +123,11 @@ public class GillespieTest {
     public void testBioModel_NegFB_Homeostasis() {
         Parameters p = new Parameters();
 
-        p.setIterations(2);
-        p.setNoOfThreads(2);
-        p.setStoptime(1000);
-        p.setOutStepCount(100);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(2);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(1000);
+        p.setOutputStepCount(100);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000309.xml"), p);       
     }
@@ -136,11 +136,11 @@ public class GillespieTest {
     public void test_Gec_Repressilator() {
         Parameters p = new Parameters();
 
-        p.setIterations(1);
-        p.setNoOfThreads(2);
-        p.setStoptime(100);
-        p.setOutStepCount(1000);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(1);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(100);
+        p.setOutputStepCount(1000);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/gec_repressilator.xml"), p);      
     }
@@ -148,13 +148,13 @@ public class GillespieTest {
     public void testPredatorPrey() {
         Parameters p = new Parameters();
 
-        p.setIterations(1);
+        p.setSimIterations(1);
 //        p.setSimThreshold(0.0005);
-        p.setMaxIterTime(20);
-        p.setNoOfThreads(2);
-        p.setStoptime(5);
+        p.setSimMaxIterTime(20);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(5);
 //        p.setOutStepCount(500);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CONSTANT);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CONSTANT);
 
         simulateAndOutput(parse("test/test/simulator/PP.xml"), p);
     }
@@ -163,11 +163,11 @@ public class GillespieTest {
     public void test_Min_Feedback() {
         Parameters p = new Parameters();
 
-        p.setIterations(50);
-        p.setNoOfThreads(2);
-        p.setStoptime(1000);
-        p.setOutStepCount(10000);
-        p.setRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.setSimIterations(50);
+        p.setSimNoOfThreads(2);
+        p.setSimStoptime(1000);
+        p.setOutputStepCount(10000);
+        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000325.xml"), p);      
     }
