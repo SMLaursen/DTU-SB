@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import dk.dtu.sb.compiler.Compiler;
+import dk.dtu.sb.outputformatter.AbstractOutputFormatter;
 import dk.dtu.sb.outputformatter.GraphGUI;
 import dk.dtu.sb.parser.AbstractParser;
 import dk.dtu.sb.parser.SBMLParser;
@@ -38,11 +39,6 @@ public class Main {
     private static final String DESCRIPTION = "DTU-SB v0.1";
 
     /**
-     * Used to ask the user for input.
-     */
-    private static BufferedReader cli = null;
-
-    /**
      * Initiates the simulation. Resets logging level.
      * 
      * @param args
@@ -52,8 +48,6 @@ public class Main {
         Util.log.setLevel(Level.INFO);
         setupCli(args);
     }
-
-    // https://github.com/NanoHttpd/nanohttpd
 
     /**
      * Uses Apache Commons CLI to setup accepted parameters on the CLI.
@@ -146,7 +140,7 @@ public class Main {
      */
     private static void parseLine(CommandLine line) {
         if (line.hasOption(OPT_CPROP)) {
-            createPropertiesFile();
+            ParametersCreator.createPropertiesFile();
         } else {
             if (line.hasOption(OPT_RPROP)) {
                 simulate(new Parameters(line.getOptionValue(OPT_RPROP)));
@@ -165,55 +159,7 @@ public class Main {
         }
     }
 
-    /**
-     * Dynamically create a properties file by querying the user for parameters.
-     */
-    private static void createPropertiesFile() {
-        System.out
-                .println("Follow the instructions to create a new properties file to use for simulation.");
-        System.out.println("Default in []");
-
-        Parameters params = new Parameters();
-
-        try {
-            params.setInputFilename(prompt("Input filename",
-                    Parameters.PARAM_INPUT_FILENAME_DEFAULT));
-            params.setInputParserClassName(prompt("Parser class",
-                    Parameters.PARAM_INPUT_PARSER_CLASS_DEFAULT));
-            params.setSimAlgorithmClassName(prompt("Algorithm class",
-                    Parameters.PARAM_SIM_ALGORITHM_CLASS_DEFAULT));
-
-            int iterations = createIntProperty("Number of iterations", Parameters.PARAM_SIM_ITERATIONS_DEFAULT);
-            params.setSimIterations(iterations);
-
-            int stoptime = createIntProperty("Stoptime", Parameters.PARAM_SIM_ITERATIONS_DEFAULT);
-            params.setSimStoptime(stoptime);
-
-            boolean resultGUI = Parameters.PARAM_OUT_RESULT_GUI_DEFAULT;
-            if (prompt("Show graph after simulation?", "no").equals("yes")) {
-                resultGUI = true;
-            }
-            params.setOutputResultGUI(resultGUI);
-
-            int stepsize = createIntProperty("Output stepsize", Parameters.PARAM_OUT_STEPCOUNT_DEFAULT);
-            params.setOutputStepCount(stepsize);
-
-            String filename = prompt("Save as", "sim.properties");
-
-            params.saveAsFile(filename);
-        } catch (IOException e) {
-            System.err.println("An error occurred: " + e);
-        }
-    }
-
-    private static int createIntProperty(String prompt, int def) throws IOException {
-        int value = def;
-        try {
-            value = Integer.parseInt(prompt(prompt, "" + def));
-        } catch (NumberFormatException e) {
-        }
-        return value;
-    }
+    
 
     /**
      * Set up the the tool chain required for simulation and run the simulation
@@ -242,6 +188,12 @@ public class Main {
             if (params.getOutputResultGUI()) {
                 GraphGUI gui = new GraphGUI();
                 gui.process(simulator.getOutput(), params);
+            }
+            
+            // run output formatter
+            if (!(params.getOutputResultGUI() && params.getOutputFormatterClassName().equals(Parameters.PARAM_OUT_FORMATTER_CLASS_DEFAULT))) {
+                AbstractOutputFormatter outputFormatter = getOutputFormatter(params.getOutputFormatterClassName());
+                outputFormatter.process(simulator.getOutput(), params);
             }
         } catch (FileNotFoundException e) {
             Util.log.error("Input file: " + filename + " was not found.");
@@ -276,39 +228,21 @@ public class Main {
         }
         return new SBMLParser();
     }
+    
+    private static AbstractOutputFormatter getOutputFormatter(String className) {
+        try {
+            Class<?> outputFormatterClass = Class.forName(className);
+            AbstractOutputFormatter outputFormatter = (AbstractOutputFormatter) outputFormatterClass.newInstance();
 
-    /**
-     * Interactively query the user for input.
-     * 
-     * @param text
-     *            The query test.
-     * @param def
-     *            Default if nothing specified.
-     * @return The input entered or the default.
-     * @throws IOException
-     */
-    private static String prompt(String text, String def) throws IOException {
-        if (def.trim().length() > 0) {
-            text += " [" + def + "]";
-        }
-        System.out.print(text + ": ");
+            Util.log.debug("Output formatter class: " + className);
 
-        String input = cli().readLine();
-        if (input.trim().length() == 0) {
-            input = def;
+            return outputFormatter;
+        } catch (ClassNotFoundException e) {
+            Util.log.error("The output formatter class: " + className
+                    + " could not be found. Using default.");
+        } catch (Exception e) {
+            Util.log.error("Using default output parser.", e);
         }
-        return input;
-    }
-
-    /**
-     * Helper: Create the input stream reader if not already created.
-     * 
-     * @return See {@link Main#cli}.
-     */
-    private static BufferedReader cli() {
-        if (cli == null) {
-            cli = new BufferedReader(new InputStreamReader(System.in));
-        }
-        return cli;
+        return new GraphGUI();
     }
 }

@@ -91,7 +91,7 @@ public class Parameters {
     /**
      * See {@link #getOutputFormatterClassName()}.
      */
-    public static final String PARAM_OUT_FORMATTER_CLASS_DEFAULT = "dk.dtu.sb.output.GraphGUI";
+    public static final String PARAM_OUT_FORMATTER_CLASS_DEFAULT = "dk.dtu.sb.outputformatter.GraphGUI";
     private static final String PARAM_OUT_FORMATTER_CLASS = "output.formatter";
     
     /**
