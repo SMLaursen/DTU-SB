@@ -43,7 +43,7 @@ public class GillespieAlgorithm extends Algorithm {
 
             // Step 3
             time += tau;
-            if (time > params.getStoptime()) {
+            if (time > params.getSimStoptime()) {
                 break;
             }
             Util.updateMarkings(R_mu, currentMarkings);

@@ -7,7 +7,8 @@ import java.util.Set;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
- * Data wrapper class for holding results of algorithm runs.
+ * Data wrapper class for holding results of algorithm runs. Consists of a
+ * linked list of {@link SimulationPoint}.
  */
 public class AlgorithmResult {
 

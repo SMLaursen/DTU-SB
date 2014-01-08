@@ -72,4 +72,11 @@ public class MainTest extends StdOutTester {
         String[] args = new String[]{"-d", "-rprop=test/test/main/simple.properties"};
         Main.main(args);     
     }
+    
+    @Test
+    public void testSimMainProperties() {
+        System.setOut(stdout);
+        String[] args = new String[]{"-d", "-rprop=test_sim_main.properties"};
+        Main.main(args);     
+    }
 }

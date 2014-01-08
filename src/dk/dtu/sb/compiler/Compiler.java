@@ -12,7 +12,7 @@ import dk.dtu.sb.spn.StochasticPetriNet;
 public class Compiler {
 
     private StochasticPetriNet spn;
-    private Parameters params;
+    private Parameters params = new Parameters();
 
     /**
      * If this constructor is used, only the {@link VerifyCompiler} will be
@@ -51,19 +51,21 @@ public class Compiler {
         String currentCompiler = "";
 
         try {
-            CompilerInterface compiler;
+            AbstractCompiler compiler;
             Class<?> compilerClass;
             for (String compilerName : params.getCompilers()) {
                 currentCompiler = compilerName;
                 compilerClass = Class.forName(compilerName);
 
-                compiler = (CompilerInterface) compilerClass.newInstance();
+                compiler = (AbstractCompiler) compilerClass.newInstance();
+                compiler.setParams(params);
                 spn = compiler.compile(spn);
             }
             
             // Use framework compiler after the compiler-chain is done
             compiler = new VerifyCompiler();
             currentCompiler = compiler.getClass().getCanonicalName();
+            compiler.setParams(params);
             spn = compiler.compile(spn);
 
         } catch (CompilerException e) {
@@ -77,5 +79,16 @@ public class Compiler {
         }
 
         return spn;
+    }
+    
+    /**
+     * Used to set the {@link Parameters} object after instantiation.
+     * 
+     * @param params
+     *            The {@link Parameters} with additional simulator parameters
+     *            specified.
+     */
+    public void setParams(Parameters params) {
+        this.params = params;
     }
 }

@@ -61,9 +61,9 @@ public class SimulationResult {
             }
 
             // Put values in buckets
-            double bucketSize = params.getStoptime() / params.getOutStepCount();
+            double bucketSize = params.getSimStoptime() / params.getOutputStepCount();
 
-            for (double time = bucketSize; time < params.getStoptime(); time += bucketSize) {
+            for (double time = bucketSize; time < params.getSimStoptime(); time += bucketSize) {
                 // Bucket sizes reset
                 bucketCount.clear();
                 bucketCount.putAll(emptyBucketCount);
@@ -76,10 +76,11 @@ public class SimulationResult {
 
                 // For each simulation set
                 for (AlgorithmResult algorithmResult : algorithmResults) {
-                    LinkedList<SimulationPoint> list = algorithmResult.getSimulationPoints();
-                    //for (SimulationPoint simulationPoint : algorithmResult
-                    //        .getSimulationPoints()) {
-                    while(!list.isEmpty()) {
+                    LinkedList<SimulationPoint> list = algorithmResult
+                            .getSimulationPoints();
+                    // for (SimulationPoint simulationPoint : algorithmResult
+                    // .getSimulationPoints()) {
+                    while (!list.isEmpty()) {
                         SimulationPoint simulationPoint = list.removeFirst();
                         // Take all those values in the bucket (<i)
                         if (simulationPoint.getTime() > time) {
@@ -99,10 +100,17 @@ public class SimulationResult {
 
                 // Store averaged intersection
                 HashMap<String, Float> avg = new HashMap<String, Float>();
-                for (String species : getDifference(currMarking, prevMarking)) {
-                    avg.put(species,
-                            (float) (currMarking.get(species) / bucketCount
-                                    .get(species)));
+                // TODO: determine whether the following can be removed
+                /*
+                 * for (String species : getDifference(currMarking,
+                 * prevMarking)) { avg.put(species, (float)
+                 * (currMarking.get(species) / bucketCount .get(species))); } if
+                 * (avg.size() != 4) { Util.log.error("err"); }
+                 */
+                for (String specie : species) {
+                    float marking = currMarking.containsKey(specie) ? currMarking
+                            .get(specie) : 0;
+                    avg.put(specie, (float) (marking / bucketCount.get(specie)));
                 }
                 add(time, avg);
             }
@@ -118,12 +126,19 @@ public class SimulationResult {
      */
     private HashSet<String> getDifference(HashMap<String, Integer> mapOne,
             HashMap<String, Integer> mapTwo) {
+
         HashSet<String> difference = new HashSet<String>();
         for (String key : mapOne.keySet()) {
             if (!mapTwo.containsKey(key) || mapOne.get(key) != mapTwo.get(key)) {
                 difference.add(key);
             }
         }
+        for (String key : mapTwo.keySet()) {
+            if (!mapOne.containsKey(key)) {
+                difference.add(key);
+            }
+        }
+
         return difference;
     }
 
@@ -146,19 +161,25 @@ public class SimulationResult {
     }
 
     /**
+     * Add the given plot point to the result.
      * 
      * @param plotPoint
+     *            The plot point.
      */
     public void add(PlotPoint plotPoint) {
         plotPoints.add(plotPoint);
     }
 
     /**
+     * Add the given raw variables as a {@link PlotPoint} in
+     * {@link #add(PlotPoint)}.
      * 
      * @param time
+     *            A time point.
      * @param markings
+     *            The markings for the time point.
      */
     public void add(double time, HashMap<String, Float> markings) {
-        plotPoints.add(new PlotPoint(time, markings));
+        add(new PlotPoint(time, markings));
     }
 }

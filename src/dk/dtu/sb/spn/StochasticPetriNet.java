@@ -1,10 +1,8 @@
 package dk.dtu.sb.spn;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import dk.dtu.sb.Parameters;
 
@@ -181,16 +179,6 @@ public class StochasticPetriNet {
         graph += "}";
 
         return graph;
-    }
-
-    /**
-     * Returns a file with the PNML encoding.
-     * 
-     * @return
-     */
-    public File toPNML() {
-        // TODO
-        return null;
     }
 
     public StochasticPetriNet clone() {

@@ -39,7 +39,7 @@ import dk.dtu.sb.spn.StochasticPetriNet;
  * Modifier -> Place
  * </p>
  */
-public class SBMLParser extends Parser {
+public class SBMLParser extends AbstractParser {
 
     SBMLDocument document;
     Model model;

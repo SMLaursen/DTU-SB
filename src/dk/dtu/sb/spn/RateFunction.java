@@ -13,7 +13,9 @@ import de.congrace.exp4j.UnparsableExpressionException;
 import dk.dtu.sb.Util;
 
 /**
- * 
+ * Holds a mathematical formula describing the rate of a {@link Reaction}.
+ * Basically this is just a wrapper of a {@link Calculable}-object, where the
+ * unknown variables can be changed at runtime.
  */
 public class RateFunction {
 
@@ -146,7 +148,8 @@ public class RateFunction {
                     return cache.get(key);
                 }
             } catch (Exception e) {
-                Util.log.error("An error occurred. Using default. " + e.getMessage());
+                Util.log.error("An error occurred. Using default. "
+                        + e.getMessage());
             }
         }
 

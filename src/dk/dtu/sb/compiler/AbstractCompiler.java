@@ -4,11 +4,13 @@ import dk.dtu.sb.Parameters;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
- * An interface defining what compilers specified in
+ * An abstract class defining what compilers specified in
  * {@link Parameters#getCompilers()} should implement.
  */
-public interface CompilerInterface {
+public abstract class AbstractCompiler {
 
+    protected Parameters params = new Parameters();
+    
     /**
      * This method compiles the {@link StochasticPetriNet} given.
      * 
@@ -20,4 +22,15 @@ public interface CompilerInterface {
      */
     public abstract StochasticPetriNet compile(StochasticPetriNet spn)
             throws CompilerException;
+    
+    /**
+     * Used to set the {@link Parameters} object after instantiation.
+     * 
+     * @param params
+     *            The {@link Parameters} with additional simulator parameters
+     *            specified.
+     */
+    public void setParams(Parameters params) {
+        this.params = params;
+    }
 }

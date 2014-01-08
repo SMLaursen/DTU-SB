@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This class represents markings, or concentrations, of a time point.
+ * This general class represents markings, or concentrations, of a time point.
  */
 public class DataPoint<T> {
 

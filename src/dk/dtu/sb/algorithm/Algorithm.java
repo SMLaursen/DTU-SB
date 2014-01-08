@@ -15,7 +15,7 @@ import dk.dtu.sb.spn.StochasticPetriNet;
  * This class implements a bunch of helper methods that can be used in the
  * method {@link #run()} that should be implemented when this class is extended.
  */
-public class Algorithm implements Runnable {
+public abstract class Algorithm implements Runnable {
 
 	//Stored here instead of in Reaction as several threads needs their local copy.
 	HashMap<String, Double> propensities = new HashMap<String,Double>();
@@ -37,22 +37,22 @@ public class Algorithm implements Runnable {
             spn.getInitialMarkings());
 
     /**
-     * 
+     * The shared parameters object.
      */
     protected static Parameters params = new Parameters();
 
     /**
-     * 
+     * The shared input. This should not be modified in {@link #run()}.
      */
     protected static StochasticPetriNet spn = new StochasticPetriNet();
 
     /**
-     * 
+     * The final result, a mapping from instances to their result.
      */
     private static volatile HashMap<Integer, AlgorithmResult> result = new HashMap<Integer, AlgorithmResult>();
 
     /**
-     * Default constructor generating the uniqueid and creating the
+     * Default constructor generating the {@link #uniqueId} and creating the
      * {@link AlgorithmResult} of this run.
      */
     public Algorithm() {
@@ -80,6 +80,17 @@ public class Algorithm implements Runnable {
      */
     public static void setInput(StochasticPetriNet spn, Parameters params) {
         Algorithm.spn = spn;
+        Algorithm.params = params;
+    }
+
+    /**
+     * Used to set the {@link Parameters} object after instantiation.
+     * 
+     * @param params
+     *            The {@link Parameters} with additional simulator parameters
+     *            specified.
+     */
+    public static void setParams(Parameters params) {
         Algorithm.params = params;
     }
 

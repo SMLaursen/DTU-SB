@@ -1,10 +1,11 @@
 package test.data;
 
+import java.util.HashMap;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import dk.dtu.sb.data.AlgorithmResult;
-import dk.dtu.sb.data.Markings;
 
 public class AlgorithmResultTest {
 
@@ -12,7 +13,7 @@ public class AlgorithmResultTest {
     public void testAlgorithmResult() {
         AlgorithmResult result = new AlgorithmResult();
         
-        Markings markings = new Markings();
+        HashMap<String, Integer> markings = new HashMap<String, Integer>();
         markings.put("S", 2);        
         result.add(1, markings);
         
