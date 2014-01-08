@@ -99,7 +99,7 @@ public class GillespieAlgorithm extends Algorithm {
         double a_0 = 0;
         // if (R_mu == null) {
         for (Reaction reaction : spn.getReactions().values()) {
-            double prop = reaction.calculatePropensity(currentMarkings,params.getRateMode());
+            double prop = reaction.calculatePropensity(currentMarkings,params.getSimRateMode());
         	a_0 += prop;
         	//Store for reuse
         	propensities.put(reaction.getId(), prop);
