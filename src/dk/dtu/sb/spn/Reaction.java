@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import dk.dtu.sb.Parameters;
+
 /**
  * Represents a transition in the {@link StochasticPetriNet}.
  */
@@ -17,7 +19,7 @@ public class Reaction {
     private Map<String, Integer> reactants = new HashMap<String, Integer>();
     private Map<String, Integer> products = new HashMap<String, Integer>();
     private List<String> modifiers = new ArrayList<String>();
-
+    
     /**
      * Constructs a reaction.
      * 
@@ -232,5 +234,36 @@ public class Reaction {
 
     public boolean equals(Object other) {
         return other instanceof Reaction && this.id == ((Reaction) other).id;
+    }
+    
+    /**
+     * Calculates the propensity based on the currenMarkings. 
+     * 
+     * @param currentMarkings
+     * @param rateMode type of kinetic function to use. 
+     * @return Calculated propensity
+     */
+    public double calculatePropensity(HashMap<String,Integer> currentMarkings,int rateMode) {
+        double h = 1.0;
+        switch (rateMode) {
+        case Parameters.PARAM_SIM_RATE_MODE_CUSTOM:
+            if (!canReact(currentMarkings)) {
+                h = 0;
+            } else {
+                h = getRate(currentMarkings);
+            }
+            break;
+        case Parameters.PARAM_SIM_RATE_MODE_CONSTANT:
+        default:
+            for (Entry<String, Integer> reactant : getReactants()
+                    .entrySet()) {
+                //h *= Util.binom(currentMarkings.get(reactant.getKey()),reactant.getValue());
+            	h*=currentMarkings.get(reactant.getKey());
+            }
+            h *= getRate(currentMarkings);
+            break;
+
+        }
+        return h;
     }
 }

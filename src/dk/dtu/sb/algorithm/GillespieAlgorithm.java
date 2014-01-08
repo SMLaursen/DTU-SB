@@ -1,11 +1,8 @@
 package dk.dtu.sb.algorithm;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 
-import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.data.SimulationPoint;
 import dk.dtu.sb.spn.Reaction;
@@ -16,16 +13,12 @@ import dk.dtu.sb.spn.Reaction;
  */
 public class GillespieAlgorithm extends Algorithm {
 
-    private Map<String, Double> propensities = new HashMap<String, Double>();
-
     /**
      * Direct Method (First reaction may be faster)
      */
     public void run() {
     	
         double a_0;
-        double r_1;
-        double r_2;
         double tau;
         double deltaTau = 0;
         Reaction R_mu = null;
@@ -38,23 +31,15 @@ public class GillespieAlgorithm extends Algorithm {
         while (true) {
 
             // Step 1
-            a_0 = calculate_a0(R_mu);
+            a_0 = calculate_a0();
             if (a_0 == 0.0) {
                 // Nothing more to be done
                 break;
             }
 
             // Step 2
-            r_1 = rand.nextDouble();
-            r_2 = rand.nextDouble();
-            tau = ((1.0 / a_0) * Math.log(1.0 / r_1));
-
-            /*
-             * if ((int)tau % 10 == 0) { Util.log.debug("a_0 : " + a_0 +
-             * "    r_1 :" + r_1 + "     tau :" + tau); }
-             */
-
-            R_mu = findReaction(a_0 * r_2);
+            tau = ((1.0 / a_0) * Math.log(1.0 / rand.nextDouble()));
+            R_mu = findReaction(a_0 * rand.nextDouble());
 
             // Step 3
             time += tau;
@@ -85,10 +70,7 @@ public class GillespieAlgorithm extends Algorithm {
         }
         Util.log.debug("Thread done: " + Thread.currentThread().getId() +" in "+steps+" steps");
     }
-
-    // TODO determine if these should go here. They are general but Gillespie
-    // specific!
-
+    
     /**
      * Returns a reaction that fulfills: \Sum_{v=1}^{mu-1} a_v < val <
      * \Sum_{v=1}^{mu} a_v
@@ -107,17 +89,20 @@ public class GillespieAlgorithm extends Algorithm {
         }
         throw new RuntimeException("Failed to find the reaction for a = " + val);
     }
-
+    
     /**
-     * a_0 = SUM a_i forall i in SPN
+     * a_0 = SUM a_i forall i in SPN. Stores each propensity value in {@link propensities} for reuse.
      * 
      * @return
      */
-    private double calculate_a0(Reaction R_mu) {
+    protected double calculate_a0() {
         double a_0 = 0;
         // if (R_mu == null) {
         for (Reaction reaction : spn.getReactions().values()) {
-            a_0 += calculatePropensity(reaction);
+            double prop = reaction.calculatePropensity(currentMarkings,params.getRateMode());
+        	a_0 += prop;
+        	//Store for reuse
+        	propensities.put(reaction.getId(), prop);
         }
         /*
          * } else { for (String productId : R_mu.getProducts().keySet()) { for
@@ -130,39 +115,5 @@ public class GillespieAlgorithm extends Algorithm {
          * propensities.get(reaction.getId()); } }
          */
         return a_0;
-    }
-
-    /**
-     * Returns the propensity a_r = rate * PROD m_i forall i in
-     * Reaction reaction
-     * 
-     * @param reaction
-     * @return
-     */
-    private double calculatePropensity(Reaction reaction) {
-        double h = 1.0;
-        switch (params.getRateMode()) {
-        case Parameters.PARAM_SIM_RATE_MODE_CUSTOM:
-            if (!reaction.canReact(currentMarkings)) {
-                h = 0;
-            } else {
-                h = reaction.getRate(currentMarkings);
-            }
-            break;
-        case Parameters.PARAM_SIM_RATE_MODE_CONSTANT:
-        default:
-            for (Entry<String, Integer> reactant : reaction.getReactants()
-                    .entrySet()) {
-                //h *= Util.binom(currentMarkings.get(reactant.getKey()),reactant.getValue());
-            	h*=currentMarkings.get(reactant.getKey());
-            }
-            h *= reaction.getRate(currentMarkings);
-            break;
-
-        }
-
-        // Set propensity to avoid recalculations later
-        propensities.put(reaction.getId(), h);
-        return h;
     }
 }

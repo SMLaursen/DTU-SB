@@ -2,10 +2,13 @@ package dk.dtu.sb.algorithm;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.data.AlgorithmResult;
 import dk.dtu.sb.data.SimulationPoint;
+import dk.dtu.sb.spn.Reaction;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**
@@ -14,8 +17,12 @@ import dk.dtu.sb.spn.StochasticPetriNet;
  */
 public class Algorithm implements Runnable {
 
+	//Stored here instead of in Reaction as several threads needs their local copy.
+	HashMap<String, Double> propensities = new HashMap<String,Double>();
+	
     private final int uniqueId;
 
+    
     /**
      * The current time. This is typically incremented in {@link #run()}.
      */
