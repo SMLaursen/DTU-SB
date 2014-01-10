@@ -14,7 +14,7 @@
 	<property name="logback-core.lib" value="../framework/lib/logback-core-1.0.13.jar" />
 	<property name="slf4j.lib" value="../framework/lib/slf4j-api-1.7.5.jar" />
 
-	<property name="dtu-sb-framework.lib" value="../framework/DTU-SB.bundle.jar" />
+	<property name="dtu-sb-framework.lib" value="DTU-SB.bundle.jar" />
 
 	<property name="ormlite-core.lib" value="lib/ormlite-core-4.48.jar" />
 	<property name="ormlite-jdbc.lib" value="lib/ormlite-jdbc-4.48.jar" />
@@ -48,6 +48,7 @@
 	<target name="clean" description="Remove /build and /javadoc">
 		<delete dir="${build.dir}" />
 		<delete dir="${javadoc.dir}" />
+		<delete file="${dtu-sb-framework.lib}" />
 	</target>
 
 	<target name="prepare">
