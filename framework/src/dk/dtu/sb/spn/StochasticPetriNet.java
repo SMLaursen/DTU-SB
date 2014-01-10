@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import dk.dtu.sb.Parameters;
-
 /**
  * 
  */
@@ -181,6 +179,7 @@ public class StochasticPetriNet {
         return graph;
     }
 
+    @Override
     public StochasticPetriNet clone() {
         StochasticPetriNet s = new StochasticPetriNet();
         s.initialMarkings.putAll(initialMarkings);
@@ -188,6 +187,7 @@ public class StochasticPetriNet {
         return s;
     }
 
+    @Override
     public String toString() {
         String output = "Reactions:\n";
         for (Reaction reaction : reactions.values()) {

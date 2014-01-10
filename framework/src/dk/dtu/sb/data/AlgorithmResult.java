@@ -71,6 +71,7 @@ public class AlgorithmResult {
         return data;
     }
 
+    @Override
     public String toString() {
         return data.toString();
     }

@@ -83,6 +83,7 @@ public class Species {
         return name != null && !name.trim().isEmpty() ? name : id;
     }
     
+    @Override
     public String toString() {
         return "<" + id +  ", " + name + ">";
     }

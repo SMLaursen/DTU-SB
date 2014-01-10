@@ -224,17 +224,6 @@ public class Reaction {
         }
         return true;
     }
-
-    public String toString() {
-        String s = "id: " + id + ", rate: " + rateFunction + "\n";
-        s += "  Reactants: " + reactants + "\n";
-        s += "  Products:  " + products + "\n";
-        return s;
-    }
-
-    public boolean equals(Object other) {
-        return other instanceof Reaction && this.id == ((Reaction) other).id;
-    }
     
     /**
      * Calculates the propensity based on the currenMarkings. 
@@ -258,12 +247,25 @@ public class Reaction {
             for (Entry<String, Integer> reactant : getReactants()
                     .entrySet()) {
                 //h *= Util.binom(currentMarkings.get(reactant.getKey()),reactant.getValue());
-            	h*=currentMarkings.get(reactant.getKey());
+                h*=currentMarkings.get(reactant.getKey());
             }
             h *= getRate(currentMarkings);
             break;
 
         }
         return h;
+    }
+
+    @Override
+    public String toString() {
+        String s = "id: " + id + ", rate: " + rateFunction + "\n";
+        s += "  Reactants: " + reactants + "\n";
+        s += "  Products:  " + products + "\n";
+        return s;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof Reaction && this.id == ((Reaction) other).id;
     }
 }

@@ -2,13 +2,10 @@ package dk.dtu.sb.algorithm;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.data.AlgorithmResult;
 import dk.dtu.sb.data.SimulationPoint;
-import dk.dtu.sb.spn.Reaction;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 /**

@@ -1,6 +1,5 @@
 package dk.dtu.sb.algorithm;
 
-import java.util.HashMap;
 import java.util.Random;
 
 import dk.dtu.sb.Util;

@@ -59,15 +59,17 @@ public class DataPoint<T> {
         return markings.get(species);
     }
 
+    @Override
     public String toString() {
         return "[" + time + "] : " + markings;
     }
 
+    @Override
     public boolean equals(Object other) {
+        if (other == null || !(other instanceof DataPoint))
+            return false;
         if (other == this)
             return true;
-        if (!(other instanceof DataPoint))
-            return false;
         DataPoint<?> that = (DataPoint<?>) other;
         return time == that.getTime() && markings.equals(that.getMarkings());
     }

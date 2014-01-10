@@ -2,7 +2,6 @@ package dk.dtu.sb.data;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -117,6 +116,7 @@ public class SimulationResult {
         }
     }
 
+    // TODO: Should this be moved?
     /**
      * Get the keys with different values of the two maps.
      * 
@@ -124,7 +124,7 @@ public class SimulationResult {
      * @param mapTwo
      * @return A map of those keys that have changed their values
      */
-    private HashSet<String> getDifference(HashMap<String, Integer> mapOne,
+    /*private HashSet<String> getDifference(HashMap<String, Integer> mapOne,
             HashMap<String, Integer> mapTwo) {
 
         HashSet<String> difference = new HashSet<String>();
@@ -140,7 +140,7 @@ public class SimulationResult {
         }
 
         return difference;
-    }
+    }*/
 
     /**
      * Get all the species found in this result.

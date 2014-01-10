@@ -185,6 +185,7 @@ public class RateFunction {
         return keyBuilder.toString();
     }
 
+    @Override
     public String toString() {
         if (this.formula != null) {
             return this.formula;
