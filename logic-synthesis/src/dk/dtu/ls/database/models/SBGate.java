@@ -11,13 +11,17 @@ public class SBGate {
     
     // for QueryBuilder to be able to find the fields
     public static final String NAME_FIELD_NAME = "name";
-    public static final String PASSWORD_FIELD_NAME = "passwd";
+    public static final String MODEL_SBML_FILE_FIELD_NAME = "model_sbml_file";
+    public static final String MODEL_SBML_CONTENT_FIELD_NAME = "model_sbml_content";
 
     @DatabaseField(columnName = NAME_FIELD_NAME, canBeNull = false)
     private String name;
 
-    @DatabaseField(columnName = PASSWORD_FIELD_NAME)
-    private String password;
+    @DatabaseField(columnName = MODEL_SBML_FILE_FIELD_NAME)
+    private String modelSBMLFile;
+    
+    @DatabaseField(columnName = MODEL_SBML_CONTENT_FIELD_NAME)
+    private String modelSBMLContents;
 
     SBGate() {
         // all persisted classes must define a no-arg constructor with at least
@@ -26,11 +30,6 @@ public class SBGate {
 
     public SBGate(String name) {
         this.name = name;
-    }
-
-    public SBGate(String name, String password) {
-        this.name = name;
-        this.password = password;
     }
 
     public int getId() {
@@ -44,18 +43,26 @@ public class SBGate {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getPassword() {
-        return password;
+    
+    public String getModelSBMLFile() {
+        return modelSBMLFile;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setModelSBMLFile(String modelSBMLFile) {
+        this.modelSBMLFile = modelSBMLFile;
+    }
+    
+    public String getModelSBMLContents() {
+        return modelSBMLContents;
+    }
+
+    public void setModelSBMLContents(String modelSBMLContents) {
+        this.modelSBMLContents = modelSBMLContents;
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return id + name.hashCode();
     }
 
     @Override
@@ -63,6 +70,6 @@ public class SBGate {
         if (other == null || other.getClass() != getClass()) {
             return false;
         }
-        return name.equals(((SBGate) other).name);
+        return id == ((SBGate) other).id;
     }
 }
