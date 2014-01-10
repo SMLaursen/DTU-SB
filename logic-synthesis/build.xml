@@ -14,7 +14,7 @@
 	<property name="logback-core.lib" value="../framework/lib/logback-core-1.0.13.jar" />
 	<property name="slf4j.lib" value="../framework/lib/slf4j-api-1.7.5.jar" />
 
-	<property name="dtu-sb-framework.lib" value="DTU-SB.bundle.jar" />
+	<property name="dtu-sb-framework.lib" value="../framework/DTU-SB.bundle.jar" />
 
 	<property name="ormlite-core.lib" value="lib/ormlite-core-4.48.jar" />
 	<property name="ormlite-jdbc.lib" value="lib/ormlite-jdbc-4.48.jar" />
@@ -54,13 +54,16 @@
 	<target name="prepare">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${javadoc.dir}" />
+		<java dir="../framework" classname="org.apache.tools.ant.launch.Launcher" fork="true" failonerror="true">
+		   <classpath path="${java.class.path}"/>
+		   <arg value="jarBundle"/>
+		 </java>
 	</target>
 
 	<target name="build" depends="prepare" description="Compile all classes">
 		<javac srcdir="${source.dir}" destdir="${build.dir}" includeantruntime="false">
 			<classpath refid="classpath-ls" />
 		</javac>
-		<ant antfile="../framework/build.xml" target="jarBundle" />
 	</target>
 
 	<target name="buildTest" depends="build" description="Compile all test classes">
@@ -75,7 +78,7 @@
 	<target name="javadoc" depends="prepare" description="Generate javadoc from files">
 		<!--<javadoc packagenames="dk.dtu.sb.*" destdir="${javadoc.dir}" sourcepath="${source.dir}" windowtitle="DTU-SB" access="private">-->
 		<javadoc packagenames="dk.dtu.ls.*" destdir="${javadoc.dir}" sourcepath="${source.dir}" windowtitle="Logic Synthesis">
-			<classpath refid="classpath" />
+			<classpath refid="classpath-ls" />
 		</javadoc>
 		<echo>
 JavaDoc available in directory ${javadoc.dir}/index.html.
@@ -84,9 +87,9 @@ JavaDoc available in directory ${javadoc.dir}/index.html.
 
 	<target name="test" depends="buildAll" description="Run all tests">
 		<junit>
-			<classpath refid="classpath.test" />
+			<classpath refid="classpath-ls.test" />
 			<formatter type="brief" usefile="false" />
-			<test name="test.main.MainTest" />
+			<test name="test.TestDatabase" />
 		</junit>
 	</target>
 

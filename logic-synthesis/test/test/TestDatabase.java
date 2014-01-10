@@ -2,7 +2,6 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 import org.junit.Test;
