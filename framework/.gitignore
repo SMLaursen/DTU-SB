@@ -15,3 +15,4 @@ test/test/parser/BIOMD0000000412.pdf
 neg_feedback_1.dat
 neg_feedback_10.dat
 neg_feedback_ext_1.dat
+/output.csv

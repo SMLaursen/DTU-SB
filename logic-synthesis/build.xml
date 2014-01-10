@@ -1,4 +1,4 @@
-<project name="DTU-SB" default="help" basedir=".">
+<project name="Logic Synthesis" default="help" basedir=".">
 
 	<property name="version.major" value="0" />
 	<property name="version.minor" value="1" />
@@ -6,33 +6,33 @@
 	<property name="source.dir" value="src" />
 	<property name="test.dir" value="test" />
 	<property name="build.dir" value="build" />
-	<property name="javadoc.dir" value="dtu-sb-docs" />
+	<property name="javadoc.dir" value="javadocs" />
 
-	<property name="junit.lib" value="lib/junit-4.11.jar" />
-	<property name="hamcrest.lib" value="lib/hamcrest-core-1.3.jar" />
-	<property name="commons-cli.lib" value="lib/commons-cli-1.2.jar" />
-	<property name="jbsml.lib" value="lib/jsbml-0.8-with-dependencies.jar" />
-	<property name="jfreechart.lib" value="lib/jfreechart-1.0.16.jar" />
-	<property name="jcommon.lib" value="lib/jcommon-1.0.20.jar" />
-	<property name="exp4j.lib" value="lib/exp4j-0.3.11.jar" />
-	<property name="logback-classic.lib" value="lib/logback-classic-1.0.13.jar" />
-	<property name="logback-core.lib" value="lib/logback-core-1.0.13.jar" />
-	<property name="slf4j.lib" value="lib/slf4j-api-1.7.5.jar" />
+	<property name="junit.lib" value="../framework/lib/junit-4.11.jar" />
+	<property name="hamcrest.lib" value="../framework/lib/hamcrest-core-1.3.jar" />
+	<property name="logback-classic.lib" value="../framework/lib/logback-classic-1.0.13.jar" />
+	<property name="logback-core.lib" value="../framework/lib/logback-core-1.0.13.jar" />
+	<property name="slf4j.lib" value="../framework/lib/slf4j-api-1.7.5.jar" />
 
-	<path id="classpath">
+	<property name="dtu-sb-framework.lib" value="../framework/DTU-SB.bundle.jar" />
+
+	<property name="ormlite-core.lib" value="lib/ormlite-core-4.48.jar" />
+	<property name="ormlite-jdbc.lib" value="lib/ormlite-jdbc-4.48.jar" />
+	<property name="sqlite-jdbc.lib" value="lib/sqlite-jdbc-3.7.2.jar" />
+
+	<path id="classpath-ls">
 		<pathelement location="${build.dir}" />
-		<pathelement location="${commons-cli.lib}" />
-		<pathelement location="${jbsml.lib}" />
-		<pathelement location="${jfreechart.lib}" />
-		<pathelement location="${jcommon.lib}" />
-		<pathelement location="${exp4j.lib}" />
 		<pathelement location="${logback-classic.lib}" />
 		<pathelement location="${logback-core.lib}" />
 		<pathelement location="${slf4j.lib}" />
+		<pathelement location="${dtu-sb-framework.lib}" />
+		<pathelement location="${ormlite-core.lib}" />
+		<pathelement location="${ormlite-jdbc.lib}" />
+		<pathelement location="${sqlite-jdbc.lib}" />
 	</path>
 
-	<path id="classpath.test">
-		<path refid="classpath" />
+	<path id="classpath-ls.test">
+		<path refid="classpath-ls" />
 		<pathelement location="${junit.lib}" />
 		<pathelement location="${hamcrest.lib}" />
 	</path>
@@ -48,8 +48,6 @@
 	<target name="clean" description="Remove /build and /javadoc">
 		<delete dir="${build.dir}" />
 		<delete dir="${javadoc.dir}" />
-		<delete file="DTU-SB.jar" />
-		<delete file="DTU-SB.bundle.jar" />
 	</target>
 
 	<target name="prepare">
@@ -59,13 +57,14 @@
 
 	<target name="build" depends="prepare" description="Compile all classes">
 		<javac srcdir="${source.dir}" destdir="${build.dir}" includeantruntime="false">
-			<classpath refid="classpath" />
+			<classpath refid="classpath-ls" />
 		</javac>
+		<ant antfile="../framework/build.xml" target="jarBundle" />
 	</target>
 
 	<target name="buildTest" depends="build" description="Compile all test classes">
 		<javac srcdir="${test.dir}" destdir="${build.dir}" includeantruntime="false">
-			<classpath refid="classpath.test" />
+			<classpath refid="classpath-ls.test" />
 		</javac>
 	</target>
 
@@ -74,7 +73,7 @@
 	<!-- generate javadoc -->
 	<target name="javadoc" depends="prepare" description="Generate javadoc from files">
 		<!--<javadoc packagenames="dk.dtu.sb.*" destdir="${javadoc.dir}" sourcepath="${source.dir}" windowtitle="DTU-SB" access="private">-->
-		<javadoc packagenames="dk.dtu.sb.*" destdir="${javadoc.dir}" sourcepath="${source.dir}" windowtitle="DTU-SB">
+		<javadoc packagenames="dk.dtu.ls.*" destdir="${javadoc.dir}" sourcepath="${source.dir}" windowtitle="Logic Synthesis">
 			<classpath refid="classpath" />
 		</javadoc>
 		<echo>
@@ -88,25 +87,6 @@ JavaDoc available in directory ${javadoc.dir}/index.html.
 			<formatter type="brief" usefile="false" />
 			<test name="test.main.MainTest" />
 		</junit>
-	</target>
-
-	<target name="jarBundle" depends="build" description="Create jar file">
-		<jar destfile="DTU-SB.bundle.jar" basedir="${build.dir}">
-			<zipgroupfileset dir="lib" includes="*.jar" />
-			<manifest>
-				<attribute name="Main-Class" value="dk.dtu.sb.Main" />
-				<attribute name="Implementation-Version" value="${version.major}.${version.minor}" />
-			</manifest>
-		</jar>
-	</target>
-
-	<target name="jar" depends="build" description="Create jar file">
-		<jar destfile="DTU-SB.jar" basedir="${build.dir}">
-			<manifest>
-				<attribute name="Main-Class" value="dk.dtu.sb.Main" />
-				<attribute name="Implementation-Version" value="${version.major}.${version.minor}" />
-			</manifest>
-		</jar>
 	</target>
 
 	<target name="run">

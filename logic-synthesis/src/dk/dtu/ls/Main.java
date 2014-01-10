@@ -17,7 +17,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         new Main().doMain(args);
-
     }
 
     private void doMain(String[] args) throws Exception {

@@ -14,4 +14,17 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>SharedREADME.md</name>
+			<type>1</type>
+			<locationURI>SharedREADMEmd</locationURI>
+		</link>
+	</linkedResources>
+	<variableList>
+		<variable>
+			<name>SharedREADMEmd</name>
+			<value>$%7BPARENT-1-PROJECT_LOC%7D/README.md</value>
+		</variable>
+	</variableList>
 </projectDescription>
