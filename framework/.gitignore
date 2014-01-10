@@ -1,0 +1,17 @@
+build
+bin
+sim.properties
+jsbml.log
+DTU-SB*jar
+dtu-sb-docs
+.gitmodules
+
+#test
+test/test/simulator/test_simulator.csv
+out.csv
+test/test/parser/BIOMD0000000010.pdf
+test/test/parser/BIOMD0000000012.pdf
+test/test/parser/BIOMD0000000412.pdf
+neg_feedback_1.dat
+neg_feedback_10.dat
+neg_feedback_ext_1.dat
