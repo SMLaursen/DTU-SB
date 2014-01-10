@@ -1,4 +1,4 @@
-package dk.dtu.gates;
+package dk.dtu.ls;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
