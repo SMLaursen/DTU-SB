@@ -10,9 +10,6 @@
 
 	<property name="junit.lib" value="../framework/lib/junit-4.11.jar" />
 	<property name="hamcrest.lib" value="../framework/lib/hamcrest-core-1.3.jar" />
-	<property name="logback-classic.lib" value="../framework/lib/logback-classic-1.0.13.jar" />
-	<property name="logback-core.lib" value="../framework/lib/logback-core-1.0.13.jar" />
-	<property name="slf4j.lib" value="../framework/lib/slf4j-api-1.7.5.jar" />
 
 	<property name="dtu-sb-framework.lib" value="../framework/DTU-SB.bundle.jar" />
 
@@ -22,9 +19,6 @@
 
 	<path id="classpath-ls">
 		<pathelement location="${build.dir}" />
-		<pathelement location="${logback-classic.lib}" />
-		<pathelement location="${logback-core.lib}" />
-		<pathelement location="${slf4j.lib}" />
 		<pathelement location="${dtu-sb-framework.lib}" />
 		<pathelement location="${ormlite-core.lib}" />
 		<pathelement location="${ormlite-jdbc.lib}" />
