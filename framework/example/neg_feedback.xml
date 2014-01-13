@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model id="neg_feedback_2_spstochpn">
+    <listOfCompartments>
+      <compartment id="compartment" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="mRNA" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="lacI" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="Plac" compartment="compartment" initialAmount="1" hasOnlySubstanceUnits="true"/>
+      <species id="Plac_lacI" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="transcription" reversible="false">
+        <listOfProducts>
+          <speciesReference species="mRNA"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="Plac"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.5 </cn>
+              <ci> Plac </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay_mRNA" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mRNA"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.0058 </cn>
+              <ci> mRNA </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="translation" reversible="false">
+        <listOfProducts>
+          <speciesReference species="lacI"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="mRNA"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.167 </cn>
+              <ci> mRNA </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay_lacI" reversible="false">
+        <listOfReactants>
+          <speciesReference species="lacI"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.0012 </cn>
+              <ci> lacI </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="regulation" reversible="false">
+        <listOfReactants>
+          <speciesReference species="Plac"/>
+          <speciesReference species="lacI"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Plac_lacI"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn type="integer"> 1 </cn>
+              <ci> Plac </ci>
+              <ci> lacI </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="unbinds" reversible="false">
+        <listOfReactants>
+          <speciesReference species="Plac_lacI"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Plac"/>
+          <speciesReference species="lacI"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn type="integer"> 9 </cn>
+              <ci> Plac_lacI </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="repressed_transcription" reversible="false">
+        <listOfProducts>
+          <speciesReference species="mRNA"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="Plac_lacI"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn type="integer"> 5 </cn>
+              <apply>
+                <power/>
+                <cn type="integer"> 10 </cn>
+                <cn type="integer"> -4 </cn>
+              </apply>
+              <ci> Plac_lacI </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

@@ -20,7 +20,7 @@ import ch.qos.logback.classic.Level;
 public class Main {
 
     private static final String OPT_CPROP = "cprop";
-    private static final String OPT_RPROP = "rprop";
+    private static final String OPT_PROP = "prop";
 
     private static final String OPT_DEBUG_LONG = "debug";
     private static final String OPT_DEBUG_SHORT = "d";
@@ -60,7 +60,7 @@ public class Main {
         Options options = new Options();
         options.addOption(OPT_CPROP, false, "Create properties file");
         options.addOption(OptionBuilder.hasArg().withArgName("file")
-                .withDescription("Read properties file").create(OPT_RPROP));
+                .withDescription("Read properties file").create(OPT_PROP));
         options.addOption(OptionBuilder.hasArg().withArgName("file")
                 .withDescription("SBML file to load")
                 .withLongOpt(OPT_FILE_LONG).create(OPT_FILE_SHORT));
@@ -142,8 +142,8 @@ public class Main {
             ParametersCreator.createPropertiesFile();
         } else {
             Parameters params = null;
-            if (line.hasOption(OPT_RPROP)) {
-                params = new Parameters(line.getOptionValue(OPT_RPROP));
+            if (line.hasOption(OPT_PROP)) {
+                params = new Parameters(line.getOptionValue(OPT_PROP));
             } else if (line.hasOption(OPT_FILE_SHORT)) {
                 params = new Parameters();
                 params.setInputFilename(line.getOptionValue(OPT_FILE_SHORT));                

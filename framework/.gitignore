@@ -2,7 +2,7 @@ build
 bin
 sim.properties
 jsbml.log
-DTU-SB*jar
+DTU-SB.jar
 dtu-sb-docs
 .gitmodules
 
