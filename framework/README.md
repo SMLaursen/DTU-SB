@@ -14,7 +14,7 @@ used with Ant. Invoke `ant` without any arguments to see the available targets.
 
 The repository can be imported to Eclipse, thereby the build tools of Eclipse can be facilitated. 
 Alternatively use your favorite editor and use the Ant target `build`, `test` and `run` 
-(see [`build.xml`](https://bitbucket.org/jboysen/dtu-sb/src/master/build.xml?at=master)).
+(see [`build.xml`](build.xml)).
 
 # Documentation
 
