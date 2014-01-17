@@ -46,10 +46,11 @@ public class GillespieTest {
 
         p.setSimIterations(2);
         p.setSimNoOfThreads(2);
-        p.setSimStoptime(6000);
+        p.setSimStoptime(2000);
         p.setOutputStepCount(1000);
         p.setSimThreshold(1);
-        p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        //p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
+        p.saveAsFile("repressilator.properties");
 
         simulateAndOutput(parse("test/test/simulator/BIOMD0000000012.xml"), p);
     }
