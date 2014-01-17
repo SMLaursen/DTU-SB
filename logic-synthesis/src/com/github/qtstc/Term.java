@@ -30,6 +30,8 @@ import java.util.*;
 import java.io.*;
 
 public class Term {
+	private byte[] varVals;
+	
     public static final byte False = 0;
     public static final byte True = 1;
     public static final byte DontCare = 2;
@@ -58,7 +60,8 @@ public class Term {
     private String getVarResult(int i) {
         String result = "";
         if (varVals[i] != DontCare) {
-            result = Character.toString((char)(i + 65)) + (varVals[i] == False ? "'" : "");
+//          result = Character.toString((char)(i + 65)) + (varVals[i] == False ? "'" : "");
+        	result = Formula.nameList.get(i) + (varVals[i] == False ? "'" : "");
         }
         return result;
     }
@@ -174,6 +177,4 @@ public class Term {
     public byte[] getVals() {
         return varVals;
     }
-
-    private byte[] varVals;
 }

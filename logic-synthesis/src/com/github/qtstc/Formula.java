@@ -30,15 +30,22 @@ import java.util.*;
 import java.io.*;
 
 public class Formula {
-    public Formula(List<Term> termList) {
+	
+    private List<Term> termList;
+    public static List<String> nameList;
+    private List<Term> originalTermList;
+	
+    public Formula(List<Term> termList, List<String> nameList) {
         this.termList = termList;
+        Formula.nameList = nameList;
     }
 
     public String toString() {
-        String result = "";
+        String result = nameList.get(nameList.size()-1)+" = ";
         //result += termList.size() + " terms, " + termList.get(0).getNumVars()
         //        + " variables\n";
         for (int i = 0; i < termList.size()-1; i++) {
+        	
             result += termList.get(i) + " + ";
         }
         result += termList.get(termList.size()-1);
@@ -117,20 +124,39 @@ public class Formula {
 
     public static Formula read(Reader reader) throws IOException {
         ArrayList<Term> terms = new ArrayList<Term>();
+        ArrayList<String> names = getNames(reader);
         Term term;
         while ((term = Term.read(reader)) != null) {
             terms.add(term);
         }
-        return new Formula(terms);
+        return new Formula(terms,names);
     }
     
     public static Formula readCompleteTT(Reader reader) throws IOException {
         ArrayList<Term> terms = new ArrayList<Term>();
+        ArrayList<String> names = getNames(reader);
+        
         Term term;
         while ((term = Term.readCompleteTT(reader)) != null) {
             terms.add(term);
         }
-        return new Formula(terms);
+        return new Formula(terms,names);
+    }
+    
+    private static ArrayList<String> getNames(Reader reader) throws IOException{
+    	ArrayList<String> names = new ArrayList<String>();
+    	char c;
+        String n = "";
+        while((c = (char) reader.read()) != '\n'){
+        	if(c == ' '){
+        		names.add(n);
+        		n ="";
+        	} else{
+        		n+=c;
+        	}
+        }
+        names.add(n.trim());
+        return names;
     }
 
     private int extractEssentialImplicant(boolean[][] table) {
@@ -190,7 +216,4 @@ public class Formula {
     public List<Term> getTerms() {
         return termList;
     }
-
-    private List<Term> termList;
-    private List<Term> originalTermList;
 }
