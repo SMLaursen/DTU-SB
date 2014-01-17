@@ -15,7 +15,9 @@ public class TestQMC {
     @Test
     public void testSimple() throws IOException {
         Formula f = Formula.read(new BufferedReader(new FileReader("test/test/qmc/input.txt")));
+        System.out.println(f);
         f.reduceToPrimeImplicants();
+        System.out.println(f);
         f.reducePrimeImplicantsToSubset();
         System.out.println(f);
     }

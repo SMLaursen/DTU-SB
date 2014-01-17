@@ -35,9 +35,19 @@ public class Term {
     public static final byte False = 0;
     public static final byte True = 1;
     public static final byte DontCare = 2;
+    
+    private List<String> names = new ArrayList<String>();
 
     public Term(byte[] varVals) {
         this.varVals = varVals;
+    }
+    public Term(byte[] varVals, List<String> names) {
+        this(varVals);
+        this.addNames(names);
+    }
+    
+    public void addNames(List<String> names) {
+        this.names.addAll(names);
     }
 
     public int getNumVars() {
@@ -61,7 +71,7 @@ public class Term {
         String result = "";
         if (varVals[i] != DontCare) {
 //          result = Character.toString((char)(i + 65)) + (varVals[i] == False ? "'" : "");
-        	result = Formula.nameList.get(i) + (varVals[i] == False ? "'" : "");
+        	result = names.get(i) + (varVals[i] == False ? "'" : "");
         }
         return result;
     }
@@ -84,7 +94,7 @@ public class Term {
         }
         byte[] resultVars = varVals.clone();
         resultVars[diffVarNum] = DontCare;
-        return new Term(resultVars);
+        return new Term(resultVars, names);
     }
 
     public int countValues(byte value) {
@@ -128,9 +138,9 @@ public class Term {
         while (c != '\n' && c != -1) {
             c = reader.read();
             if (c == '0') {
-                t.add((byte) 0);
+                t.add((byte) False);
             } else if (c == '1') {
-                t.add((byte) 1);
+                t.add((byte) True);
             }
         }
         if (t.size() > 0) {
@@ -151,9 +161,9 @@ public class Term {
             prevC = c;
             c = reader.read();
             if (c == '0') {
-                t.add((byte) 0);
+                t.add((byte) False);
             } else if (c == '1') {
-                t.add((byte) 1);
+                t.add((byte) True);
             }
         }
         if (prevC == '0') {
