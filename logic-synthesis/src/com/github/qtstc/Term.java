@@ -57,11 +57,12 @@ public class Term {
         return result;
     }
     
+    
     private String getVarResult(int i) {
         String result = "";
         if (varVals[i] != DontCare) {
 //          result = Character.toString((char)(i + 65)) + (varVals[i] == False ? "'" : "");
-        	result = Formula.nameList.get(i) + (varVals[i] == False ? "'" : "");
+        	result = Formula.nameList.get(i) + (varVals[i] == False ? "' " : " ");
         }
         return result;
     }
