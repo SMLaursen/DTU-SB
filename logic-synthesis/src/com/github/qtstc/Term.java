@@ -166,6 +166,9 @@ public class Term {
                 t.add((byte) True);
             }
         }
+        if (c == -1) {
+            return null;
+        }
         if (prevC == '0') {
             // don't create term if output is false
             t.clear();
@@ -173,15 +176,11 @@ public class Term {
             // remove output column
             t.remove(t.size()-1);
         }
-        if (t.size() > 0) {
-            byte[] resultBytes = new byte[t.size()];
-            for (int i = 0; i < t.size(); i++) {
-                resultBytes[i] = (byte) t.get(i);
-            }
-            return new Term(resultBytes);
-        } else {
-            return null;
+        byte[] resultBytes = new byte[t.size()];
+        for (int i = 0; i < t.size(); i++) {
+            resultBytes[i] = (byte) t.get(i);
         }
+        return new Term(resultBytes);
     }
     
     public byte[] getVals() {

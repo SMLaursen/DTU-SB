@@ -139,8 +139,10 @@ public class Formula {
 
         Term term;
         while ((term = Term.readCompleteTT(reader)) != null) {
-            term.addNames(names);
-            terms.add(term);
+            if (term.getNumVars() > 0) {
+                term.addNames(names);
+                terms.add(term);
+            }
         }
         return new Formula(terms, names);
     }

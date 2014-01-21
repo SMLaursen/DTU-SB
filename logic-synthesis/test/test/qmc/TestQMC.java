@@ -15,16 +15,14 @@ public class TestQMC {
     @Test
     public void testSimple() throws IOException {
         Formula f = Formula.read(new BufferedReader(new FileReader("test/test/qmc/input.txt")));
-        System.out.println(f);
         f.reduceToPrimeImplicants();
-        System.out.println(f);
         f.reducePrimeImplicantsToSubset();
         System.out.println(f);
     }
     
     @Test
     public void testSimpleTT() throws IOException {
-        Formula f = Formula.readCompleteTT(new BufferedReader(new FileReader("test/test/qmc/input_tt.txt")));
+        Formula f = Formula.readCompleteTT(new BufferedReader(new FileReader("test/test/qmc/input_tt_xor3.txt")));
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
         System.out.println(f);
