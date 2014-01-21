@@ -30,25 +30,24 @@ import java.util.*;
 import java.io.*;
 
 public class Formula {
-	
+
     private List<Term> termList;
-    public static List<String> nameList;
+    private List<String> nameList;
     private List<Term> originalTermList;
-	
+
     public Formula(List<Term> termList, List<String> nameList) {
         this.termList = termList;
-        Formula.nameList = nameList;
+        this.nameList = nameList;
     }
 
     public String toString() {
-        String result = nameList.get(nameList.size()-1)+" = ";
-        //result += termList.size() + " terms, " + termList.get(0).getNumVars()
-        //        + " variables\n";
-        for (int i = 0; i < termList.size()-1; i++) {
-        	
+        String result = nameList.get(nameList.size() - 1) + " = ";
+        // result += termList.size() + " terms, " + termList.get(0).getNumVars()
+        // + " variables\n";
+        for (int i = 0; i < termList.size() - 1; i++) {
             result += termList.get(i) + " + ";
         }
-        result += termList.get(termList.size()-1);
+        result += termList.get(termList.size() - 1);
         return result;
     }
 
@@ -125,35 +124,40 @@ public class Formula {
     public static Formula read(Reader reader) throws IOException {
         ArrayList<Term> terms = new ArrayList<Term>();
         ArrayList<String> names = getNames(reader);
+        
         Term term;
         while ((term = Term.read(reader)) != null) {
+            term.addNames(names);
             terms.add(term);
         }
-        return new Formula(terms,names);
+        return new Formula(terms, names);
     }
-    
+
     public static Formula readCompleteTT(Reader reader) throws IOException {
         ArrayList<Term> terms = new ArrayList<Term>();
         ArrayList<String> names = getNames(reader);
-        
+
         Term term;
         while ((term = Term.readCompleteTT(reader)) != null) {
-            terms.add(term);
+            if (term.getNumVars() > 0) {
+                term.addNames(names);
+                terms.add(term);
+            }
         }
-        return new Formula(terms,names);
+        return new Formula(terms, names);
     }
-    
-    private static ArrayList<String> getNames(Reader reader) throws IOException{
-    	ArrayList<String> names = new ArrayList<String>();
-    	char c;
+
+    private static ArrayList<String> getNames(Reader reader) throws IOException {
+        ArrayList<String> names = new ArrayList<String>();
+        char c;
         String n = "";
-        while((c = (char) reader.read()) != '\n'){
-        	if(c == ' '){
-        		names.add(n);
-        		n ="";
-        	} else{
-        		n+=c;
-        	}
+        while ((c = (char) reader.read()) != '\n') {
+            if (c == ' ') {
+                names.add(n);
+                n = "";
+            } else {
+                n += c;
+            }
         }
         names.add(n.trim());
         return names;
@@ -212,7 +216,7 @@ public class Formula {
         }
         return -1;
     }
-    
+
     public List<Term> getTerms() {
         return termList;
     }

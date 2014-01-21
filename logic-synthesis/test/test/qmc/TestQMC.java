@@ -22,7 +22,7 @@ public class TestQMC {
     
     @Test
     public void testSimpleTT() throws IOException {
-        Formula f = Formula.readCompleteTT(new BufferedReader(new FileReader("test/test/qmc/input_tt.txt")));
+        Formula f = Formula.readCompleteTT(new BufferedReader(new FileReader("test/test/qmc/input_tt_xor3.txt")));
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
         System.out.println(f);
