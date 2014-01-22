@@ -13,16 +13,10 @@
 
 	<property name="dtu-sb-framework.lib" value="../framework/DTU-SB.bundle.jar" />
 
-	<property name="ormlite-core.lib" value="lib/ormlite-core-4.48.jar" />
-	<property name="ormlite-jdbc.lib" value="lib/ormlite-jdbc-4.48.jar" />
-	<property name="sqlite-jdbc.lib" value="lib/sqlite-jdbc-3.7.2.jar" />
 
 	<path id="classpath-ls">
 		<pathelement location="${build.dir}" />
 		<pathelement location="${dtu-sb-framework.lib}" />
-		<pathelement location="${ormlite-core.lib}" />
-		<pathelement location="${ormlite-jdbc.lib}" />
-		<pathelement location="${sqlite-jdbc.lib}" />
 	</path>
 
 	<path id="classpath-ls.test">

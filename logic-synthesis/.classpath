@@ -8,9 +8,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/ormlite-core-4.48.jar"/>
-	<classpathentry kind="lib" path="lib/ormlite-jdbc-4.48.jar"/>
-	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="lib" path="/DTU-SB/lib/logback-classic-1.0.13.jar"/>
 	<classpathentry kind="lib" path="/DTU-SB/lib/logback-core-1.0.13.jar"/>
 	<classpathentry kind="lib" path="/DTU-SB/lib/slf4j-api-1.7.5.jar"/>

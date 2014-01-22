@@ -1,13 +1,18 @@
 package dk.dtu.ls;
 
-import dk.dtu.ls.database.DAO;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+
+import dk.dtu.ls.library.models.SBGate;
+import dk.dtu.sb.Util;
 
 public class Main {
 
     public static void main(String[] args) {
-        DAO.setup();
+        
         new Main();
-        DAO.close();
+        
     }
     
     private Main() {
