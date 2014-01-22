@@ -3,29 +3,29 @@ package dk.dtu.AIG;
 import java.util.HashSet;
 import java.util.Set;
 
-abstract class Gate {
-	protected Set<Gate> in;
-	protected Gate out;
+abstract class LogicGate {
+	protected Set<LogicGate> in;
+	protected LogicGate out;
 	
-	protected Gate(){
-		in = new HashSet<Gate>();
+	protected LogicGate(){
+		in = new HashSet<LogicGate>();
 		out = null;
 	}
 	
-	protected void addChild(Gate g){
+	protected void addChild(LogicGate g){
 		//Sanity check
 		assert(g != null && g.out == null);
 		in.add(g);
 		g.out = this;
 	}
 	
-	/**Recursively prints all nodes in lisp notation from this root */
+	/**Recursively prints all nodes in preorder-lisp notation from this Gate as root */
 	public String subTreeToString(){
 		String s = this.toString();
 		//Except the last InputGates
 		if(in!=null){
 			s+="(";
-			for(Gate g : in){
+			for(LogicGate g : in){
 				s+=g.subTreeToString();
 			}
 		}
@@ -34,9 +34,15 @@ abstract class Gate {
 	
 	// Enforce overriding of toString()
 	public abstract String toString();
+	
+	/** Removes the child object */
+	public void removeChild(LogicGate g){
+		in.remove(g);
+		g.out = null;
+	}
 }
 
-class AndGate extends Gate {
+class AndGate extends LogicGate {
 	public AndGate(){
 		super();
 	}
@@ -45,7 +51,7 @@ class AndGate extends Gate {
 	}
 }
 
-class OrGate extends Gate {
+class OrGate extends LogicGate {
 	public OrGate(){
 		super();
 	}
@@ -54,7 +60,7 @@ class OrGate extends Gate {
 	}
 }
 
-class NotGate extends Gate {
+class NotGate extends LogicGate {
 	public NotGate(){
 		super();
 	}
@@ -63,7 +69,7 @@ class NotGate extends Gate {
 	}
 }
 
-class InputGate extends Gate {
+class InputGate extends LogicGate {
 	String protein;
 
 	public InputGate(String protein){
@@ -76,7 +82,7 @@ class InputGate extends Gate {
 	}
 }
 
-class OutputGate extends Gate {
+class OutputGate extends LogicGate {
 	String protein;
 	
 	public OutputGate(String protein){

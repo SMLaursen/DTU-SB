@@ -8,15 +8,16 @@ import org.junit.Test;
 
 import com.github.qtstc.Formula;
 
-import dk.dtu.AIG.AIG;
+import dk.dtu.AIG.TechnologyMapper;
 
 public class testAIG {
 	@Test
     public void testSimple() throws IOException {
         Formula f = Formula.read(new BufferedReader(new FileReader("test/test/aig/simple.txt")));
+       System.out.println(f);
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
-        AIG g = new AIG(f);   
+        TechnologyMapper g = new TechnologyMapper(f);   
         System.out.println(g);
     }
 	
@@ -25,7 +26,7 @@ public class testAIG {
         Formula f = Formula.read(new BufferedReader(new FileReader("test/test/aig/input.txt")));
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
-        AIG g = new AIG(f);   
+        TechnologyMapper g = new TechnologyMapper(f);   
         System.out.println(g);
     }
 }
