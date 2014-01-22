@@ -1,6 +1,7 @@
 package dk.dtu.AIG;
 
 import java.util.HashMap;
+
 import com.github.qtstc.Formula;
 
 public class AIG {
@@ -9,30 +10,62 @@ public class AIG {
 	
 	/**Parses formula f into the AIG structure */
 	public AIG(Formula f){
+		try {
+			Gate g = parseFormula(f);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	/**Creates an empty AIG for manual tree building*/
+	//public Graph(){}
+	
+	/** Parses the String representation of Formula f into a graph of (n-fan in/out) AND, OR and NOT 
+	 * @throws Exception */
+	public Gate parseFormula(Formula f) throws Exception{
 		String text = f.toString(); 
-		System.out.println(text);
 		
 		//Get index of equals
 		int index = text.indexOf("=");
 		
 		//Get output protein
 		String out = text.substring(0, index).trim();
-//		System.out.println(out);
 		text = text.substring(index+1).trim();
 		
 		//Get terms
 		String[] terms = text.replaceAll("[\\(\\)]","").split("\\+");
-	
 		output = new OutputGate(out);
-		Gate or = new OrGate();
-		output.addChild(or);
+		//Figure out whether to put a OR-gate
+		Gate topGate;
+		if(terms.length > 2){
+			throw new Exception("This release only supports 2 terms per formula");
+		} else if (terms.length == 2){
+			topGate = new OrGate();
+			output.addChild(topGate);
+		} else {
+			//Skip the topgate if only 1 term
+			topGate = output;
+		}
 		for(String s : terms){	
-			//Add and gates
-			Gate g = new AndGate();
-			or.addChild(g);
-			//Connect to InputGates - possibly with a NotGate
 			String[] term = s.trim().split("[ ]");
+			//Figure out whether to put AND-gates
+			Gate midGate;
+			if(term.length > 2){
+				throw new Exception("This release only supports 2 literals pr. term");
+			} else if (term.length == 2) {
+				//Add and gates
+				midGate = new AndGate();
+				topGate.addChild(midGate);
+			} else{
+				//Skip the midgate
+				midGate = topGate;
+			}
 			for(String t : term){
+				//Do not create duplicate input gates
 				boolean inverted = t.endsWith("'");
 				String literal = t.replace("'", "").trim();
 				if(!inMap.containsKey(literal)){
@@ -40,23 +73,21 @@ public class AIG {
 				}else {
 					System.out.println("Warning : complete orthogonality is not preserved");
 				}	
+				//Connect to InputGates - possibly with a NotGate
 				InputGate input = inMap.get(literal);
 				if(inverted){
 					//Add a notgate on the way to the inputgate
 					Gate inv = new NotGate();
-					g.addChild(inv);	
+					midGate.addChild(inv);	
 					inv.addChild(input);
 				} else {
-					g.addChild(input);
+					//Connect directly
+					midGate.addChild(input);
 				}
 					
 			}
 		}
-	}
-	
-	/**Creates an empty AIG for manual tree building*/
-	public AIG(){
-		
+		return output;
 	}
 	
 	public String toString(){

@@ -71,7 +71,7 @@ public class Term {
         String result = "";
         if (varVals[i] != DontCare) {
 //          result = Character.toString((char)(i + 65)) + (varVals[i] == False ? "'" : "");
-        	result = names.get(i) + (varVals[i] == False ? "'" : "");
+        	result = names.get(i) + (varVals[i] == False ? "' " : " ");
         }
         return result;
     }
