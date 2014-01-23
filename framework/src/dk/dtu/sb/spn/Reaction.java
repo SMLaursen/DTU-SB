@@ -25,6 +25,16 @@ public class Reaction {
      * 
      * @param id
      *            See {@link #id}.
+     */
+    public Reaction(String id) {
+        this(id, id, null);
+    }
+    
+    /**
+     * Constructs a reaction.
+     * 
+     * @param id
+     *            See {@link #id}.
      * @param rateFunction
      *            See {@link #rateFunction}.
      */

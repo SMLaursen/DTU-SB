@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +36,9 @@ import dk.dtu.sb.data.PlotPoint;
  * Java Swing GUI with a graph of the simulation results.
  */
 public class GraphGUI extends AbstractOutputFormatter {
-
+    
+    public static String outputProtein = null;
+    
     public void process(SimulationResult plotData) {
 
         XYSeriesCollection dataset = getDataSet(plotData);
@@ -45,10 +46,17 @@ public class GraphGUI extends AbstractOutputFormatter {
         final JFreeChart chart = ChartFactory.createXYLineChart("DTU-SB",
                 "time [s]", "Concentration [molecules]", dataset,
                 PlotOrientation.VERTICAL, true, true, true);
-
-        // Draw smooth lines :
-        // chart.getXYPlot().setRenderer(new XYSplineRenderer());
-
+        
+        ArrayList<String> species = new ArrayList<String>(plotData.getSpecies());
+        
+        if (outputProtein != null) {
+            for (int i = 0; i < chart.getXYPlot().getSeriesCount(); i++) {
+                if (!species.get(i).equals(outputProtein)) {
+                    chart.getXYPlot().getRenderer().setSeriesVisible(i, false);
+                }
+            }
+        }
+        
         ChartPanel chartpanel = new ChartPanel(chart);
         chartpanel.setDomainZoomable(true);
 
@@ -136,7 +144,6 @@ public class GraphGUI extends AbstractOutputFormatter {
         CheckableItem[] items = new CheckableItem[strings.size()];
 
         List<String> list = new ArrayList<String>(strings);
-        Collections.sort(list);
 
         int n = 0;
         for (String row : list) {
@@ -146,7 +153,6 @@ public class GraphGUI extends AbstractOutputFormatter {
 
         return items;
     }
-
 }
 
 class CheckListRenderer extends JCheckBox implements ListCellRenderer {
@@ -178,7 +184,7 @@ class CheckableItem {
 
     public CheckableItem(String str) {
         this.str = str;
-        isSelected = true;
+        isSelected = GraphGUI.outputProtein == null || GraphGUI.outputProtein.equals(str);
     }
 
     public void setSelected(boolean b) {
