@@ -6,18 +6,12 @@ import org.junit.Test;
 
 import ch.qos.logback.classic.Level;
 
-import java.util.Map.*;
-
 import dk.dtu.ls.library.ConcreteParts;
-import dk.dtu.ls.library.Library;
 import dk.dtu.ls.library.models.SBGate;
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.outputformatter.GraphGUI;
 import dk.dtu.sb.simulator.Simulator;
-import dk.dtu.sb.spn.Reaction;
-import dk.dtu.sb.spn.Species;
-import dk.dtu.sb.spn.StochasticPetriNet;
 
 public class TestComposer {
 
@@ -61,24 +55,23 @@ public class TestComposer {
         result.getSPN().setInitialMarking("IPTG", SBGate.HIGH);
         result.getSPN().setInitialMarking("lacI", SBGate.HIGH);
         
-        /*System.out.println(result.toGraphviz());
-        
         Parameters p = new Parameters();
 
         p.setSimIterations(2);
         p.setSimNoOfThreads(2);
-        p.setSimStoptime(10000);
-        p.setOutputStepCount(100);
+        p.setSimStoptime(3000);
+        p.setOutputStepCount(300);
         p.setSimThreshold(0.1);
         p.setSimMaxIterTime(120);
         p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
         
         Util.log.setLevel(Level.DEBUG);
-        Simulator simulator = new Simulator(result, p);
+        Simulator simulator = new Simulator(result.getSPN(), p);
         simulator.simulate();
 
         GraphGUI graph = new GraphGUI();
-        graph.process(simulator.getOutput(), p);  */
+        GraphGUI.outputProtein = result.outputProtein;
+        graph.process(simulator.getOutput(), p);
     }
 
 }
