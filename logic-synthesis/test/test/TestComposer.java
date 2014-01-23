@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import ch.qos.logback.classic.Level;
-
 import dk.dtu.ls.library.ConcreteParts;
+import dk.dtu.ls.library.Library;
 import dk.dtu.ls.library.models.SBGate;
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
@@ -17,29 +17,12 @@ public class TestComposer {
 
     @Test
     public void testCompose() {
-        SBGate or = new SBGate(
-                1, 
-                "1_or.xml", 
-                ConcreteParts.cost(0, 2), 
-                ConcreteParts.array("aTc", "Ara"),
-                ConcreteParts.array(), 
-                "CI", 
-                "CI = (aTc' Ara ) + (aTc Ara' )", 
-                4000
-                );
+        ConcreteParts.insertParts();
+        SBGate or = Library.getById(1);
         assertNotNull(or.getSPN());
         assertEquals(5, or.getSPN().getSpeciess().size());
         
-        SBGate and = new SBGate(
-                3, 
-                "3_and.xml", 
-                ConcreteParts.cost(0, 1), 
-                ConcreteParts.array("IPTG", "lacI"),
-                ConcreteParts.array(), 
-                "Ara", 
-                "Ara = (IPTG lacI )", 
-                3000
-                );        
+        SBGate and = Library.getById(3);        
         assertNotNull(and.getSPN());
         assertEquals(5, and.getSPN().getSpeciess().size());
         

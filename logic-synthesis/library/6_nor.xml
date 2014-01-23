@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model>
+    <listOfCompartments>
+      <compartment id="compartment" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="PBAD_Tet" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="aTc" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="Ara" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="CI" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="mRNA_CI" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="P_YFP" compartment="compartment" initialAmount="1" hasOnlySubstanceUnits="true"/>
+      <species id="mRNA_YFP" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="YFP" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="P_YFP_bound" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="aTc_p" reversible="false">
+        <listOfProducts>
+          <speciesReference species="PBAD_Tet"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="aTc"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.01 </cn>
+              <ci> aTc </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ara_p" reversible="false">
+        <listOfProducts>
+          <speciesReference species="PBAD_Tet"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="Ara"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.01 </cn>
+              <ci> Ara </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="tc_CI" reversible="false">
+        <listOfReactants>
+          <speciesReference species="PBAD_Tet"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mRNA_CI"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.04 </cn>
+              <ci> PBAD_Tet </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="tl_CI" reversible="false">
+        <listOfProducts>
+          <speciesReference species="CI"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="mRNA_CI"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.02 </cn>
+              <ci> mRNA_CI </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay_mRNA_CI" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mRNA_CI"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.02 </cn>
+              <ci> mRNA_CI </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay_CI" reversible="false">
+        <listOfReactants>
+          <speciesReference species="CI"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.02 </cn>
+              <ci> CI </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="tc_YFP" reversible="false">
+        <listOfProducts>
+          <speciesReference species="mRNA_YFP"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="P_YFP"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.1 </cn>
+              <ci> P_YFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="tl_YFP" reversible="false">
+        <listOfProducts>
+          <speciesReference species="YFP"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="mRNA_YFP"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.1 </cn>
+              <ci> mRNA_YFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay_mRNA_YFP" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mRNA_YFP"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.01 </cn>
+              <ci> mRNA_YFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay_YFP" reversible="false">
+        <listOfReactants>
+          <speciesReference species="YFP"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.01 </cn>
+              <ci> YFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="_trans_10" reversible="false">
+        <listOfReactants>
+          <speciesReference species="P_YFP_bound"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="P_YFP"/>
+          <speciesReference species="CI"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.0001 </cn>
+              <ci> P_YFP_bound </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="bind_YFP_CI" reversible="false">
+        <listOfReactants>
+          <speciesReference species="P_YFP"/>
+          <speciesReference species="CI"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="P_YFP_bound"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn type="integer"> 1 </cn>
+              <ci> CI </ci>
+              <ci> P_YFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

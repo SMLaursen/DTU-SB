@@ -15,6 +15,17 @@ public class Library {
         parts.clear();
     }
     
+    public static SBGate getById(int id) {
+        for (List<SBGate> gates : parts.values()) {
+            for (SBGate gate : gates) {
+                if (gate.id == id) {
+                    return gate;
+                }
+            }
+        }
+        return null;
+    }
+    
     public static void insert(SBGate gate) {
         List<SBGate> gates = parts.containsKey(gate.outputProtein) ? parts.get(gate.outputProtein) : new ArrayList<SBGate>();
         

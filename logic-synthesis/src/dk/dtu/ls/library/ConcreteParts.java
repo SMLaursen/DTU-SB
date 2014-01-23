@@ -80,7 +80,7 @@ public class ConcreteParts {
         Library.insert(new SBGate(
                 4, 
                 "4_inv.xml", 
-                cost(0, 1), 
+                cost(1, 0), 
                 array("GFP"),
                 array(), 
                 "aTc", 
@@ -90,18 +90,34 @@ public class ConcreteParts {
         
         /** --------------------------------------------------------------------
          * INV device
-         * Steady at ~3000s
+         * Steady at ~700s
          * 1 promoter
          */
         Library.insert(new SBGate(
                 5, 
                 "5_inv.xml", 
-                cost(0, 1), 
+                cost(1, 0), 
                 array("TetR"),
                 array(), 
                 "GFP", 
                 "GFP = (TetR' )", 
                 700
+                ));
+        
+        /** --------------------------------------------------------------------
+         * NOR device
+         * Steady at ~800s
+         * 1 promoter
+         */
+        Library.insert(new SBGate(
+                6, 
+                "6_nor.xml", 
+                cost(1, 2), 
+                array("Ara", "aTc"),
+                array("CI"), 
+                "YFP", 
+                "YFP = (Ara' aTc' )", 
+                800
                 ));
     }
 }

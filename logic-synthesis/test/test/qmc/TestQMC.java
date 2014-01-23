@@ -17,7 +17,7 @@ public class TestQMC {
         Formula f = Formula.read(new BufferedReader(new FileReader("test/test/qmc/input.txt")));
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
-        System.out.println(f);
+        assertEquals("GFP = (Lacl' GalR' ) + (TetR GalR )", f.toString());
     }
     
     @Test
@@ -25,7 +25,7 @@ public class TestQMC {
         Formula f = Formula.readCompleteTT(new BufferedReader(new FileReader("test/test/qmc/input_tt_xor3.txt")));
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
-        System.out.println(f);
+        assertEquals("GFP = (Lacl' TetR' CI ) + (Lacl' TetR CI' ) + (Lacl TetR' CI' ) + (Lacl TetR CI )", f.toString());
     }
     
     @Test
