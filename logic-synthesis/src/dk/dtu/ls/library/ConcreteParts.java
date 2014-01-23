@@ -1,10 +1,13 @@
 package dk.dtu.ls.library;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import dk.dtu.ls.library.models.SBGate;
 
 public class ConcreteParts {
     
-    private static int cost(int repressors, int activators) {
+    public static int cost(int repressors, int activators) {
         int cost = 0;
         if (repressors > 0) {
             cost += Math.pow(2, 1 / repressors);
@@ -15,8 +18,8 @@ public class ConcreteParts {
         return cost; 
     }
     
-    private static String[] array(String... protein) {
-        return protein;
+    public static ArrayList<String> array(String... protein) {
+        return new ArrayList<String>(Arrays.asList(protein));
     }
 
     public static void insertParts() {
@@ -31,15 +34,15 @@ public class ConcreteParts {
                 "1_or.xml", 
                 cost(0, 2), 
                 array("aTc", "Ara"),
-                array(""), 
+                array(), 
                 "CI", 
                 "CI = (aTc' Ara ) + (aTc Ara' )", 
-                4000
+                1000
                 ));
         
         /** --------------------------------------------------------------------
          * OR device
-         * Steady at ~4000s
+         * Steady at ~1000s
          * 1 promoter
          */
         Library.insert(new SBGate(
@@ -47,10 +50,10 @@ public class ConcreteParts {
                 "2_or.xml", 
                 cost(0, 1), 
                 array("aTc", "Ara"),
-                array(""), 
+                array(), 
                 "CI", 
                 "CI = (aTc' Ara ) + (aTc Ara' )", 
-                4000
+                1000
                 ));
         
         /** --------------------------------------------------------------------
@@ -63,10 +66,10 @@ public class ConcreteParts {
                 "3_and.xml", 
                 cost(0, 1), 
                 array("IPTG", "lacI"),
-                array(""), 
+                array(), 
                 "Ara", 
                 "Ara = (IPTG lacI )", 
-                3000
+                1000
                 ));
         
         /** --------------------------------------------------------------------
@@ -79,10 +82,10 @@ public class ConcreteParts {
                 "4_inv.xml", 
                 cost(0, 1), 
                 array("GFP"),
-                array(""), 
+                array(), 
                 "aTc", 
                 "aTc = (GFP' )", 
-                3000
+                1000
                 ));
         
         /** --------------------------------------------------------------------
@@ -95,10 +98,10 @@ public class ConcreteParts {
                 "5_inv.xml", 
                 cost(0, 1), 
                 array("TetR"),
-                array(""), 
+                array(), 
                 "GFP", 
                 "GFP = (TetR' )", 
-                3000
+                700
                 ));
     }
 }
