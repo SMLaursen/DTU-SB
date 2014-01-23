@@ -155,19 +155,19 @@ public class Term {
     }
     
     public static Term readCompleteTT(Reader reader) throws IOException {
-        int c = '\0', prevC = c;
+        int c = reader.read(), prevC = c;
+        if (c == -1) {
+            return null;
+        }
         ArrayList<Byte> t = new ArrayList<Byte>();
         while (c != '\n' && c != -1) {
-            prevC = c;
-            c = reader.read();
             if (c == '0') {
                 t.add((byte) False);
             } else if (c == '1') {
                 t.add((byte) True);
             }
-        }
-        if (c == -1) {
-            return null;
+            prevC = c;
+            c = reader.read();
         }
         if (prevC == '0') {
             // don't create term if output is false
