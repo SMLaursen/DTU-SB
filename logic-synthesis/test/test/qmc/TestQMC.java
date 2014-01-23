@@ -27,5 +27,13 @@ public class TestQMC {
         f.reducePrimeImplicantsToSubset();
         System.out.println(f);
     }
+    
+    @Test
+    public void testLibraryTT() throws IOException {
+        Formula f = Formula.readCompleteTT(new BufferedReader(new FileReader("test/test/qmc/input_tt.txt")));
+        f.reduceToPrimeImplicants();
+        f.reducePrimeImplicantsToSubset();
+        System.out.println(f);
+    }
 
 }
