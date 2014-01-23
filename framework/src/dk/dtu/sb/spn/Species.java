@@ -1,8 +1,5 @@
 package dk.dtu.sb.spn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 
  */
@@ -11,10 +8,6 @@ public class Species {
     private String id;
     
     private String name;
-    
-    private List<Reaction> asProduct = new ArrayList<Reaction>();
-    
-    private List<Reaction> asReactant = new ArrayList<Reaction>();
     
     /**
      * 
@@ -41,39 +34,7 @@ public class Species {
     public String getId() {
         return id;
     }
-    
-    /**
-     * 
-     * @param reaction
-     */
-    public void addAsProductReaction(Reaction reaction) {
-        asProduct.add(reaction);
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public List<Reaction> asProductReactions() {
-        return asProduct;
-    }
-    
-    /**
-     * 
-     * @param reaction
-     */
-    public void addAsReactantReaction(Reaction reaction) {
-        asReactant.add(reaction);
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public List<Reaction> asReactantReactions() {
-        return asReactant;
-    }
-    
+        
     /**
      * Can be used to represent the species in e.g. graphs.
      * 

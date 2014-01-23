@@ -1,6 +1,7 @@
 package dk.dtu.sb.parser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -44,6 +45,9 @@ public class SBMLParser extends AbstractParser {
     SBMLDocument document;
     Model model;
     SBMLReader reader = new SBMLReader();
+    
+    String prepend = null;
+    ArrayList<String> except = null;
 
     /**
      * {@inheritDoc}
@@ -55,6 +59,19 @@ public class SBMLParser extends AbstractParser {
         }
 
         return this.spn;
+    }
+    
+    public void setPrependId(String id, ArrayList<String> except) {
+        this.prepend = id;
+        this.except = new ArrayList<String>(except);
+    }
+    
+    private String id(String id) {
+        if (prepend == null) {
+            return id;
+        } else {            
+            return except.contains(id) ? id : "id_" + prepend + "_" + id;
+        }
     }
 
     /**
@@ -87,17 +104,17 @@ public class SBMLParser extends AbstractParser {
 
             for (ModifierSpeciesReference sr : reaction.getListOfModifiers()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addModifier(s.getId());
+                newReaction.addModifier(id(s.getId()));
             }
 
             for (SpeciesReference sr : reaction.getListOfReactants()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addReactant(s.getId(), (int) sr.getStoichiometry());
+                newReaction.addReactant(id(s.getId()), (int) sr.getStoichiometry());
             }
 
             for (SpeciesReference sr : reaction.getListOfProducts()) {
                 Species s = sr.getSpeciesInstance();
-                newReaction.addProduct(s.getId(), (int) sr.getStoichiometry());
+                newReaction.addProduct(id(s.getId()), (int) sr.getStoichiometry());
             }
 
             spn.addReaction(newReaction);
@@ -114,7 +131,7 @@ public class SBMLParser extends AbstractParser {
 
         RateFunction rateFunction = getRateFunction(reaction.getKineticLaw());
 
-        return new Reaction(reaction.getId(), reaction.getName(), rateFunction);
+        return new Reaction(id(reaction.getId()), reaction.getName(), rateFunction);
     }
 
     /**
@@ -125,9 +142,9 @@ public class SBMLParser extends AbstractParser {
         // 1. Get initial marking from initialAmount or initialConcentration
         // attr.
         for (Species species : model.getListOfSpecies()) {
-            spn.addSpecies(new dk.dtu.sb.spn.Species(species.getId(), species
+            spn.addSpecies(new dk.dtu.sb.spn.Species(id(species.getId()), species
                     .getName()));
-            spn.setInitialMarking(species.getId(), getInitialAmount(species));
+            spn.setInitialMarking(id(species.getId()), getInitialAmount(species));
         }
 
         // 2. Get initial marking from listOfInitialAssignments (overrides)
@@ -135,7 +152,7 @@ public class SBMLParser extends AbstractParser {
             int marking = (int) getConstant(ia.getMath(),
                     spn.getInitialMarking(ia.getVariable()));
 
-            spn.setInitialMarking(ia.getVariable(), marking);
+            spn.setInitialMarking(id(ia.getVariable()), marking);
         }
 
         // 3. Get initial marking from AssignmentRules
@@ -148,7 +165,7 @@ public class SBMLParser extends AbstractParser {
                     expr.withVariable(unknown, spn.getInitialMarking(unknown));
                 }
                 try {
-                    spn.setInitialMarking(aRule.getVariable(), (int) expr
+                    spn.setInitialMarking(id(aRule.getVariable()), (int) expr
                             .build().calculate());
                 } catch (Exception e) {
                 }
@@ -217,6 +234,7 @@ public class SBMLParser extends AbstractParser {
                             replace = new ASTNode(compartment.getValue());
                         }
                     } else {
+                        term.setName(id(term.getName()));
                         replace = term;
                         unknowns.add(term.getName());
                     }

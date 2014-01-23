@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -93,13 +95,14 @@ public class SBMLParserTest extends StdOutTester {
     }
     
     @Test
-    public void testBioModel_NegFB_Homeostasis() throws Exception {
+    public void testBioModel_NegFB_Homeostasis_prepend() throws Exception {
         resetStreams();
         
         SBMLParser parser = new SBMLParser();
+        parser.setPrependId("1", new ArrayList<String>(Arrays.asList("X", "Rp")));
         parser.readFile("test/test/simulator/BIOMD0000000308.xml");
         StochasticPetriNet spn = parser.parse(); 
-        System.out.println(spn.toGraphviz());         
+        System.out.println(spn);         
     }
     
     public static void saveDotAsPdf(String dot, String filename) throws IOException, InterruptedException {

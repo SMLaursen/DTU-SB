@@ -35,24 +35,6 @@ public class StochasticPetriNet {
                     + " already defined.");
         }
 
-        for (String speciesId : reaction.getProducts().keySet()) {
-            if (!species.containsKey(speciesId)) {
-                throw new RuntimeException("The species with the ID "
-                        + speciesId + " was not found in this SPN.");
-            } else {
-                species.get(speciesId).addAsProductReaction(reaction);
-            }
-        }
-
-        for (String speciesId : reaction.getReactants().keySet()) {
-            if (!species.containsKey(speciesId)) {
-                throw new RuntimeException("The species with the ID "
-                        + speciesId + " was not found in this SPN.");
-            } else {
-                species.get(speciesId).addAsReactantReaction(reaction);
-            }
-        }
-
         reactions.put(reaction.getId(), reaction);
     }
 
@@ -184,6 +166,7 @@ public class StochasticPetriNet {
         StochasticPetriNet s = new StochasticPetriNet();
         s.initialMarkings.putAll(initialMarkings);
         s.reactions.putAll(reactions);
+        s.species.putAll(species);
         return s;
     }
 
