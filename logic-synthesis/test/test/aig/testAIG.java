@@ -14,11 +14,11 @@ public class testAIG {
 	@Test
     public void testSimple() throws IOException {
         Formula f = Formula.read(new BufferedReader(new FileReader("test/test/aig/simple.txt")));
-       System.out.println(f);
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
-        TechnologyMapper g = new TechnologyMapper(f);   
-        System.out.println(g);
+        TechnologyMapper tech = new TechnologyMapper(f);
+        System.out.println(f);
+        System.out.println(tech.isMatching(tech.getOutputGate(), tech.getOutputGate()));
     }
 	
 	@Test
@@ -26,7 +26,9 @@ public class testAIG {
         Formula f = Formula.read(new BufferedReader(new FileReader("test/test/aig/input.txt")));
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
-        TechnologyMapper g = new TechnologyMapper(f);   
-        System.out.println(g);
+        TechnologyMapper tech = new TechnologyMapper(f);   
+        System.out.println(f);
+        System.out.println(tech.isMatching(tech.getOutputGate(), tech.getOutputGate()));
     }
+	
 }
