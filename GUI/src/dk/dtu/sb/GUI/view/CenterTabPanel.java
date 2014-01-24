@@ -1,13 +1,17 @@
-package dk.dtu.sb.GUI;
-
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+package dk.dtu.sb.GUI.view;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 
 public class CenterTabPanel extends JPanel {
+    
+    public JTextPane description;
+    public SimulationPanel simulation;
 
     /**
      * Create the panel.
@@ -20,11 +24,16 @@ public class CenterTabPanel extends JPanel {
         
         JPanel desc = new JPanel();
         tabbedPane.addTab("Description", null, desc, null);
+        desc.setLayout(new GridLayout(1, 0, 0, 0));
+        
+        description = new JTextPane();
+        description.setEditable(false);
+        desc.add(description);
         
         JPanel graph = new JPanel();
-        tabbedPane.addTab("Graph", null, graph, null);
+        tabbedPane.addTab("SPN Graph", null, graph, null);
         
-        JPanel simulation = new JPanel();
+        simulation = new SimulationPanel();
         tabbedPane.addTab("Simulation", null, simulation, null);
 
     }

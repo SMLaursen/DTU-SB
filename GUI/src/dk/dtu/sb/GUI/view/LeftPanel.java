@@ -1,4 +1,4 @@
-package dk.dtu.sb.GUI;
+package dk.dtu.sb.GUI.view;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -9,6 +9,8 @@ import java.awt.Dimension;
 
 public class LeftPanel extends JPanel {
 
+    public LoadSBMLPanel sbmlPanel;
+    
     /**
      * Create the panel.
      */
@@ -19,8 +21,8 @@ public class LeftPanel extends JPanel {
         JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
         add(tabbedPane, BorderLayout.CENTER);
         
-        JPanel panel = new JPanel();
-        tabbedPane.addTab("SBML", null, panel, null);
+        sbmlPanel = new LoadSBMLPanel();
+        tabbedPane.addTab("SBML", null, sbmlPanel, null);
         
         JPanel panel_1 = new JPanel();
         tabbedPane.addTab("Truth Table", null, panel_1, null);

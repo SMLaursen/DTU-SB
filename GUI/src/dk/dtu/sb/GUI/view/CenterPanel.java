@@ -1,4 +1,4 @@
-package dk.dtu.sb.GUI;
+package dk.dtu.sb.GUI.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -13,6 +13,9 @@ import javax.swing.border.EmptyBorder;
 
 public class CenterPanel extends JPanel {
 
+    public JTextPane consoleText;
+    public CenterTabPanel topPanel;
+    
     /**
      * Create the panel.
      */
@@ -20,12 +23,11 @@ public class CenterPanel extends JPanel {
         setBorder(new EmptyBorder(0, 0, 10, 0));
         setLayout(new BorderLayout(0, 0));
         
-        JPanel topPanel = new CenterTabPanel();
+        topPanel = new CenterTabPanel();
         add(topPanel);
         
-        JTextPane consoleText = new JTextPane();
+        consoleText = new JTextPane();
         consoleText.setMargin(new Insets(5, 5, 5, 5));
-        consoleText.setBorder(new LineBorder(new Color(0, 0, 0)));
         consoleText.setFont(new Font("Lucida Console", Font.PLAIN, 13));
         consoleText.setEditable(false);
         consoleText.setPreferredSize(new Dimension(100, 100));

@@ -7,6 +7,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import dk.dtu.sb.GUI.controller.CenterTabsController;
+import dk.dtu.sb.GUI.controller.ConsoleController;
+import dk.dtu.sb.GUI.controller.ParametersController;
+import dk.dtu.sb.GUI.controller.SBMLController;
+import dk.dtu.sb.GUI.controller.SimulationController;
+import dk.dtu.sb.GUI.model.Model;
+import dk.dtu.sb.GUI.view.CenterPanel;
+import dk.dtu.sb.GUI.view.CenterTabPanel;
+import dk.dtu.sb.GUI.view.LeftPanel;
+import dk.dtu.sb.GUI.view.RightPanel;
+
 import java.awt.BorderLayout;
 
 public class Main {
@@ -49,17 +60,25 @@ public class Main {
         frame.setBounds(100, 100, WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
         
-        JPanel leftPanel = new LeftPanel();
+        LeftPanel leftPanel = new LeftPanel();
         frame.getContentPane().add(leftPanel, BorderLayout.WEST);
         
-        JPanel centerPanel = new CenterPanel();
+        CenterPanel centerPanel = new CenterPanel();
         frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
         
-        JPanel rightPanel = new RightPanel();
+        RightPanel rightPanel = new RightPanel();
         frame.getContentPane().add(rightPanel, BorderLayout.EAST);
         
+        Model model = new Model();
+        
+        new ParametersController(rightPanel, model);
+        new SBMLController(leftPanel.sbmlPanel, model);
+        new ConsoleController(centerPanel, model);
+        new CenterTabsController(centerPanel.topPanel, model);
+        new SimulationController(centerPanel.topPanel.simulation, model);
     }
 
 }

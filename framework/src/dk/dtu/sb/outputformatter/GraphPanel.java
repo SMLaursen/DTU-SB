@@ -32,15 +32,12 @@ import dk.dtu.sb.data.SimulationResult;
 
 public class GraphPanel extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
+    String outputProtein = null;
+    
     /**
      * Create the panel.
      */
-    public GraphPanel(SimulationResult plotData) {
+    public GraphPanel(SimulationResult plotData, String outputProtein) {
         setLayout(new BorderLayout(0, 0));
 
         XYSeriesCollection dataset = getDataSet(plotData);
@@ -51,9 +48,9 @@ public class GraphPanel extends JPanel {
 
         ArrayList<String> species = new ArrayList<String>(plotData.getSpecies());
 
-        if (GraphGUI.outputProtein != null) {
+        if (outputProtein != null) {
             for (int i = 0; i < chart.getXYPlot().getSeriesCount(); i++) {
-                if (!species.get(i).equals(GraphGUI.outputProtein)) {
+                if (!species.get(i).equals(outputProtein)) {
                     chart.getXYPlot().getRenderer().setSeriesVisible(i, false);
                 }
             }
@@ -134,7 +131,7 @@ public class GraphPanel extends JPanel {
 
         int n = 0;
         for (String row : list) {
-            items[n] = new CheckableItem(row);
+            items[n] = new CheckableItem(row, outputProtein);
             n++;
         }
 
@@ -165,14 +162,14 @@ class CheckListRenderer extends JCheckBox implements ListCellRenderer {
  * Represents a checkbox with text
  */
 class CheckableItem {
-    private String str;
+    private String label;
 
     private boolean isSelected;
 
-    public CheckableItem(String str) {
-        this.str = str;
-        isSelected = GraphGUI.outputProtein == null
-                || GraphGUI.outputProtein.equals(str);
+    public CheckableItem(String label, String outputProtein) {
+        this.label = label;
+        isSelected = outputProtein == null
+                || outputProtein.equals(label);
     }
 
     public void setSelected(boolean b) {
@@ -184,6 +181,6 @@ class CheckableItem {
     }
 
     public String toString() {
-        return str;
+        return label;
     }
 }

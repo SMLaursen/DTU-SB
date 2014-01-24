@@ -41,7 +41,7 @@ public class GraphGUI extends AbstractOutputFormatter {
     
     public void process(SimulationResult plotData) {
         JFrame frame = new JFrame();
-        frame.add(new GraphPanel(plotData));
+        frame.add(new GraphPanel(plotData, outputProtein));
         frame.pack();
         frame.setVisible(true);
 
