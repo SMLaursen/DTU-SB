@@ -19,7 +19,8 @@ public class GillespieTest {
         p.setSimIterations(10);
         p.setSimNoOfThreads(2);
         p.setSimStoptime(10000);
-        p.setOutputStepCount(1000);
+        p.setOutputStepCount(500);
+        p.setSimThreshold(0.5);
         p.setSimRateMode(Parameters.PARAM_SIM_RATE_MODE_CUSTOM);
 
         simulateAndOutput(parse("test/test/simulator/neg_feedback.xml"), p);

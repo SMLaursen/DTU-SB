@@ -103,7 +103,7 @@ public class Parameters {
     /**
      * See {@link #getSimThreshold()}.
      */
-    public static final double PARAM_SIM_THRESHOLD_DEFAULT = 0.0005;
+    public static final double PARAM_SIM_THRESHOLD_DEFAULT = 0.05;
     private static final String PARAM_SIM_THRESHOLD = "simulation.threshold";
     
     /**
@@ -372,7 +372,7 @@ public class Parameters {
     /**
      * Default 0. Limits the output generated from the simulation to only save
      * points which delta tau > threshold. Can greatly reduce the required
-     * memory!
+     * memory during simulation!
      */
     public double getSimThreshold() {
         double threshold;
@@ -391,7 +391,7 @@ public class Parameters {
     }
 
     /**
-     * See {@link #getOutputStepCount()}.
+     * See {@link #getSimThreshold()}.
      */
     public void setSimThreshold(double threshold) {
         holder.setProperty(PARAM_SIM_THRESHOLD, "" + threshold);
