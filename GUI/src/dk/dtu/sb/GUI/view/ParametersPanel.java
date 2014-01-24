@@ -80,7 +80,7 @@ public class ParametersPanel extends JPanel {
         add(lblStoptime, "2, 6");
         
         stoptime = new JSpinner();
-        stoptime.setModel(new SpinnerNumberModel(new Integer(1000), new Integer(0), null, new Integer(1)));
+        stoptime.setModel(new SpinnerNumberModel(new Integer(1000), new Integer(0), null, new Integer(100)));
         add(stoptime, "2, 8");
         
         JLabel lblTimeout = new JLabel("Timeout");
@@ -96,14 +96,14 @@ public class ParametersPanel extends JPanel {
         add(lblOutputSteps, "2, 14");
         
         outSteps = new JSpinner();
-        outSteps.setModel(new SpinnerNumberModel(new Integer(100), null, null, new Integer(1)));
+        outSteps.setModel(new SpinnerNumberModel(new Integer(100), null, null, new Integer(100)));
         add(outSteps, "2, 16");
         
         JLabel lblThreshold = new JLabel("Threshold");
         add(lblThreshold, "2, 18");
         
         threshold = new JSpinner();
-        threshold.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(1)));
+        threshold.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(0)));
         add(threshold, "2, 20");
         
         JLabel lblCpuCores = new JLabel("Max threads");
