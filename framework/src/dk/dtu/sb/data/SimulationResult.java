@@ -41,6 +41,7 @@ public class SimulationResult {
     }
 
     private void generatePlots(Collection<AlgorithmResult> algorithmResults) {
+    	
         if (algorithmResults.size() == 0) {
             throw new RuntimeException("The input was empty.");
         } else {
@@ -96,6 +97,7 @@ public class SimulationResult {
                         }
                     }
                 }
+                
 
                 // Store averaged intersection
                 HashMap<String, Float> avg = new HashMap<String, Float>();
@@ -112,8 +114,22 @@ public class SimulationResult {
                     avg.put(specie, (float) (marking / bucketCount.get(specie)));
                 }
                 add(time, avg);
+             
             }
+            //Unreference for GC
+            prevMarking.clear();
+            currMarking.clear();
+            bucketCount.clear();
+            emptyBucketCount.clear();
+            prevMarking = null;
+            currMarking = null;
+            bucketCount = null;
+            emptyBucketCount = null;
+            algorithmResults.clear();
+            algorithmResults = null;
+            System.gc();
         }
+   
     }
 
     // TODO: Should this be moved?
