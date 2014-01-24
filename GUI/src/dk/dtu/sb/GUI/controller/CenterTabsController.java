@@ -3,7 +3,7 @@ package dk.dtu.sb.GUI.controller;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import dk.dtu.sb.GUI.model.Model;
+import dk.dtu.sb.GUI.Model;
 import dk.dtu.sb.GUI.view.CenterTabPanel;
 
 public class CenterTabsController implements PropertyChangeListener {
@@ -31,6 +31,10 @@ public class CenterTabsController implements PropertyChangeListener {
 
         if (propName.equals(Model.EVENT_SBML_FILE_LOADED)) {
             view.description.setText(model.getSPN().toString());
+        }
+        
+        if (propName.equals(Model.EVENT_START_SIMULATION) || propName.equals(Model.EVENT_SIMULATION_DONE)) {
+            view.tabs.setSelectedIndex(view.tabs.indexOfTab("Simulation"));
         }
     }
 

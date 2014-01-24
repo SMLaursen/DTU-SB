@@ -9,7 +9,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.GUI.model.Model;
+import dk.dtu.sb.GUI.Model;
 import dk.dtu.sb.GUI.view.LoadSBMLPanel;
 
 public class SBMLController implements PropertyChangeListener {

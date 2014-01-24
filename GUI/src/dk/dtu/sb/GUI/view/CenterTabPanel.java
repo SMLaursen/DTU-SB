@@ -12,6 +12,7 @@ public class CenterTabPanel extends JPanel {
     
     public JTextPane description;
     public SimulationPanel simulation;
+    public JTabbedPane tabs;
 
     /**
      * Create the panel.
@@ -19,11 +20,11 @@ public class CenterTabPanel extends JPanel {
     public CenterTabPanel() {
         setLayout(new BorderLayout(0, 0));
         
-        JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
-        add(tabbedPane, BorderLayout.CENTER);
+        tabs = new JTabbedPane(SwingConstants.TOP);
+        add(tabs, BorderLayout.CENTER);
         
         JPanel desc = new JPanel();
-        tabbedPane.addTab("Description", null, desc, null);
+        tabs.addTab("Description", null, desc, null);
         desc.setLayout(new GridLayout(1, 0, 0, 0));
         
         description = new JTextPane();
@@ -31,10 +32,10 @@ public class CenterTabPanel extends JPanel {
         desc.add(description);
         
         JPanel graph = new JPanel();
-        tabbedPane.addTab("SPN Graph", null, graph, null);
+        tabs.addTab("SPN Graph", null, graph, null);
         
         simulation = new SimulationPanel();
-        tabbedPane.addTab("Simulation", null, simulation, null);
+        tabs.addTab("Simulation", null, simulation, null);
 
     }
 

@@ -11,7 +11,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.GUI.model.Model;
+import dk.dtu.sb.GUI.Model;
 import dk.dtu.sb.GUI.view.ParametersPanel;
 import dk.dtu.sb.GUI.view.RightPanel;
 

@@ -48,14 +48,15 @@ public class GraphPanel extends JPanel {
 
         ArrayList<String> species = new ArrayList<String>(plotData.getSpecies());
 
-        if (outputProtein != null) {
-            for (int i = 0; i < chart.getXYPlot().getSeriesCount(); i++) {
-                if (!species.get(i).equals(outputProtein)) {
-                    chart.getXYPlot().getRenderer().setSeriesVisible(i, false);
-                }
+        for (int i = 0; i < chart.getXYPlot().getSeriesCount(); i++) {
+            if (chart.getXYPlot().getRenderer().getSeriesVisible(i) == null) {
+                chart.getXYPlot().getRenderer().setSeriesVisible(i, true);
+            }
+            if (outputProtein != null && !species.get(i).equals(outputProtein)) {
+                chart.getXYPlot().getRenderer().setSeriesVisible(i, false);
             }
         }
-
+    
         ChartPanel chartpanel = new ChartPanel(chart);
         chartpanel.setDomainZoomable(true);
 

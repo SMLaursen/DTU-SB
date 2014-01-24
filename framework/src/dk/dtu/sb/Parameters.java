@@ -59,7 +59,7 @@ public class Parameters {
     /**
      * See {@link #getSimStoptime()}.
      */
-    public static final int PARAM_SIM_STOPTIME_DEFAULT = 20;
+    public static final int PARAM_SIM_STOPTIME_DEFAULT = 1000;
     private static final String PARAM_SIM_STOPTIME = "simulation.stoptime";
     
     /**
@@ -85,7 +85,7 @@ public class Parameters {
     /**
      * See {@link #getOutputStepCount()}.
      */
-    public static final int PARAM_OUT_STEPCOUNT_DEFAULT = 1000;
+    public static final int PARAM_OUT_STEPCOUNT_DEFAULT = 100;
     private static final String PARAM_OUT_STEPCOUNT = "output.stepcount";
 
     /**

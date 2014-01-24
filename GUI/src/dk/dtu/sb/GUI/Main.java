@@ -1,10 +1,10 @@
 package dk.dtu.sb.GUI;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import dk.dtu.sb.GUI.controller.CenterTabsController;
@@ -12,13 +12,9 @@ import dk.dtu.sb.GUI.controller.ConsoleController;
 import dk.dtu.sb.GUI.controller.ParametersController;
 import dk.dtu.sb.GUI.controller.SBMLController;
 import dk.dtu.sb.GUI.controller.SimulationController;
-import dk.dtu.sb.GUI.model.Model;
 import dk.dtu.sb.GUI.view.CenterPanel;
-import dk.dtu.sb.GUI.view.CenterTabPanel;
 import dk.dtu.sb.GUI.view.LeftPanel;
 import dk.dtu.sb.GUI.view.RightPanel;
-
-import java.awt.BorderLayout;
 
 public class Main {
 
@@ -73,7 +69,7 @@ public class Main {
         frame.getContentPane().add(rightPanel, BorderLayout.EAST);
         
         Model model = new Model();
-        
+                
         new ParametersController(rightPanel, model);
         new SBMLController(leftPanel.sbmlPanel, model);
         new ConsoleController(centerPanel, model);

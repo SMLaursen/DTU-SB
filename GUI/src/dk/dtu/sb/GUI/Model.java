@@ -1,15 +1,17 @@
-package dk.dtu.sb.GUI.model;
+package dk.dtu.sb.GUI;
 
 import java.beans.PropertyChangeListener;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.SwingPropertyChangeSupport;
 
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.algorithm.GillespieAlgorithm;
+import dk.dtu.sb.Util;
 import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.parser.SBMLParser;
 import dk.dtu.sb.simulator.Simulator;
@@ -32,6 +34,7 @@ public class Model {
 
     public Model() {
         propChangeFirer = new SwingPropertyChangeSupport(this);
+        
     }
 
     public void addListener(PropertyChangeListener prop) {
@@ -56,17 +59,22 @@ public class Model {
     public void startSimulation() {
         propChangeFirer.firePropertyChange(EVENT_START_SIMULATION, "", "new");
         
-        SwingUtilities.invokeLater(new Runnable() {
+        (new SwingWorker<Boolean, Boolean>() {
+
             @Override
-            public void run() {
+            protected Boolean doInBackground() throws Exception {
                 Simulator simulator = new Simulator(spn, parameters);
                 simulator.simulate();
                 simData = simulator.getOutput();
-                
+                return true;
+            }
+            
+            @Override
+            protected void done() {
                 propChangeFirer.firePropertyChange(EVENT_SIMULATION_DONE, "", "new");
                 simulationNo++;
             }
-        });
+        }).execute();
     }
     
     public StochasticPetriNet getSPN() {
