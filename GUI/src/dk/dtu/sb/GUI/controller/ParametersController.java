@@ -48,7 +48,42 @@ public class ParametersController implements PropertyChangeListener {
         parametersPanel.simulations.addChangeListener(new ChangeListener() {            
             @Override
             public void stateChanged(ChangeEvent arg0) {
-                
+                model.parameters.setSimIterations((Integer)parametersPanel.simulations.getValue());
+            }
+        });
+        
+        parametersPanel.stoptime.addChangeListener(new ChangeListener() {            
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+                model.parameters.setSimStoptime((Integer)parametersPanel.stoptime.getValue());
+            }
+        });
+        
+        parametersPanel.timeout.addChangeListener(new ChangeListener() {            
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+                model.parameters.setSimMaxIterTime((Integer)parametersPanel.timeout.getValue());
+            }
+        });
+        
+        parametersPanel.outSteps.addChangeListener(new ChangeListener() {            
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+                model.parameters.setOutputStepCount((Integer)parametersPanel.outSteps.getValue());
+            }
+        });
+        
+        parametersPanel.threshold.addChangeListener(new ChangeListener() {            
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+                model.parameters.setSimThreshold((Double)parametersPanel.threshold.getValue());
+            }
+        });
+        
+        parametersPanel.cores.addChangeListener(new ChangeListener() {            
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+                model.parameters.setSimNoOfThreads((Integer)parametersPanel.cores.getValue());
             }
         });
         
