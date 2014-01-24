@@ -1,10 +1,10 @@
 package test.aig;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringReader;
-
 import org.junit.Test;
 
 import com.github.qtstc.Formula;
@@ -17,15 +17,16 @@ public class testAIG {
         Formula f = Formula.read(new BufferedReader(new FileReader("test/test/aig/simple.txt")));
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
-        System.out.println(f);
         
-        TechnologyMapper t1 = new TechnologyMapper("O =(A B) +  (C D)");
-        TechnologyMapper t2 = new TechnologyMapper(f);
-
-        System.out.println(t1);
-        System.out.println(t2);
+        TechnologyMapper t1 = new TechnologyMapper(f); 
         
-        System.out.println(t1.isMatching(t2.getOutputGate(), t1.getOutputGate()));
+        System.out.println(t1.getOutputGate().subTreeToString());
+        
+        //Validate structure of AIG which can have the following 4 permutations : 
+        assertTrue(t1.getOutputGate().subTreeToString().equals("O = (Not(And(Not(And(B()A()))C())))") ||
+        		   t1.getOutputGate().subTreeToString().equals("O = (Not(And(Not(And(A()B()))C())))") ||
+        		   t1.getOutputGate().subTreeToString().equals("O = (Not(And(C()Not(And(B()A())))))") ||
+        		   t1.getOutputGate().subTreeToString().equals("O = (Not(And(C()Not(And(A()B())))))"));
     }
 	
 	@Test
@@ -37,5 +38,7 @@ public class testAIG {
         System.out.println(f);
         System.out.println(tech.isMatching(tech.getOutputGate(), tech.getOutputGate()));
     }
+	
+	
 	
 }
