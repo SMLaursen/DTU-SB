@@ -68,8 +68,8 @@ public class ParametersPanel extends JPanel {
                 FormFactory.RELATED_GAP_ROWSPEC,
                 FormFactory.DEFAULT_ROWSPEC,}));
         
-        JLabel lblSimulations = new JLabel("Simulations");
-        lblSimulations.setToolTipText("Number of simulations");
+        JLabel lblSimulations = new JLabel("Iterations");
+        lblSimulations.setToolTipText("Number of iterations");
         add(lblSimulations, "2, 2");
         
         simulations = new JSpinner();
@@ -77,6 +77,7 @@ public class ParametersPanel extends JPanel {
         add(simulations, "2, 4");
         
         JLabel lblStoptime = new JLabel("Stoptime");
+        lblStoptime.setToolTipText("The simulation interval");
         add(lblStoptime, "2, 6");
         
         stoptime = new JSpinner();
@@ -92,7 +93,7 @@ public class ParametersPanel extends JPanel {
         add(timeout, "2, 12");
         
         JLabel lblOutputSteps = new JLabel("Output steps");
-        lblOutputSteps.setToolTipText("The more steps, the more detailed simulation graph");
+        lblOutputSteps.setToolTipText("The amount of samples to output. Reduces memory consumption.");
         add(lblOutputSteps, "2, 14");
         
         outSteps = new JSpinner();
@@ -100,6 +101,7 @@ public class ParametersPanel extends JPanel {
         add(outSteps, "2, 16");
         
         JLabel lblThreshold = new JLabel("Threshold");
+        lblThreshold.setToolTipText("The minimum time elapsed between successive samples. Reduces memory consumption.");
         add(lblThreshold, "2, 18");
         
         threshold = new JSpinner();

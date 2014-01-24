@@ -4,8 +4,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+
 import org.junit.Test;
 
+import dk.dtu.sb.GraphViz;
 import dk.dtu.sb.spn.RateFunction;
 import dk.dtu.sb.spn.Reaction;
 import dk.dtu.sb.spn.Species;
@@ -50,7 +53,18 @@ public class SPNtest {
 		assertTrue(spn.getReaction("Decomposition").getProducts().containsKey("A"));
 		assertTrue(spn.getReaction("Decomposition").getProducts().containsKey("B"));
 		
-		System.out.println(spn.toGraphviz());
+		GraphViz gv = new GraphViz();
+		gv.addln(spn.toGraphviz());
+//		String type = "gif";
+//      String type = "dot";
+//      String type = "fig";    // open with xfig
+//      	String type = "pdf";
+//      String type = "ps";
+//      String type = "svg";    // open with inkscape
+      String type = "png";
+//      String type = "plain";
+		File out = new File("./out/out." + type);    // Windows
+	    gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), type ), out );
 		
 		r1.removeReactant("B");
 		assertFalse(spn.getReaction("Composition").getReactants().containsKey("B"));
@@ -63,5 +77,7 @@ public class SPNtest {
 		
 		
 	}
+	
+	
 
 }
