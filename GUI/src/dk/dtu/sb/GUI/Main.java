@@ -4,14 +4,10 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-
-import java.awt.FlowLayout;
-
-import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import java.awt.BorderLayout;
-import java.awt.event.ComponentAdapter;
 
 public class Main {
 
@@ -25,8 +21,10 @@ public class Main {
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 try {
+                	UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     Main window = new Main();
                     window.frame.setVisible(true);
                 } catch (Exception e) {

@@ -11,21 +11,23 @@ public class TechnologyMapper {
 
 	/**Parses formula f into the AIG structure */
 	public TechnologyMapper(Formula f){
-		output = parseFormula(f);
+		output = parseFormula(f.toString());
 		convertToAIG(output);
 		//STRASH 
 		//Map to DeviceNodes using DataBase
 		//Translate DeviceNodes to a PN
 		//Simulate PN
 	}
-
-
+	
+	public TechnologyMapper(String f){
+		output = parseFormula(f);
+		convertToAIG(output);
+	}
 
 	/** Parses the String representation of Formula f into a graph of (2 input) AND, OR and NOT 
 	 * @throws Exception */
-	public OutputGate parseFormula(Formula f){
-		String text = f.toString(); 
-
+	public OutputGate parseFormula(String text){
+		
 		//Get index of equals
 		int index = text.indexOf("=");
 

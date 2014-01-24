@@ -3,6 +3,7 @@ package test.aig;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 
 import org.junit.Test;
 
@@ -16,9 +17,15 @@ public class testAIG {
         Formula f = Formula.read(new BufferedReader(new FileReader("test/test/aig/simple.txt")));
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
-        TechnologyMapper tech = new TechnologyMapper(f);
         System.out.println(f);
-        System.out.println(tech.isMatching(tech.getOutputGate(), tech.getOutputGate()));
+        
+        TechnologyMapper t1 = new TechnologyMapper("O =(A B) +  (C D)");
+        TechnologyMapper t2 = new TechnologyMapper(f);
+
+        System.out.println(t1);
+        System.out.println(t2);
+        
+        System.out.println(t1.isMatching(t2.getOutputGate(), t1.getOutputGate()));
     }
 	
 	@Test

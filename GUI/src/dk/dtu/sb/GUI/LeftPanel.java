@@ -2,6 +2,7 @@ package dk.dtu.sb.GUI;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -15,7 +16,7 @@ public class LeftPanel extends JPanel {
         setLayout(new BorderLayout(0, 0));
         setPreferredSize(new Dimension(280, 600));
         
-        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
         add(tabbedPane, BorderLayout.CENTER);
         
         JPanel panel = new JPanel();

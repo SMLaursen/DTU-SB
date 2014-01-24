@@ -1,7 +1,10 @@
 package dk.dtu.sb.GUI;
 
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import java.awt.BorderLayout;
+
 import javax.swing.JTabbedPane;
 
 public class CenterTabPanel extends JPanel {
@@ -12,7 +15,7 @@ public class CenterTabPanel extends JPanel {
     public CenterTabPanel() {
         setLayout(new BorderLayout(0, 0));
         
-        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
         add(tabbedPane, BorderLayout.CENTER);
         
         JPanel desc = new JPanel();
