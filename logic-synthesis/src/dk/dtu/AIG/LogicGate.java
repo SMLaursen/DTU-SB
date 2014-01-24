@@ -3,18 +3,21 @@ package dk.dtu.AIG;
 import java.util.HashSet;
 import java.util.Set;
 
-abstract class LogicGate {
+public abstract class LogicGate {
 	protected Set<LogicGate> in;
 	protected LogicGate out;
+	private static int idCounter = 0;
+	protected int myId;
 	
 	protected LogicGate(){
 		in = new HashSet<LogicGate>();
 		out = null;
+		myId = idCounter++;
 	}
 	
 	protected void addChild(LogicGate g){
 		//Sanity check
-		assert(g != null && g.out == null);
+		assert(g != null);
 		in.add(g);
 		g.out = this;
 	}
@@ -36,7 +39,7 @@ abstract class LogicGate {
 	public abstract String toString();
 	
 	/** Removes the child object */
-	public void removeChild(LogicGate g){
+	protected void removeChild(LogicGate g){
 		in.remove(g);
 		g.out = null;
 	}
