@@ -1,17 +1,16 @@
 package dk.dtu.sb.GUI;
 
 import java.beans.PropertyChangeListener;
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.util.List;
 
 import javax.swing.SwingWorker;
 import javax.swing.event.SwingPropertyChangeSupport;
 
+import dk.dtu.ls.library.Library;
+import dk.dtu.ls.library.models.SBGate;
 import dk.dtu.sb.Parameters;
-import dk.dtu.sb.Util;
 import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.parser.SBMLParser;
 import dk.dtu.sb.simulator.Simulator;
@@ -29,6 +28,7 @@ public class Model {
     public Parameters parameters = new Parameters();
     private StochasticPetriNet spn = new StochasticPetriNet();
     private SimulationResult simData;
+    public final List<SBGate> library = Library.getAllParts();
     
     public int simulationNo = 1;
 

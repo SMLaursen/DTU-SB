@@ -82,6 +82,7 @@ public class SBGate implements Comparable<SBGate> {
         this.inputProteins = input;
         this.intermediateProteins = intm;
         this.outputProtein = output;
+        this.SOP = SOP;
         this.stableStateTime = stableTime;
     }
     

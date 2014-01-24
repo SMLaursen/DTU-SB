@@ -38,4 +38,12 @@ public class Library {
     public static List<SBGate> getGatesWithOutput(String outputProtein) {
         return parts.get(outputProtein);
     }
+    
+    public static List<SBGate> getAllParts() {
+        ArrayList<SBGate> allParts = new ArrayList<SBGate>();
+        for (List<SBGate> gates : parts.values()) {
+            allParts.addAll(gates);
+        }
+        return allParts;
+    }
 }
