@@ -113,6 +113,7 @@ public class ParametersController implements PropertyChangeListener {
         parametersPanel.simButton.addActionListener(new ActionListener() {            
             @Override
             public void actionPerformed(ActionEvent e) {
+                model.setInitialMarkings(rightPanel.getInitialConcentrations());
                 model.startSimulation();
                 parametersPanel.simButton.setEnabled(false);
             }
@@ -126,6 +127,7 @@ public class ParametersController implements PropertyChangeListener {
 
         if (propName.equals(Model.EVENT_SBML_FILE_LOADED)) {
             parametersPanel.simButton.setEnabled(true);
+            rightPanel.addProteinConcentrations(model.getSPN().getInitialMarkings());
         }
         if (propName.equals(Model.EVENT_START_SIMULATION)) {            
             parametersPanel.stopSimButton.setEnabled(true);

@@ -4,6 +4,8 @@ import java.beans.PropertyChangeListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.SwingWorker;
 import javax.swing.event.SwingPropertyChangeSupport;
@@ -23,18 +25,21 @@ public class Model {
     public static final String EVENT_START_SIMULATION = "start_simulation";
     public static final String EVENT_SIMULATION_DONE = "simulation_done";
     
+    public static final int CURRENT_MODEL_LIBRARY = 100;
+    public static final int CURRENT_MODEL_FILE = 200;
+    
     private SwingPropertyChangeSupport propChangeFirer;
     
+    // properties
     public Parameters parameters = new Parameters();
+    public final List<SBGate> library = Library.getAllParts();
     private StochasticPetriNet spn = new StochasticPetriNet();
     private SimulationResult simData;
-    public final List<SBGate> library = Library.getAllParts();
-    
     public int simulationNo = 1;
+    public int currentLoadedModel = 0;
 
     public Model() {
-        propChangeFirer = new SwingPropertyChangeSupport(this);
-        
+        propChangeFirer = new SwingPropertyChangeSupport(this);        
     }
 
     public void addListener(PropertyChangeListener prop) {
@@ -54,6 +59,12 @@ public class Model {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }        
+    }
+        
+    public void setInitialMarkings(Map<String, Integer> markings) {
+        for (Entry<String, Integer> entry : markings.entrySet()) {
+            spn.setInitialMarking(entry.getKey(), entry.getValue());
+        }
     }
     
     public void startSimulation() {

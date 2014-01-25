@@ -18,7 +18,7 @@ public class ConsoleController implements PropertyChangeListener {
         
         this.view = view;
         
-        Console.redirectOutput(view.consoleText);
+        //Console.redirectOutput(view.consoleText);
     }
     
     @Override
