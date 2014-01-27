@@ -3,6 +3,7 @@ package dk.dtu.sb.GUI;
 import java.beans.PropertyChangeListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,6 +30,7 @@ public class Model {
     public static final int CURRENT_MODEL_FILE = 200;
     
     private SwingPropertyChangeSupport propChangeFirer;
+    private String sbmlFilename;
     
     // properties
     public Parameters parameters = new Parameters();
@@ -37,6 +39,8 @@ public class Model {
     private SimulationResult simData;
     public int simulationNo = 1;
     public int currentLoadedModel = 0;
+    public String outputProtein;
+    public ArrayList<String> inputProteins;
 
     public Model() {
         propChangeFirer = new SwingPropertyChangeSupport(this);        
@@ -46,19 +50,33 @@ public class Model {
         propChangeFirer.addPropertyChangeListener(prop);
     }
     
-    public void setSBML(String fileName) {
-        SBMLParser parser = new SBMLParser();
-        try {
-            parser.readFile(fileName);
-            spn = parser.parse();
-            propChangeFirer.firePropertyChange(EVENT_SBML_FILE_LOADED, "", "new");
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }        
+    public void setSBML(String fileName, int currentModel) {
+        this.currentLoadedModel = currentModel;
+        this.sbmlFilename = fileName;
+        (new SwingWorker<Boolean, Boolean>() {
+
+            @Override
+            protected Boolean doInBackground() throws Exception {
+                SBMLParser parser = new SBMLParser();
+                try {
+                    parser.readFile(sbmlFilename);
+                    spn = parser.parse();
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }   
+                return true;
+            }
+            
+            @Override
+            protected void done() {
+                propChangeFirer.firePropertyChange(EVENT_SBML_FILE_LOADED, "", "new");
+                sbmlFilename = null;
+            }
+        }).execute();     
     }
         
     public void setInitialMarkings(Map<String, Integer> markings) {

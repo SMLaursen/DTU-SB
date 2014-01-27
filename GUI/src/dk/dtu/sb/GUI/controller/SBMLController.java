@@ -46,8 +46,10 @@ public class SBMLController implements PropertyChangeListener {
             public void actionPerformed(ActionEvent arg0) {
                 int returnVal = fileChooser.showOpenDialog(view);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();                    
-                    model.setSBML(file.getAbsolutePath());
+                    File file = fileChooser.getSelectedFile();    
+                    model.outputProtein = null;
+                    model.inputProteins = null;
+                    model.setSBML(file.getAbsolutePath(), Model.CURRENT_MODEL_FILE);
                 }
             }
         });
@@ -56,7 +58,9 @@ public class SBMLController implements PropertyChangeListener {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 SBGate gate = model.library.get(view.list.getSelectedIndex());
-                model.setSBML(gate.sbmlFile);
+                model.outputProtein = gate.outputProtein;
+                model.inputProteins = new ArrayList<String>(gate.inputProteins);
+                model.setSBML("../logic-synthesis/" + gate.sbmlFile, Model.CURRENT_MODEL_LIBRARY);
             }
         });
         

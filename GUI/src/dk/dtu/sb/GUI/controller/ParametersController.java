@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.HashMap;
 
 import javax.swing.JFileChooser;
 import javax.swing.event.ChangeEvent;
@@ -127,7 +128,16 @@ public class ParametersController implements PropertyChangeListener {
 
         if (propName.equals(Model.EVENT_SBML_FILE_LOADED)) {
             parametersPanel.simButton.setEnabled(true);
-            rightPanel.addProteinConcentrations(model.getSPN().getInitialMarkings());
+            HashMap<String, Integer> markings = new HashMap<String, Integer>(model.getSPN().getInitialMarkings());
+            if (model.currentLoadedModel == Model.CURRENT_MODEL_LIBRARY) {
+                markings = new HashMap<String, Integer>();
+                for (String protein : model.getSPN().getInitialMarkings().keySet()) {
+                    if (model.inputProteins.contains(protein)) {
+                        markings.put(protein, model.getSPN().getInitialMarkings().get(protein));
+                    }
+                }
+            }
+            rightPanel.addProteinConcentrations(markings);
         }
         if (propName.equals(Model.EVENT_START_SIMULATION)) {            
             parametersPanel.stopSimButton.setEnabled(true);
