@@ -1,6 +1,7 @@
 package dk.dtu.sb.GUI.view;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class ImagePanel extends JPanel{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		float factor = getWidth() / (float) image.getWidth();
-		g.drawImage(image,0,0,(int) (image.getWidth()*factor),(int) (image.getHeight()*factor), null); // see javadoc for more info on the parameters            
+		g.drawImage(image.getScaledInstance(getWidth(), (int) (image.getHeight()*factor), Image.SCALE_SMOOTH),0,0, null); // see javadoc for more info on the parameters            
 		g.dispose();
 	}
 }
