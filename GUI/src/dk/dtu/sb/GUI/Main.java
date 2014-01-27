@@ -13,9 +13,11 @@ import dk.dtu.sb.GUI.controller.ConsoleController;
 import dk.dtu.sb.GUI.controller.ParametersController;
 import dk.dtu.sb.GUI.controller.SBMLController;
 import dk.dtu.sb.GUI.controller.SimulationController;
+import dk.dtu.sb.GUI.controller.TTController;
 import dk.dtu.sb.GUI.view.CenterPanel;
 import dk.dtu.sb.GUI.view.LeftPanel;
 import dk.dtu.sb.GUI.view.RightPanel;
+import dk.dtu.sb.GUI.view.TruthTablePanel;
 
 public class Main {
 
@@ -78,6 +80,7 @@ public class Main {
         new ConsoleController(centerPanel, model);
         new CenterTabsController(centerPanel.topPanel, model);
         new SimulationController(centerPanel.topPanel.simulation, model);
+        new TTController(leftPanel.truthTablePanel, model);
     }
 
 }
