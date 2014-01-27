@@ -127,7 +127,7 @@ public class RightPanel extends JPanel {
     
     public Map<String, Integer> getInitialConcentrations() {
         HashMap<String, Integer> levels = new HashMap<String, Integer>();
-        for (int i = 1; i < proteinPanel.getComponentCount(); i++) {
+        for (int i = 0; i < proteinPanel.getComponentCount(); i++) {
             ProteinLevelPanel panel = (ProteinLevelPanel)proteinPanel.getComponent(i);
             levels.put(panel.getProteinName(), panel.getLevel());
         }

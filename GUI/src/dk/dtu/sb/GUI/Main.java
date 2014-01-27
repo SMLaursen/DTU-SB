@@ -17,7 +17,6 @@ import dk.dtu.sb.GUI.controller.TTController;
 import dk.dtu.sb.GUI.view.CenterPanel;
 import dk.dtu.sb.GUI.view.LeftPanel;
 import dk.dtu.sb.GUI.view.RightPanel;
-import dk.dtu.sb.GUI.view.TruthTablePanel;
 
 public class Main {
 
