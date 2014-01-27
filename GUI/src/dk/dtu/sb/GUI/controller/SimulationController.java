@@ -38,7 +38,7 @@ public class SimulationController implements PropertyChangeListener {
         }
 
         if (propName.equals(Model.EVENT_SIMULATION_DONE)) {
-            view.updateTab("Simulation " + model.simulationNo, model.getSimulationResult());
+            view.updateTab("Simulation " + model.simulationNo, model.getSimulationResult(), model.outputProtein);
         }
     }
 }

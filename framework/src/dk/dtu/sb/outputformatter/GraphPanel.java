@@ -38,6 +38,7 @@ public class GraphPanel extends JPanel {
      * Create the panel.
      */
     public GraphPanel(SimulationResult plotData, String outputProtein) {
+        this.outputProtein = outputProtein;
         setLayout(new BorderLayout(0, 0));
 
         XYSeriesCollection dataset = getDataSet(plotData);

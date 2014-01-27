@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import dk.dtu.sb.GUI.Model;
 import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.outputformatter.GraphPanel;
 
@@ -45,7 +46,7 @@ public class SimulationPanel extends JPanel {
         tabs.addTab(title, panel);
     }
 
-    public void updateTab(String title, SimulationResult data) {
+    public void updateTab(String title, SimulationResult data, String outputProtein) {
         int index = tabs.indexOfTab(title);
 
         JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -65,7 +66,7 @@ public class SimulationPanel extends JPanel {
         pnlTab.add(btnClose, gbc);
 
         tabs.setTabComponentAt(index, pnlTab);
-        tabs.setComponentAt(index, new GraphPanel(data, null));
+        tabs.setComponentAt(index, new GraphPanel(data, outputProtein));
 
         btnClose.addActionListener(new MyCloseActionHandler(title));
 
