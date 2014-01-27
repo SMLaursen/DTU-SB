@@ -67,6 +67,14 @@ public class TTController implements PropertyChangeListener {
                 }
             }
         });
+        
+        view.btnLoadSelectedDesign.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                if (view.resultsList.getSelectedIndex() != -1) {
+                    
+                }
+            }
+        });
     }
     
     private void createNewTT(String input, String output) {

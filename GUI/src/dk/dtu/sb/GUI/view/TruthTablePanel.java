@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 public class TruthTablePanel extends JPanel {
 
@@ -18,6 +17,8 @@ public class TruthTablePanel extends JPanel {
     public JTextArea truthTableRaw;
     public JButton btnMinimise;
     public JTextArea textAreaMinimised;
+    public JButton btnLoadSelectedDesign;
+    public JList resultsList;
 
     /**
      * Create the panel.
@@ -27,8 +28,8 @@ public class TruthTablePanel extends JPanel {
         gridBagLayout.columnWidths = new int[] { 324, 0 };
         gridBagLayout.rowHeights = new int[] { 29, 144, 29, 58, 27, 77, 0, 0 };
         gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-        gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                4.9E-324, 1.0 };
+        gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                4.9E-324 };
         setLayout(gridBagLayout);
 
         btnAddTruthTable = new JButton("New truth table");
@@ -79,16 +80,22 @@ public class TruthTablePanel extends JPanel {
         gbc_lblNewLabel.gridx = 0;
         gbc_lblNewLabel.gridy = 4;
         add(lblNewLabel, gbc_lblNewLabel);
+        
+        btnLoadSelectedDesign = new JButton("Load selected design");
+        GridBagConstraints gbc_btnLoadSelectedDesign = new GridBagConstraints();
+        gbc_btnLoadSelectedDesign.insets = new Insets(0, 0, 5, 0);
+        gbc_btnLoadSelectedDesign.gridx = 0;
+        gbc_btnLoadSelectedDesign.gridy = 6;
+        add(btnLoadSelectedDesign, gbc_btnLoadSelectedDesign);
 
         JPanel resultDetailsPanel = new JPanel();
         GridBagConstraints gbc_resultDetailsPanel = new GridBagConstraints();
-        gbc_resultDetailsPanel.insets = new Insets(0, 0, 5, 0);
         gbc_resultDetailsPanel.fill = GridBagConstraints.BOTH;
         gbc_resultDetailsPanel.gridx = 0;
-        gbc_resultDetailsPanel.gridy = 6;
+        gbc_resultDetailsPanel.gridy = 7;
         add(resultDetailsPanel, gbc_resultDetailsPanel);
 
-        JList resultsList = new JList();
+        resultsList = new JList();
         GridBagConstraints gbc_resultsList = new GridBagConstraints();
         gbc_resultsList.insets = new Insets(0, 0, 5, 0);
         gbc_resultsList.fill = GridBagConstraints.BOTH;
