@@ -188,13 +188,12 @@ public class TechnologyMapper {
 								//Else break (And check the other branch)
 								break;
 							}
-							//Else clear any matches made so far.
+							//Else clear any partial matches made so far.
 							resumeProgress.clear();
 						}
 					}
 				}
 				//return false when everything has been explored and clear progress.
-				
 				return false;
 			}
 

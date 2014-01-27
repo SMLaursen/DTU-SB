@@ -1,9 +1,11 @@
 package dk.dtu.sb.GUI.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
@@ -12,6 +14,7 @@ public class CenterTabPanel extends JPanel {
     
     public JTextPane description;
     public SimulationPanel simulation;
+    public ImagePanel graph;
     public JTabbedPane tabs;
 
     /**
@@ -30,8 +33,8 @@ public class CenterTabPanel extends JPanel {
         description = new JTextPane();
         description.setEditable(false);
         desc.add(description);
-        
-        JPanel graph = new JPanel();
+     
+        graph = new ImagePanel();
         tabs.addTab("SPN Graph", null, graph, null);
         
         simulation = new SimulationPanel();

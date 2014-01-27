@@ -112,7 +112,7 @@ public class StochasticPetriNet {
     public String toGraphviz() {
         // Use http://sandbox.kidstrythisathome.com/erdos/
         String graph = "digraph G {\nsize=\"4,4\";\nfontsize=\"10\";nodesep=\"2.0\";\n";
-
+        graph +="graph [ dpi = 800]\n";
         for (Reaction reaction : reactions.values()) {
 
             graph += "\"" + reaction.getLabel() + " ["
@@ -157,7 +157,6 @@ public class StochasticPetriNet {
             }
         }
         graph += "}";
-
         return graph;
     }
 
