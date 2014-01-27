@@ -107,8 +107,9 @@ public class RightPanel extends JPanel {
     }
     
     public void addProteinConcentrations(Map<String, Integer> concentrations) {
-        for (int i = 1; i < proteinPanel.getComponentCount(); i++) {
-            proteinPanel.remove(i);
+        int components = proteinPanel.getComponentCount();
+        for (int i = 1; i < components; i++) {
+            proteinPanel.remove(1);
         }
         for (Entry<String, Integer> entry : concentrations.entrySet()) {
             proteinPanel.add(new ProteinLevelPanel(entry.getKey(), entry.getValue()));
