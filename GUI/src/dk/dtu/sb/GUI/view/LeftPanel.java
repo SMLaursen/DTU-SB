@@ -10,6 +10,7 @@ import java.awt.Dimension;
 public class LeftPanel extends JPanel {
 
     public LoadSBMLPanel sbmlPanel;
+    public TruthTablePanel truthTablePanel;
     
     /**
      * Create the panel.
@@ -24,8 +25,8 @@ public class LeftPanel extends JPanel {
         sbmlPanel = new LoadSBMLPanel();
         tabbedPane.addTab("SBML", null, sbmlPanel, null);
         
-        JPanel panel_1 = new JPanel();
-        tabbedPane.addTab("Truth Table", null, panel_1, null);
+        truthTablePanel = new TruthTablePanel();
+        tabbedPane.addTab("Truth Table", null, truthTablePanel, null);
 
     }
 

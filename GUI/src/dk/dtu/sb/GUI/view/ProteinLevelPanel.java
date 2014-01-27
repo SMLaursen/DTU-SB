@@ -33,7 +33,7 @@ public class ProteinLevelPanel extends JPanel {
         this.proteinName = name;
         setLayout(new FormLayout(new ColumnSpec[] {
                 FormFactory.RELATED_GAP_COLSPEC,
-                ColumnSpec.decode("max(32dlu;default)"),
+                ColumnSpec.decode("left:max(32dlu;default):grow"),
                 FormFactory.RELATED_GAP_COLSPEC,
                 FormFactory.DEFAULT_COLSPEC,
                 FormFactory.RELATED_GAP_COLSPEC,
@@ -46,7 +46,7 @@ public class ProteinLevelPanel extends JPanel {
         
         JLabel lblProtein = new JLabel(name);
         lblProtein.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-        add(lblProtein, "2, 2, 5, 1");
+        add(lblProtein, "2, 2");
         
         levelSpinner = new JSpinner();
         levelSpinner.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
