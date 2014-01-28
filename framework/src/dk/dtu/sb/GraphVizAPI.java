@@ -67,6 +67,11 @@ public class GraphVizAPI
 		   DOT_PATH = "/usr/bin/dot";
 	   }
 	   
+	   //Create necessary dirs automatically
+	   File dir_tmp = new File(TEMP_DIR);
+	   dir_tmp.mkdir();
+	   File dir_out = new File(OUT_PATH);
+	   dir_out.mkdir();
    }	
 
    /**

@@ -38,6 +38,7 @@ public class CenterTabsController implements PropertyChangeListener {
     		gv.addln(model.getSPN().toGraphviz());
     		String type = "png";
     		File out = new File(GraphVizAPI.OUT_PATH+"out."+ type);
+    		
     	    gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), type ), out );
     	    view.graph.setImage(GraphVizAPI.OUT_PATH+"out."+type);
         }

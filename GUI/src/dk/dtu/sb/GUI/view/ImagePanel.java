@@ -26,8 +26,10 @@ public class ImagePanel extends JPanel{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		float factor = getWidth() / (float) image.getWidth();
-		g.drawImage(image.getScaledInstance(getWidth(), (int) (image.getHeight()*factor), Image.SCALE_SMOOTH),0,0, null); // see javadoc for more info on the parameters            
-		g.dispose();
+		if(image!=null){
+			float factor = getWidth() / (float) image.getWidth();
+			g.drawImage(image.getScaledInstance(getWidth(), (int) (image.getHeight()*factor), Image.SCALE_SMOOTH),0,0, null); // see javadoc for more info on the parameters            
+			g.dispose();
+		}
 	}
 }
