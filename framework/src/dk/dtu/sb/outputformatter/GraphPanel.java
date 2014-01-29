@@ -29,6 +29,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import dk.dtu.sb.data.PlotPoint;
 import dk.dtu.sb.data.SimulationResult;
+import java.awt.Color;
 
 public class GraphPanel extends JPanel {
 
@@ -43,7 +44,7 @@ public class GraphPanel extends JPanel {
 
         XYSeriesCollection dataset = getDataSet(plotData);
 
-        final JFreeChart chart = ChartFactory.createXYLineChart("DTU-SB",
+        final JFreeChart chart = ChartFactory.createXYLineChart(null,
                 "time [s]", "Concentration [molecules]", dataset,
                 PlotOrientation.VERTICAL, true, true, true);
 
@@ -91,10 +92,15 @@ public class GraphPanel extends JPanel {
             }
         });
         JScrollPane sp = new JScrollPane(list);
+        sp.setBorder(null);
         JPanel checkListPanel = new JPanel();
+        checkListPanel.setBorder(null);
+        checkListPanel.setBackground(Color.WHITE);
         checkListPanel.setLayout(new BorderLayout());
         checkListPanel.add(sp, BorderLayout.CENTER);
-        checkListPanel.add(new JLabel("Show species:  "), BorderLayout.NORTH);
+        JLabel label = new JLabel("Show species:  ");
+        label.setBorder(new EmptyBorder(2, 2, 2, 2));
+        checkListPanel.add(label, BorderLayout.NORTH);
         add(checkListPanel, BorderLayout.EAST);
     }
 
