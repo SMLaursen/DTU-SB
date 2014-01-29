@@ -1,4 +1,4 @@
-package dk.dtu.AIG;
+package dk.dtu.techmap;
 
 import java.util.HashMap;
 import java.util.Map;

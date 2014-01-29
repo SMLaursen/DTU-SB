@@ -10,8 +10,9 @@ import org.junit.Test;
 
 import com.github.qtstc.Formula;
 
-import dk.dtu.AIG.LogicGate;
-import dk.dtu.AIG.TechnologyMapper;
+import dk.dtu.techmap.AIG;
+import dk.dtu.techmap.LogicGate;
+import dk.dtu.techmap.TechnologyMapper;
 
 public class TestTechMap {
 
@@ -21,19 +22,21 @@ public class TestTechMap {
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
         
-        TechnologyMapper t1 = new TechnologyMapper(f); // O = (C') + (A B)
-        TechnologyMapper t2 = new TechnologyMapper("O =(I) + (C')");
-        TechnologyMapper t3 = new TechnologyMapper("I = (B A)");
+        AIG g1 = new AIG(f); // O = (C') + (A B)
+        AIG g2 = new AIG("O =(I) + (C')");
+        AIG g3 = new AIG("I = (B A)");
      
+        TechnologyMapper t = new TechnologyMapper(g1);
+        
         //Ensure that t2 matches t1's pattern
-        assertTrue(t1.isMatching(t2.getOutputGate(), t1.getOutputGate()));
+        assertTrue(t.isMatching(g2.getOutputGate(), g1.getOutputGate()));
 
         //Ensure there is only one unfinished mapping for I
-        assertTrue(t1.getProgress().size()==1 && t1.getProgress().containsKey("I"));
+        assertTrue(t.getProgress().size()==1 && t.getProgress().containsKey("I"));
        
         //Ensure that t3 fits the unfinished mapping and completes the technology mapping 
         // (complete when getProgress.isEmpty)
-        assertTrue(t1.isMatching(t3.getOutputGate(), t1.getProgress().get("I")) && t1.getProgress().isEmpty());
+        assertTrue(t.isMatching(g3.getOutputGate(), t.getProgress().get("I")) && t.getProgress().isEmpty());
 	}
 	
 	@Test
@@ -42,24 +45,26 @@ public class TestTechMap {
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
         
-        TechnologyMapper t1 = new TechnologyMapper(f); // O = (C') + (A B)
-        TechnologyMapper t2 = new TechnologyMapper("O =(I) + (C')");
-        TechnologyMapper t3 = new TechnologyMapper("I = (B C) + (C')");
-        TechnologyMapper t4 = new TechnologyMapper("I = (C B)");
+        AIG g1 = new AIG(f); // O = (C') + (A B)
+        AIG g2 = new AIG("O =(I) + (C')");
+        AIG g3 = new AIG("I = (B C) + (C')");
+        AIG g4 = new AIG("I = (C B)");
      
+        TechnologyMapper t = new TechnologyMapper(g1);
+        
         //Ensure that t2 matches t1's pattern
-        assertTrue(t1.isMatching(t2.getOutputGate(), t1.getOutputGate()));
+        assertTrue(t.isMatching(g2.getOutputGate(), g1.getOutputGate()));
 
         //Ensure there is only one unfinished mapping for I
-        assertTrue(t1.getProgress().size()==1 && t1.getProgress().containsKey("I"));
+        assertTrue(t.getProgress().size()==1 && t.getProgress().containsKey("I"));
         
-        LogicGate temp = t1.getProgress().get("I");
+        LogicGate temp = t.getProgress().get("I");
         
         //Ensure that t3 dont fit the unfinished mapping
-        assertFalse(t1.isMatching(t3.getOutputGate(), temp));
+        assertFalse(t.isMatching(g3.getOutputGate(), temp));
         
         //Ensure that t4 dont fit the unfinished mapping
-        assertFalse(t1.isMatching(t4.getOutputGate(), temp));
+        assertFalse(t.isMatching(g4.getOutputGate(), temp));
     
 	}
 }
