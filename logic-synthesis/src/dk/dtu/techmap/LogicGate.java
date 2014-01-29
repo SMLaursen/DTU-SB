@@ -1,4 +1,4 @@
-package dk.dtu.AIG;
+package dk.dtu.techmap;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -42,6 +42,10 @@ public abstract class LogicGate {
 	protected void removeChild(LogicGate g){
 		in.remove(g);
 		g.out = null;
+	}
+	
+	protected int getId(){
+		return myId;
 	}
 }
 
