@@ -77,12 +77,15 @@ class NotGate extends LogicGate {
 }
 
 class InputGate extends LogicGate {
-	String protein;
+	private String protein;
 
 	public InputGate(String protein){
 		out = null;
 		//Do net initialize in!
 		this.protein = protein;
+	}
+	public String getProtein(){
+		return protein;
 	}
 	public String toString(){
 		return protein;
@@ -90,11 +93,15 @@ class InputGate extends LogicGate {
 }
 
 class OutputGate extends LogicGate {
-	String protein;
+	private String protein;
 	
 	public OutputGate(String protein){
 		super();
 		this.protein = protein;
+	}
+	
+	public String getProtein(){
+		return protein;
 	}
 	
 	public String toString(){

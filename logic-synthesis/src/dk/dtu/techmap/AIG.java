@@ -6,13 +6,13 @@ import java.util.HashMap;
 public class AIG {
 	String name;
 	
-	LogicGate output;
+	private OutputGate output;
 	
 	//Map with inputs, this map is emptied as matches are found
-	HashMap<String,InputGate> inMap = new HashMap<String,InputGate>();
+	private HashMap<String,InputGate> inMap = new HashMap<String,InputGate>();
 
 	//Indicates if the graph has been succesfully converted to AIG
-	boolean isAIG = false;
+	public boolean isAIG = false;
 
 	public AIG(String formula){
 		output = parseFormula(formula);
@@ -143,8 +143,12 @@ public class AIG {
 	public String toString(){
 		return name;
 	}
-	public LogicGate getOutputGate(){
+	public OutputGate getOutputGate(){
 		return output;
+	}
+	
+	public boolean containsInputProtein(String protein){
+		return inMap.containsKey(protein);
 	}
 //	/** Returns a copy of the tree rooting from g*/
 //	public LogicGate CopyTree(OutputGate g){
@@ -155,5 +159,8 @@ public class AIG {
 	/**When the entire graph has been mapped, the inMap is empty.*/
 	public boolean isMapped(){
 		return inMap.isEmpty();
+	}
+	public String treeToString() {
+		return output.subTreeToString();
 	}
 }

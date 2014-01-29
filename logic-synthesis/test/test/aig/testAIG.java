@@ -11,7 +11,6 @@ import org.junit.Test;
 import com.github.qtstc.Formula;
 
 import dk.dtu.techmap.AIG;
-import dk.dtu.techmap.TechnologyMapper;
 
 public class testAIG {
 	@Test
@@ -22,13 +21,13 @@ public class testAIG {
         
         AIG g1 = new AIG(f.toString()); 
         
-        System.out.println(g1.getOutputGate().subTreeToString());
+        System.out.println(g1.treeToString());
         
         //Validate structure of AIG which can have the following 4 permutations : 
-        assertTrue(g1.getOutputGate().subTreeToString().equals("O = (Not(And(Not(And(B()A()))C())))") ||
-        		   g1.getOutputGate().subTreeToString().equals("O = (Not(And(Not(And(A()B()))C())))") ||
-        		   g1.getOutputGate().subTreeToString().equals("O = (Not(And(C()Not(And(B()A())))))") ||
-        		   g1.getOutputGate().subTreeToString().equals("O = (Not(And(C()Not(And(A()B())))))"));
+        assertTrue(g1.treeToString().equals("O = (Not(And(Not(And(B()A()))C())))") ||
+        		   g1.treeToString().equals("O = (Not(And(Not(And(A()B()))C())))") ||
+        		   g1.treeToString().equals("O = (Not(And(C()Not(And(B()A())))))") ||
+        		   g1.treeToString().equals("O = (Not(And(C()Not(And(A()B())))))"));
     }
 	
 	@Test

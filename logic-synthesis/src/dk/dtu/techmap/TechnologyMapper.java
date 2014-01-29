@@ -4,32 +4,26 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class TechnologyMapper {
-
-	//Stores the LogicGates that needs to be matched next by the protein .
-//	private HashMap<String,LogicGate> matchNext = new HashMap<String,LogicGate>();
-
-	
 	private AIG graph;
 
 	/**Sets up the technologymapper using g to be matched */
 	public TechnologyMapper(AIG g){
 		//Ensure AIG has been correctly defined.
-		assert(g.output instanceof OutputGate);
+		assert(g.getOutputGate() instanceof OutputGate);
 		assert(g.isAIG);
 		//Add top-level node
 		graph = g;
-
 	}
+	
 	/** Starts mapping.
 	 * @return
 	 * null : No mapping could be made
 	 * Set : The set of parts in the solution */
 	public HashSet<AIG> start(HashSet<AIG> library){
 		HashMap<String, LogicGate> startingGate = new HashMap<String, LogicGate>();
-		startingGate.put(graph.output.toString(), graph.output);
+		startingGate.put(graph.getOutputGate().getProtein(), graph.getOutputGate());
 		HashSet<AIG> solution = new HashSet<AIG>();
 		return map(library, solution, startingGate);
-		
 	}
 	
 	/** Maps using the library of {@link AIG}'s
@@ -38,19 +32,26 @@ public class TechnologyMapper {
 	 * null : no match could be found
 	 * Set  : the set of parts that make up the match*/
 	private HashSet<AIG> map(HashSet<AIG> library, HashSet<AIG> selectedParts, HashMap<String,LogicGate> toMatch){
-
+		
 		//For each incomplete matching
-		for(LogicGate g : toMatch.values()){
-
+		for(String protein : toMatch.keySet()){
+			LogicGate g = toMatch.get(protein);
+			
 			//Try to match it using any part from library
 			for(AIG libPart : library){
-
+				
 				//Ensure orthogonality
 				if(selectedParts.contains(libPart)){
 					continue;
 				}
+				
+//				//Ensure proteins match
+				if(!libPart.getOutputGate().getProtein().equals(protein)){
+					continue;
+				}
+				
+				//Can this be libPart be matched?
 				HashMap<String, LogicGate> toMatchNext = isMatching(libPart.getOutputGate(), g);
-
 				//Part didn't match. skip this part.
 				if(toMatchNext==null){
 					continue;
@@ -94,7 +95,7 @@ public class TechnologyMapper {
 	public HashMap<String, LogicGate> isMatching(LogicGate other, LogicGate atPos){
 		//Used as control : null = no match, empty = complete match 
 		//Values = partial match i.e. need to continue explore these vales with other parts
-		HashMap<String, LogicGate> matches = new HashMap<String, LogicGate>();
+		HashMap<String, LogicGate> nextMatches = new HashMap<String, LogicGate>();
 
 		if(other instanceof AndGate){
 			if(atPos instanceof AndGate){
@@ -120,13 +121,13 @@ public class TechnologyMapper {
 							continue;
 						}
 						else if(childOther.getClass() == childThis.getClass()){
-							matches = isMatching(childOther,childThis);
+							nextMatches = isMatching(childOther,childThis);
 							//See if it matches downwards.
-							if(matches != null){
+							if(nextMatches != null){
 								//Found one match 
 								match++;
 								alreadyMatched = childOther;
-								mergedMatches.putAll(matches);
+								mergedMatches.putAll(nextMatches);
 								//If both branches could be matched, return their union.
 								if(match == 2){
 									return mergedMatches;
@@ -155,17 +156,37 @@ public class TechnologyMapper {
 			return null;
 			
 		} else if(other instanceof InputGate){
-			//If the input proteins matches, we have a "complete" match.
-			if(!(atPos instanceof InputGate && other.toString().equals(atPos.toString()) )){
-				//Otherwise store position of graph where to resume matching next part
-				//If not wrong mappings! (Orthogonality ensures we can abort here)
-				if(graph.inMap.containsKey(atPos.toString())){
+			if(atPos instanceof InputGate){
+				//If proteins match - and are specified in the inMap of the AIG
+				if(((InputGate) other).getProtein().equals(((InputGate) atPos).getProtein()) 
+						&& graph.containsInputProtein(((InputGate) atPos).getProtein())){
+					//nextMatches should be empty here
+					assert(nextMatches.isEmpty());
+					return nextMatches;
+				}
+				else{
+					//Proteins do not match
+					//TODO add functionality to translate proteins freely
 					return null;
-				} else {
-					matches.put(other.toString(),atPos);
 				}
 			}
-			return matches;
+			else{
+				//Continue from this node using other's protein 
+				nextMatches.put(((InputGate) other).getProtein(), atPos);
+				return nextMatches;
+			}
+			
+//			if(!(atPos instanceof InputGate && other.toString().equals(atPos.toString()) )){
+//				//Otherwise store position of graph where to resume matching next part
+//				//If not wrong mappings! (Orthogonality ensures we can abort here)
+//				if(graph.inMap.containsKey(atPos.toString())){
+//					return null;
+//				} else {
+//					nextMatches.put(other.toString(),atPos);
+//				}
+//			}
+//			return nextMatches;
+		
 		} else if(other instanceof OutputGate){
 			//Sanity check
 			assert(other.in.size() == 1);
@@ -177,6 +198,7 @@ public class TechnologyMapper {
 				childThis = (LogicGate) atPos.in.toArray()[0];
 			}
 			return isMatching(childOther, childThis);
+		
 		} else {
 			throw new RuntimeException("Unrecognized graph structure");
 		}
