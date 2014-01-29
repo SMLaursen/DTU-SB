@@ -2,10 +2,10 @@ package dk.dtu.techmap;
 
 import java.util.HashMap;
 
-import com.github.qtstc.Formula;
-
 /** Represents And-Inverter-Graph */
 public class AIG {
+	String name;
+	
 	LogicGate output;
 	
 	//Map with inputs, this map is emptied as matches are found
@@ -13,15 +13,16 @@ public class AIG {
 
 	//Indicates if the graph has been succesfully converted to AIG
 	boolean isAIG = false;
-	
-	public AIG(Formula f){
-		output = parseFormula(f.toString());
-		convertToAIG(output);
-	}
 
-	public AIG(String f){
-		output = parseFormula(f);
+	public AIG(String formula){
+		output = parseFormula(formula);
 		convertToAIG(output);
+		name = output.subTreeToString();
+	}
+	public AIG(String formula, String name){
+		output = parseFormula(formula);
+		convertToAIG(output);
+		this.name = name;
 	}
 	
 	/** Parses the String representation of Formula f into a graph of (2 input) AND, OR and NOT 
@@ -140,7 +141,7 @@ public class AIG {
 	}
 	
 	public String toString(){
-		return output.subTreeToString();
+		return name;
 	}
 	public LogicGate getOutputGate(){
 		return output;

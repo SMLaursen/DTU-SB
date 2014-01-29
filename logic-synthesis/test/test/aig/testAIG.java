@@ -20,7 +20,7 @@ public class testAIG {
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
         
-        AIG g1 = new AIG(f); 
+        AIG g1 = new AIG(f.toString()); 
         
         System.out.println(g1.getOutputGate().subTreeToString());
         
@@ -36,7 +36,7 @@ public class testAIG {
         Formula f = Formula.read(new BufferedReader(new FileReader("test/test/aig/input.txt")));
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
-        AIG g = new AIG(f);   
+        AIG g = new AIG(f.toString());   
         System.out.println(f);
        
     }
