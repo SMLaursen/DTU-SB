@@ -9,6 +9,7 @@ import dk.dtu.sb.parser.SBMLParser;
 import dk.dtu.sb.spn.Reaction;
 import dk.dtu.sb.spn.Species;
 import dk.dtu.sb.spn.StochasticPetriNet;
+import dk.dtu.techmap.AIG;
 
 public class SBGate implements Comparable<SBGate> {
     
@@ -64,6 +65,7 @@ public class SBGate implements Comparable<SBGate> {
     public int stableStateTime;
     
     private StochasticPetriNet spn = null;
+    private AIG aig = null;
     
     public SBGate(int id, int cost) {
         this.id = id;
@@ -109,6 +111,13 @@ public class SBGate implements Comparable<SBGate> {
     
     public void setSPN(StochasticPetriNet spn) {
         this.spn = spn;
+    }
+    
+    public AIG getAIG() {
+        if (aig == null) {
+            aig = new AIG(SOP);
+        }
+        return aig;
     }
 
     @Override
