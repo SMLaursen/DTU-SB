@@ -43,6 +43,10 @@ public abstract class LogicGate {
 		in.remove(g);
 		g.out = null;
 	}
+	
+	protected int getId(){
+		return myId;
+	}
 }
 
 class AndGate extends LogicGate {

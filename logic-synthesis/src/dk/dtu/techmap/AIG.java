@@ -4,10 +4,14 @@ import java.util.HashMap;
 
 import com.github.qtstc.Formula;
 
+/** Represents And-Inverter-Graph */
 public class AIG {
 	LogicGate output;
+	
 	//Map with inputs, this map is emptied as matches are found
 	HashMap<String,InputGate> inMap = new HashMap<String,InputGate>();
+
+	//Indicates if the graph has been succesfully converted to AIG
 	boolean isAIG = false;
 	
 	public AIG(Formula f){
@@ -22,7 +26,7 @@ public class AIG {
 	
 	/** Parses the String representation of Formula f into a graph of (2 input) AND, OR and NOT 
 	 * @throws Exception */
-	public OutputGate parseFormula(String text){
+	private OutputGate parseFormula(String text){
 		
 		//Get index of equals
 		int index = text.indexOf("=");
@@ -88,7 +92,7 @@ public class AIG {
 	}
 
 	/**Converts the CNF graph to AIG-representation*/
-	public LogicGate convertToAIG(LogicGate curr){
+	private LogicGate convertToAIG(LogicGate curr){
 		if(curr instanceof OrGate){
 			LogicGate curr_temp = new AndGate();
 			LogicGate prev_temp = curr.out;
@@ -141,12 +145,12 @@ public class AIG {
 	public LogicGate getOutputGate(){
 		return output;
 	}
-	/** Returns a copy of the tree rooting from g*/
-	public LogicGate CopyTree(OutputGate g){
-		LogicGate copy = new OutputGate(g.protein);
-		//TODO
-		return copy;
-	}
+//	/** Returns a copy of the tree rooting from g*/
+//	public LogicGate CopyTree(OutputGate g){
+//		LogicGate copy = new OutputGate(g.protein);
+//		//TODO
+//		return copy;
+//	}
 	/**When the entire graph has been mapped, the inMap is empty.*/
 	public boolean isMapped(){
 		return inMap.isEmpty();
