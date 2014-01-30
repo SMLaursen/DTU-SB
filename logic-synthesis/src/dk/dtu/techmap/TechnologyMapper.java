@@ -32,20 +32,24 @@ public class TechnologyMapper {
 	/** Maps using the library of {@link AIG}'s
 	 * 
 	 * @return
-	 * null : no match could be found
+	 * empty : no match could be found
 	 * Set  : the set of parts that make up the match*/
 	private HashSet<SBGate> map(HashSet<SBGate> selectedParts, HashMap<String,LogicGate> toMatch){
 
+		HashSet<SBGate> allSelectedParts = new HashSet<SBGate>();
+		allSelectedParts.addAll(selectedParts);
+		
 		//For each incomplete matching
 		for(String protein : toMatch.keySet()){
 			LogicGate g = toMatch.get(protein);
-
+			Boolean foundSubSolution = false; 
+			
 			//Try to match it using any part from library with matching proteins
 			for(SBGate sbGate : Library.getGatesWithOutput(protein)){
 				AIG libPart = sbGate.getAIG();
 
 				//Ensure orthogonality
-				if(selectedParts.contains(sbGate)){
+				if(allSelectedParts.contains(sbGate)){
 					continue;
 				}
 
@@ -57,34 +61,39 @@ public class TechnologyMapper {
 				//Part didn't match. skip this part.
 				if(toMatchNext==null){
 					continue;
-				}//Entire graph has been matched! 
+				}//Entire sub graph has been matched! 
 				else if(toMatchNext.isEmpty()){
 					//Record score / Output solution
-					selectedParts.add(sbGate);
-					return selectedParts;
+					allSelectedParts.add(sbGate);
+					return allSelectedParts;
 				}//Further matching should be conducted  
 				else {
 					//Add this to selected parts
-					selectedParts.add(sbGate);			
+					allSelectedParts.add(sbGate);			
 
 					//Recursively match remainder
-					HashSet<SBGate> s = map(selectedParts, toMatchNext);
+					HashSet<SBGate> s = map(allSelectedParts, toMatchNext);
 
 					//If this branch didn't lead to a solution, remove part again and try matching using next part. 
-					if(s == null){
-						selectedParts.remove(libPart);
+					if(s.isEmpty()){
+						allSelectedParts.remove(libPart);
 						continue;
 					} else {
-						return s;
+						allSelectedParts.addAll(s);
+						foundSubSolution = true;
+						break;
 					}					
 				}
 			}
-			//When all available parts have been tried matched, it is not possible to match using this branch.
-			return null;
+			//If gate could not be matched
+			if(!foundSubSolution){
+				allSelectedParts.clear();
+				return allSelectedParts;
+			}
+		
 		}
-		//Should only be here if toMatch initially are empty
-		assert(false);
-		return null;
+
+		return allSelectedParts;
 
 	}
 
@@ -95,8 +104,7 @@ public class TechnologyMapper {
 	 * non-empty map : compatible library part - but further matching is necessary. 
 	 * */
 	public HashMap<String, LogicGate> isMatching(LogicGate other, LogicGate atPos){
-		//Used as control : null = no match, empty = complete match 
-		//Values = partial match i.e. need to continue explore these vales with other part
+	
 		if(other instanceof AndGate && atPos instanceof AndGate){
 
 			//Map for storing intersections
@@ -137,7 +145,8 @@ public class TechnologyMapper {
 			//No matches has been found
 			return null;
 
-		} else if(other instanceof NotGate && atPos instanceof NotGate){
+		}//TODO Some problems can occur here! 
+		else if(other instanceof NotGate && atPos instanceof NotGate){
 			//Sanity checks
 			assert(other.in.size() == 1);
 			assert(atPos.in.size() == 1);
@@ -148,13 +157,9 @@ public class TechnologyMapper {
 
 		} else if(other instanceof InputGate){
 			HashMap<String, LogicGate> nextMatches = new HashMap<String, LogicGate>();
-			if(atPos instanceof InputGate){
-				//If others protein 
-				if(!graph.containsInputProtein(((InputGate) other).getProtein())){
-					nextMatches.put(((InputGate) other).getProtein(), atPos);
-					return nextMatches;
-				}//If proteins match - and are specified in the inMap of the AIG
-				else if(((InputGate) other).getProtein().equals(((InputGate) atPos).getProtein())){
+			if(atPos instanceof InputGate && graph.containsInputProtein(((InputGate) other).getProtein())){
+				//If proteins match - and are specified in the inMap of the AIG
+				if(((InputGate) other).getProtein().equals(((InputGate) atPos).getProtein())){
 					//nextMatches should be empty here
 					assert(nextMatches.isEmpty());
 					return nextMatches;

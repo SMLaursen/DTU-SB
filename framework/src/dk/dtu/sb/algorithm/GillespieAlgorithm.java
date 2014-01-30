@@ -59,7 +59,7 @@ public class GillespieAlgorithm extends Algorithm {
             if(steps % 1000000 == 0){
             	//Only check once in a while
             	if(Thread.currentThread().isInterrupted()){
-            		Util.log.debug("Thread : " + Thread.currentThread().getId() +" aborted due to time-out");
+            		Util.log.debug("Thread : " + Thread.currentThread().getId() +" interrupted");
             		return;
             		
             	}
