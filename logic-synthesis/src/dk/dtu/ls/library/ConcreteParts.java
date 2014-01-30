@@ -50,9 +50,9 @@ public class ConcreteParts {
                 array("aTc", "Ara"),
                 array(), 
                 "CI", 
-                "CI = (aTc ) + (Ara )", 
+//                "CI = (aTc ) + (Ara )", 
 //                "CI = (aTc ) + (IPTG lacl )",
-//                "CI = (GFP' ) + (Ara )",
+                "CI = (aTc ) + (IPTG lacl )",
                 1000
                 ));
         
@@ -84,7 +84,7 @@ public class ConcreteParts {
                 array("GFP"),
                 array(), 
                 "aTc", 
-                "aTc = (GFP' )", 
+                "aTc = (GFP )", 
                 1000
                 ));
         

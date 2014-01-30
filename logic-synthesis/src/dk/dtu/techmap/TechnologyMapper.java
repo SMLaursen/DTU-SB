@@ -38,7 +38,6 @@ public class TechnologyMapper {
 
 		HashSet<SBGate> allSelectedParts = new HashSet<SBGate>();
 		allSelectedParts.addAll(selectedParts);
-		
 		//For each incomplete matching
 		for(String protein : toMatch.keySet()){
 			LogicGate g = toMatch.get(protein);
@@ -52,12 +51,12 @@ public class TechnologyMapper {
 				if(allSelectedParts.contains(sbGate)){
 					continue;
 				}
-
+			
 				//TODO Ensure complete orthogonality by checking all intermediate proteins
 
 				//Can this be libPart be matched?
 				HashMap<String, LogicGate> toMatchNext = isMatching(libPart.getOutputGate(), g);
-
+				
 				//Part didn't match. skip this part.
 				if(toMatchNext==null){
 					continue;
@@ -65,7 +64,8 @@ public class TechnologyMapper {
 				else if(toMatchNext.isEmpty()){
 					//Record score / Output solution
 					allSelectedParts.add(sbGate);
-					return allSelectedParts;
+					foundSubSolution = true;
+					break;
 				}//Further matching should be conducted  
 				else {
 					//Add this to selected parts

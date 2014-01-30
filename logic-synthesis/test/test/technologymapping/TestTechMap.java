@@ -82,6 +82,7 @@ public class TestTechMap {
         System.out.println(solution);
     }
     
+    // A bit more advanced.
     @Test
     public void test2(){
     	AIG secondary = new AIG("O = (A B) + (C D)");
@@ -89,6 +90,9 @@ public class TestTechMap {
         SBGate part12 = new SBGate(12, "Q = (A B)");
         SBGate part13 = new SBGate(13, "U = (C D)");
         SBGate part14 = new SBGate(14, "U = (B C)");
+        SBGate part15 = new SBGate(15, "Z = (A B) + (U)");
+        SBGate part16 = new SBGate(16, "O = Z");
+        SBGate part17 = new SBGate(17, "Z = (Q) + (U)");
         
     	//Change to secondary
         TechnologyMapper techmap = new TechnologyMapper(secondary);
@@ -104,19 +108,35 @@ public class TestTechMap {
         		&& solution.contains(part13));
         
         
-        Library.insert(part1);
-        Library.insert(part2);
-        Library.insert(part3);
-        Library.insert(part4);
-        Library.insert(part5);
-        Library.insert(part6);
-        Library.insert(part7);
-        Library.insert(part8);
-        Library.insert(part9);
-        Library.insert(part10);
+        //Check common error
+        Library.clear();
+        Library.insert(part15);
+        Library.insert(part13);
         solution = techmap.start();
-        assertTrue(!solution.isEmpty());
+        assertTrue(solution.isEmpty());
+        
+        
+        //Check output can be substitued as well
+        Library.insert(part16);
+        solution = techmap.start();
         System.out.println(solution);
+        assertTrue(solution.contains(part13) &&
+        		   solution.contains(part15) &&
+        		   solution.contains(part16));
+        
+        //Check that many substitutions can occur
+        Library.clear();
+        Library.insert(part13);
+        Library.insert(part17);
+        Library.insert(part12);
+        Library.insert(part16);
+        solution = techmap.start();
+        System.out.println(solution);
+        assertTrue(solution.contains(part13) &&
+     		   	   solution.contains(part17) &&
+     		   	   solution.contains(part16) &&
+     		       solution.contains(part12));
+        
     }
     
     
@@ -139,6 +159,7 @@ public class TestTechMap {
         Library.clear();
         ConcreteParts.insertParts();
         AIG goal = new AIG("CI = (GFP) + (IPTG lacI)");
+        System.out.println(goal.treeToString());
         TechnologyMapper techmap = new TechnologyMapper(goal);
         HashSet<SBGate> solution = techmap.start();
         assertFalse(solution.isEmpty());
