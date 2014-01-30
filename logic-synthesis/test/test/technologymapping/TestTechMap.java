@@ -80,7 +80,8 @@ public class TestTechMap {
     public void testConcreteParts() {
         Library.clear();
         ConcreteParts.insertParts();
-        TechnologyMapper techmap = new TechnologyMapper(new AIG("CI = (GFP' ) + (IPTG lacI )"));
+        AIG goal = new AIG("CI = (GFP' ) + (IPTG lacI )");
+        TechnologyMapper techmap = new TechnologyMapper(goal);
         HashSet<SBGate> solution = techmap.start();
         assertNotNull(solution);
         System.out.println(solution);
