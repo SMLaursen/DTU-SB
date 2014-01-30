@@ -10,9 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
-import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class TruthTablePanel extends JPanel {
 
     public JButton btnAddTruthTable;

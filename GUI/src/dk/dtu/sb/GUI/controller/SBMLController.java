@@ -11,7 +11,6 @@ import javax.swing.JFileChooser;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import dk.dtu.ls.library.Library;
 import dk.dtu.ls.library.SBGate;
 import dk.dtu.sb.GUI.Model;
 import dk.dtu.sb.GUI.view.LoadSBMLPanel;

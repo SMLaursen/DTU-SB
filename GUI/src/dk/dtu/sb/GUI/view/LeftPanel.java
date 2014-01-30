@@ -7,6 +7,7 @@ import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+@SuppressWarnings("serial")
 public class LeftPanel extends JPanel {
 
     public LoadSBMLPanel sbmlPanel;

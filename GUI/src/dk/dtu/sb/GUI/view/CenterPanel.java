@@ -1,6 +1,8 @@
 package dk.dtu.sb.GUI.view;
 
-import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -8,10 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
 
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Font;
-
+@SuppressWarnings("serial")
 public class CenterPanel extends JPanel {
 
     public JTextArea consoleText;

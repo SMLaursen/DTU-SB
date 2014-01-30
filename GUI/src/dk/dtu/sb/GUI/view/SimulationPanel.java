@@ -1,17 +1,5 @@
 package dk.dtu.sb.GUI.view;
 
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.plaf.basic.BasicButtonUI;
-
-import dk.dtu.sb.GUI.Model;
-import dk.dtu.sb.data.SimulationResult;
-import dk.dtu.sb.outputformatter.GraphPanel;
-
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -27,6 +15,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.plaf.basic.BasicButtonUI;
+
+import dk.dtu.sb.data.SimulationResult;
+import dk.dtu.sb.outputformatter.GraphPanel;
+
+@SuppressWarnings("serial")
 public class SimulationPanel extends JPanel {
 
     public JTabbedPane tabs;

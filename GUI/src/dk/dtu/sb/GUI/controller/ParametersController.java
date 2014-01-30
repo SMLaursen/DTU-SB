@@ -147,7 +147,7 @@ public class ParametersController implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent arg0) {
         String propName = arg0.getPropertyName();
-        Object newVal = arg0.getNewValue();
+        //Object newVal = arg0.getNewValue();
 
         if (propName.equals(Model.EVENT_SBML_FILE_LOADED)) {
             parametersPanel.simButton.setEnabled(true);

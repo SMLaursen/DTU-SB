@@ -28,7 +28,7 @@ public class SimulationController implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent arg0) {
         String propName = arg0.getPropertyName();
-        Object newVal = arg0.getNewValue();
+        //Object newVal = arg0.getNewValue();
 
         if (propName.equals(Model.EVENT_START_SIMULATION)) {
             view.addTab("Simulation " + model.simulationNo,

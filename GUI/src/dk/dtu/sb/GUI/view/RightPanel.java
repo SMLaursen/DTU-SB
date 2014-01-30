@@ -1,40 +1,23 @@
 package dk.dtu.sb.GUI.view;
 
-import javax.swing.JPanel;
-
-import java.awt.BorderLayout;
-
-import javax.swing.JLabel;
-
+import java.awt.Component;
 import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.border.EmptyBorder;
-
 import java.awt.Font;
-
-import javax.swing.BoxLayout;
-
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-
-import javax.swing.JSpinner;
-import javax.swing.JRadioButton;
-import java.awt.Component;
-import javax.swing.SpringLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.SwingConstants;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class RightPanel extends JPanel {
 
     public ParametersPanel parametersPanel;

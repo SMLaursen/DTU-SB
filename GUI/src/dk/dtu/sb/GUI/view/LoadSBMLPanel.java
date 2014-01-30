@@ -18,6 +18,7 @@ import dk.dtu.ls.library.SBGate;
 
 import javax.swing.ListSelectionModel;
 
+@SuppressWarnings("serial")
 public class LoadSBMLPanel extends JPanel {
     
     public JButton btnLoadFromSbml, btnLoadLibrary;

@@ -18,6 +18,7 @@ import javax.swing.JRadioButton;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
+@SuppressWarnings("serial")
 public class ProteinLevelPanel extends JPanel {
 
     private JSpinner levelSpinner;

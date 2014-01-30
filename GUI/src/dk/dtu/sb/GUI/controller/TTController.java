@@ -15,8 +15,6 @@ import javax.swing.JTextField;
 
 import com.github.qtstc.Formula;
 
-import dk.dtu.ls.library.ConcreteParts;
-import dk.dtu.ls.library.Library;
 import dk.dtu.ls.library.SBGate;
 import dk.dtu.sb.GUI.Model;
 import dk.dtu.sb.GUI.view.TruthTablePanel;
