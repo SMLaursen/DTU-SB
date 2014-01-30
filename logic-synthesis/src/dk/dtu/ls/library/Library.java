@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import dk.dtu.ls.library.models.SBGate;
-
 public class Library {
 
     private static HashMap<String, List<SBGate>> parts = new HashMap<String, List<SBGate>>();

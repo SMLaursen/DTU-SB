@@ -20,7 +20,7 @@ import javax.swing.event.ListSelectionListener;
 import com.github.qtstc.Formula;
 
 import dk.dtu.ls.library.Library;
-import dk.dtu.ls.library.models.SBGate;
+import dk.dtu.ls.library.SBGate;
 import dk.dtu.sb.GUI.Model;
 import dk.dtu.sb.GUI.view.LoadSBMLPanel;
 import dk.dtu.sb.GUI.view.TruthTablePanel;

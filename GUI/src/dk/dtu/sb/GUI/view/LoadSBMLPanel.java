@@ -14,7 +14,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-import dk.dtu.ls.library.models.SBGate;
+import dk.dtu.ls.library.SBGate;
 
 import javax.swing.ListSelectionModel;
 

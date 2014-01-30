@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import dk.dtu.ls.library.ConcreteParts;
 import dk.dtu.ls.library.Library;
-import dk.dtu.ls.library.models.SBGate;
+import dk.dtu.ls.library.SBGate;
 import dk.dtu.sb.spn.StochasticPetriNet;
 
 public class TestLibrary {

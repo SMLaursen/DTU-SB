@@ -3,8 +3,6 @@ package dk.dtu.ls.library;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import dk.dtu.ls.library.models.SBGate;
-
 public class ConcreteParts {
     
     public static int cost(int repressors, int activators) {

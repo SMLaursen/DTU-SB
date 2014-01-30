@@ -12,7 +12,7 @@ import javax.swing.SwingWorker;
 import javax.swing.event.SwingPropertyChangeSupport;
 
 import dk.dtu.ls.library.Library;
-import dk.dtu.ls.library.models.SBGate;
+import dk.dtu.ls.library.SBGate;
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.data.SimulationResult;
 import dk.dtu.sb.parser.SBMLParser;

@@ -1,4 +1,4 @@
-package dk.dtu.ls.library.models;
+package dk.dtu.ls.library;
 
 import java.io.IOException;
 import java.util.ArrayList;
