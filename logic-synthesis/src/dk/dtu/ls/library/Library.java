@@ -33,8 +33,15 @@ public class Library {
         parts.put(gate.outputProtein, gates);
     }
     
+    public static void remove(SBGate gate) {
+        if (parts.containsKey(gate.outputProtein)) {
+            List<SBGate> gates = parts.get(gate.outputProtein);
+            gates.remove(gate);
+        }
+    }
+    
     public static List<SBGate> getGatesWithOutput(String outputProtein) {
-        return parts.get(outputProtein);
+        return parts.containsKey(outputProtein) ? parts.get(outputProtein) : new ArrayList<SBGate>();
     }
     
     public static List<SBGate> getAllParts() {

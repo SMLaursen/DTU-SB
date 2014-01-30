@@ -56,9 +56,9 @@ public class SBGate implements Comparable<SBGate> {
     public String sbmlFile;
     public int cost;
     
-    public ArrayList<String> inputProteins;
-    public ArrayList<String> intermediateProteins;
-    public String outputProtein;
+    public ArrayList<String> inputProteins = new ArrayList<String>();
+    public ArrayList<String> intermediateProteins = new ArrayList<String>();
+    public String outputProtein = new String();
     
     public String SOP;
     
@@ -67,12 +67,15 @@ public class SBGate implements Comparable<SBGate> {
     private StochasticPetriNet spn = null;
     private AIG aig = null;
     
+    public SBGate(int id, String SOP) {
+        this.id = id;
+        this.SOP = SOP;
+        this.outputProtein = getAIG().getOutputProtein();
+    }
+    
     public SBGate(int id, int cost) {
         this.id = id;
         this.cost = cost;
-        this.inputProteins = new ArrayList<String>();
-        this.intermediateProteins = new ArrayList<String>();
-        this.outputProtein = "";
     }
     
     public SBGate(int id, String sbmlFile, int cost,

@@ -3,6 +3,9 @@ package dk.dtu.techmap;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import dk.dtu.ls.library.Library;
+import dk.dtu.ls.library.SBGate;
+
 public class TechnologyMapper {
 	private AIG graph;
 
@@ -19,11 +22,11 @@ public class TechnologyMapper {
 	 * @return
 	 * null : No mapping could be made
 	 * Set : The set of parts in the solution */
-	public HashSet<AIG> start(HashSet<AIG> library){
+	public HashSet<AIG> start(){
 		HashMap<String, LogicGate> startingGate = new HashMap<String, LogicGate>();
 		startingGate.put(graph.getOutputGate().getProtein(), graph.getOutputGate());
 		HashSet<AIG> solution = new HashSet<AIG>();
-		return map(library, solution, startingGate);
+		return map(solution, startingGate);
 	}
 	
 	/** Maps using the library of {@link AIG}'s
@@ -31,15 +34,16 @@ public class TechnologyMapper {
 	 * @return
 	 * null : no match could be found
 	 * Set  : the set of parts that make up the match*/
-	private HashSet<AIG> map(HashSet<AIG> library, HashSet<AIG> selectedParts, HashMap<String,LogicGate> toMatch){
+	private HashSet<AIG> map(HashSet<AIG> selectedParts, HashMap<String,LogicGate> toMatch){
 		
 		//For each incomplete matching
 		for(String protein : toMatch.keySet()){
 			LogicGate g = toMatch.get(protein);
 			
 			//Try to match it using any part from library
-			for(AIG libPart : library){
-				
+			for(SBGate sbGate : Library.getGatesWithOutput(protein)){
+			    AIG libPart = sbGate.getAIG();
+			    
 				//Ensure orthogonality
 				if(selectedParts.contains(libPart)){
 					continue;
@@ -66,7 +70,7 @@ public class TechnologyMapper {
 					selectedParts.add(libPart);			
 
 					//Recursively match remainder
-					HashSet<AIG> s = map(library, selectedParts, toMatchNext);
+					HashSet<AIG> s = map(selectedParts, toMatchNext);
 
 					//If this branch didn't lead to a solution, remove part again and try matching using next part. 
 					if(s == null){
