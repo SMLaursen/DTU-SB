@@ -116,9 +116,19 @@ public class ParametersController implements PropertyChangeListener {
             public void actionPerformed(ActionEvent e) {
                 model.setInitialMarkings(rightPanel.getInitialConcentrations());
                 model.startSimulation();
-                parametersPanel.simButton.setEnabled(false);
+          
             }
         });
+        
+        parametersPanel.stopSimButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e){
+        		model.stopSimulation();
+        		parametersPanel.stopSimButton.setEnabled(false);
+        	}
+        });
+        
+        
     }
     
     @Override
@@ -141,11 +151,16 @@ public class ParametersController implements PropertyChangeListener {
         }
         if (propName.equals(Model.EVENT_START_SIMULATION)) {            
             parametersPanel.stopSimButton.setEnabled(true);
+            parametersPanel.simButton.setEnabled(false);
         }
         
         if (propName.equals(Model.EVENT_SIMULATION_DONE)) { 
             parametersPanel.simButton.setEnabled(true);
             parametersPanel.stopSimButton.setEnabled(false);
+        }
+        if (propName.equals(Model.EVENT_STOP_SIMULATION)){
+        	parametersPanel.simButton.setEnabled(true);
+        	parametersPanel.stopSimButton.setEnabled(false);
         }
     }
 

@@ -24,6 +24,7 @@ public class Model {
     public static final String EVENT_SBML_FILE_LOADED = "sbml_loaded";
     public static final String EVENT_LOG = "log_msg";
     public static final String EVENT_START_SIMULATION = "start_simulation";
+    public static final String EVENT_STOP_SIMULATION = "stop_simulation";
     public static final String EVENT_SIMULATION_DONE = "simulation_done";
     
     public static final int CURRENT_MODEL_LIBRARY = 100;
@@ -41,6 +42,7 @@ public class Model {
     public int currentLoadedModel = 0;
     public String outputProtein;
     public ArrayList<String> inputProteins;
+    private Worker myWorker;
 
     public Model() {
         propChangeFirer = new SwingPropertyChangeSupport(this);        
@@ -85,26 +87,20 @@ public class Model {
         }
     }
     
+    
+    
     public void startSimulation() {
         propChangeFirer.firePropertyChange(EVENT_START_SIMULATION, "", "new");
-        
-        (new SwingWorker<Boolean, Boolean>() {
-
-            @Override
-            protected Boolean doInBackground() throws Exception {
-                Simulator simulator = new Simulator(spn, parameters);
-                simulator.simulate();
-                simData = simulator.getOutput();
-                return true;
-            }
-            
-            @Override
-            protected void done() {
-                propChangeFirer.firePropertyChange(EVENT_SIMULATION_DONE, "", "new");
-                simulationNo++;
-            }
-        }).execute();
+        myWorker = new Worker();
+        myWorker.execute();
     }
+    
+    public void stopSimulation(){
+    	propChangeFirer.firePropertyChange(EVENT_STOP_SIMULATION, "", "new");
+    	myWorker.cancel(true);
+    	Simulator.stopSimulation();
+    }
+
     
     public StochasticPetriNet getSPN() {
         return spn;
@@ -116,5 +112,22 @@ public class Model {
     
     public void log(String msg) {
         propChangeFirer.firePropertyChange(EVENT_LOG, "", msg);
+    }
+    
+    /**Background Worker threads*/
+    class Worker extends SwingWorker<Boolean,Boolean>{
+    	@Override
+        protected Boolean doInBackground() throws Exception {
+            Simulator simulator = new Simulator(spn, parameters);
+            simulator.simulate();
+            simData = simulator.getOutput();
+            return true;
+        }
+        
+        @Override
+        protected void done() {
+            propChangeFirer.firePropertyChange(EVENT_SIMULATION_DONE, "", "new");
+            simulationNo++;
+        }
     }
 }
