@@ -73,7 +73,7 @@ public class Main {
         ConcreteParts.insertParts();
         
         Model model = new Model();
-                
+                        
         new ParametersController(rightPanel, model);
         new SBMLController(leftPanel.sbmlPanel, model);
         new ConsoleController(centerPanel, model);

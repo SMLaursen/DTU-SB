@@ -27,6 +27,7 @@ public class Simulator {
     private long simulationTime = 0;
     private ExecutorService executor;
     private List<Future<?>> futures;
+    private volatile boolean timedOut = false;
 
     /**
      * This constructor simulates the {@link StochasticPetriNet} using the
@@ -136,10 +137,14 @@ public class Simulator {
 
             startSimulations(algorithmName);
 
-            simulationTime = System.currentTimeMillis() - startTime;
-            Util.log.info("Simulation ended in: " + simulationTime + "ms");
+            if (isTimedOut()) {
+                Util.log.error("Simulation timed out");
+            } else {
+                simulationTime = System.currentTimeMillis() - startTime;
+                Util.log.info("Simulation ended in: " + simulationTime + "ms");
+            }
         } catch (InterruptedException e) {
-            Util.log.error("Something went wrong when simulating: ", e);
+            Util.log.error("Simulation interrupted");
         } catch (Exception e) {
             Util.log.error("The algorithm class: " + algorithmName
                     + " could not be found. Using default.");
@@ -162,13 +167,15 @@ public class Simulator {
         executor.shutdown();
         executor.awaitTermination(params.getSimMaxIterTime(), TimeUnit.SECONDS);
         executor.shutdownNow();
+        timedOut = stopSimulation();
 
         // Wait additionally 5sec to ensure the thread has been shutdown
         // entirely due to timeout
-        if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
-            Util.log.info("Aborting: Thread timed out but could not be shutdown");
-            System.exit(1);
-        }
+        /*
+         * if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+         * Util.log.info("Aborting: Thread timed out but could not be shutdown"
+         * ); System.exit(1); }
+         */
 
     }
 
@@ -176,21 +183,24 @@ public class Simulator {
      * Calling this method will interrupt all currently running threads and
      * abort the simulation
      */
-    public void stopSimulation() {
-        if (executor != null) {
-            executor.shutdown();
-            try {
-                for (Future<?> future : futures) {
-                    future.cancel(true);
-                }
-                executor.awaitTermination(2, TimeUnit.SECONDS);
-                executor.shutdownNow();
-                executor.awaitTermination(2, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-            } finally {
-                Util.log.info("Simulation manually aborted");
+    public boolean stopSimulation() {
+        boolean interrupted = false;
+        for (Future<?> future : futures) {
+            if (!future.isDone()) {
+                future.cancel(true);
+                interrupted = true;
+                Util.log.debug("A thread was interrupted");
             }
         }
+        return interrupted;
+    }
+
+    /**
+     * 
+     * @return Whether the simulation timed out or not.
+     */
+    public synchronized boolean isTimedOut() {
+        return timedOut;
     }
 
     /**

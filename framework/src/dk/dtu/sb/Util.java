@@ -16,7 +16,7 @@ public class Util {
     /**
      * Logger-class, used for debugging and error-reporting.
      */
-    public static final Logger log = (Logger) LoggerFactory.getLogger("DTU-SB");
+    public static Logger log = (Logger) LoggerFactory.getLogger("DTU-SB");
 
     /**
      * Implementation of binomial coefficient.

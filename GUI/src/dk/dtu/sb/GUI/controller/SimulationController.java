@@ -33,7 +33,6 @@ public class SimulationController implements PropertyChangeListener {
         if (propName.equals(Model.EVENT_START_SIMULATION)) {
             view.addTab("Simulation " + model.simulationNo,
                     new SimulationLoadingPanel());
-
             view.selectTab("Simulation " + model.simulationNo);
         }
 

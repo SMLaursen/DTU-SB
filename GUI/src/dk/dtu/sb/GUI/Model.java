@@ -30,7 +30,7 @@ public class Model {
     public static final int CURRENT_MODEL_LIBRARY = 100;
     public static final int CURRENT_MODEL_FILE = 200;
 
-    private SwingPropertyChangeSupport propChangeFirer;
+    private static SwingPropertyChangeSupport propChangeFirer;
     private String sbmlFilename;
     private SimulationWorker simWorker;
 
@@ -101,8 +101,7 @@ public class Model {
                 simWorker.stopSimulation();
                 return true;
             }
-        }).execute();;
-        //simWorker.stopSimulation();
+        }).execute();
     }
 
     public StochasticPetriNet getSPN() {
@@ -113,7 +112,7 @@ public class Model {
         return simData;
     }
 
-    public void log(String msg) {
+    public static void log(String msg) {
         propChangeFirer.firePropertyChange(EVENT_LOG, "", msg);
     }
 
@@ -143,10 +142,13 @@ public class Model {
 
         @Override
         protected void done() {
-            if (!interrupted) {
+            if (!interrupted && !simulator.isTimedOut()) {
                 propChangeFirer.firePropertyChange(EVENT_SIMULATION_DONE, "",
                         "new");
                 simulationNo++;
+            } else if (simulator.isTimedOut()) {
+                propChangeFirer
+                .firePropertyChange(EVENT_STOP_SIMULATION, "", "new");
             }
         }
     }

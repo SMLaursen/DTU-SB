@@ -3,7 +3,6 @@ package dk.dtu.sb.GUI.controller;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import dk.dtu.sb.GUI.Console;
 import dk.dtu.sb.GUI.Model;
 import dk.dtu.sb.GUI.view.CenterPanel;
 
@@ -16,9 +15,7 @@ public class ConsoleController implements PropertyChangeListener {
         this.model = model;
         this.model.addListener(this);
         
-        this.view = view;
-        
-        //Console.redirectOutput(view.consoleText);
+        this.view = view;        
     }
     
     @Override
@@ -27,7 +24,7 @@ public class ConsoleController implements PropertyChangeListener {
         Object newVal = arg0.getNewValue();
 
         if(propName.equals(Model.EVENT_LOG)){
-            view.consoleText.setText((String)newVal + "\n" + view.consoleText.getText());
+            view.consoleText.append((String)newVal);
         }        
     }
 
