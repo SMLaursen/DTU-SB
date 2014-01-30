@@ -140,4 +140,8 @@ public class SBGate implements Comparable<SBGate> {
         }
         return 0;
     }
+    
+    public String toString(){
+    	return "part_"+id;
+    }
 }

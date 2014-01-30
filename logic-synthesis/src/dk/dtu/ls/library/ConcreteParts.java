@@ -51,6 +51,8 @@ public class ConcreteParts {
                 array(), 
                 "CI", 
                 "CI = (aTc ) + (Ara )", 
+//                "CI = (aTc ) + (IPTG lacl )",
+//                "CI = (GFP' ) + (Ara )",
                 1000
                 ));
         
