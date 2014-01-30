@@ -46,7 +46,8 @@ public class SimulationPanel extends JPanel {
         tabs.addTab(title, panel);
     }
 
-    public void updateTab(String title, SimulationResult data, String outputProtein) {
+    public void updateTab(String title, SimulationResult data,
+            String outputProtein) {
         int index = tabs.indexOfTab(title);
 
         JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -139,6 +140,13 @@ public class SimulationPanel extends JPanel {
         }
     };
 
+    public void removeTab(String title) {
+        int index = tabs.indexOfTab(title);
+        if (index >= 0) {
+            tabs.removeTabAt(index);
+        }
+    }
+
     private class MyCloseActionHandler implements ActionListener {
 
         private String tabName;
@@ -148,12 +156,7 @@ public class SimulationPanel extends JPanel {
         }
 
         public void actionPerformed(ActionEvent evt) {
-
-            int index = tabs.indexOfTab(tabName);
-            if (index >= 0) {
-                tabs.removeTabAt(index);
-            }
-
+            removeTab(tabName);
         }
 
     }

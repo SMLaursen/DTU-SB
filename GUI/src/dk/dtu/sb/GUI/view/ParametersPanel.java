@@ -71,7 +71,7 @@ public class ParametersPanel extends JPanel {
         add(lblSimulations, "2, 2");
         
         simulations = new JSpinner();
-        simulations.setModel(new SpinnerNumberModel(1, 1, 100, 1));
+        simulations.setModel(new SpinnerNumberModel(10, 1, 1000, 1));
         simulations.setToolTipText(simTooltip);
         add(simulations, "2, 4");
         
@@ -81,7 +81,7 @@ public class ParametersPanel extends JPanel {
         add(lblStoptime, "2, 6");
         
         stoptime = new JSpinner();
-        stoptime.setModel(new SpinnerNumberModel(new Integer(1000), new Integer(0), null, new Integer(100)));
+        stoptime.setModel(new SpinnerNumberModel(new Integer(10000), new Integer(0), null, new Integer(1000)));
         stoptime.setToolTipText(stopTooltip);
         add(stoptime, "2, 8");
         
@@ -91,7 +91,7 @@ public class ParametersPanel extends JPanel {
         add(lblTimeout, "2, 10");
         
         timeout = new JSpinner();
-        timeout.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+        timeout.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(10)));
         timeout.setToolTipText(timeoutTooltip);
         add(timeout, "2, 12");
         
@@ -101,7 +101,7 @@ public class ParametersPanel extends JPanel {
         add(lblOutputSteps, "2, 14");
         
         outSteps = new JSpinner();
-        outSteps.setModel(new SpinnerNumberModel(new Integer(100), null, null, new Integer(100)));
+        outSteps.setModel(new SpinnerNumberModel(new Integer(1000), new Integer(0), null, new Integer(100)));
         outSteps.setToolTipText(outTooltip);
         add(outSteps, "2, 16");
         
