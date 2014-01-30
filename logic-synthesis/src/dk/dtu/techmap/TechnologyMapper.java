@@ -3,6 +3,9 @@ package dk.dtu.techmap;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import dk.dtu.ls.library.Library;
+import dk.dtu.ls.library.SBGate;
+
 public class TechnologyMapper {
 	private AIG graph;
 
@@ -19,11 +22,11 @@ public class TechnologyMapper {
 	 * @return
 	 * null : No mapping could be made
 	 * Set : The set of parts in the solution */
-	public HashSet<AIG> start(HashSet<AIG> library){
+	public HashSet<SBGate> start(){
 		HashMap<String, LogicGate> startingGate = new HashMap<String, LogicGate>();
 		startingGate.put(graph.getOutputGate().getProtein(), graph.getOutputGate());
-		HashSet<AIG> solution = new HashSet<AIG>();
-		return map(library, solution, startingGate);
+		HashSet<SBGate> solution = new HashSet<SBGate>();
+		return map(solution, startingGate);
 	}
 	
 	/** Maps using the library of {@link AIG}'s
@@ -31,24 +34,25 @@ public class TechnologyMapper {
 	 * @return
 	 * null : no match could be found
 	 * Set  : the set of parts that make up the match*/
-	private HashSet<AIG> map(HashSet<AIG> library, HashSet<AIG> selectedParts, HashMap<String,LogicGate> toMatch){
+	private HashSet<SBGate> map(HashSet<SBGate> selectedParts, HashMap<String,LogicGate> toMatch){
 		
 		//For each incomplete matching
 		for(String protein : toMatch.keySet()){
 			LogicGate g = toMatch.get(protein);
 			
 			//Try to match it using any part from library
-			for(AIG libPart : library){
-				
+			for(SBGate sbGate : Library.getGatesWithOutput(protein)){
+			    AIG libPart = sbGate.getAIG();
+			    
 				//Ensure orthogonality
-				if(selectedParts.contains(libPart)){
+				if(selectedParts.contains(sbGate)){
 					continue;
 				}
 				
 //				//Ensure proteins match
-				if(!libPart.getOutputGate().getProtein().equals(protein)){
+				/*if(!libPart.getOutputGate().getProtein().equals(protein)){
 					continue;
-				}
+				}*/
 				
 				//Can this be libPart be matched?
 				HashMap<String, LogicGate> toMatchNext = isMatching(libPart.getOutputGate(), g);
@@ -58,15 +62,15 @@ public class TechnologyMapper {
 				}//Entire graph has been matched! 
 				else if(toMatchNext.isEmpty()){
 					//Record score / Output solution
-					selectedParts.add(libPart);
+					selectedParts.add(sbGate);
 					return selectedParts;
 				}//Further matching should be conducted  
 				else {
 					//Add this to selected parts
-					selectedParts.add(libPart);			
+					selectedParts.add(sbGate);			
 
 					//Recursively match remainder
-					HashSet<AIG> s = map(library, selectedParts, toMatchNext);
+					HashSet<SBGate> s = map(selectedParts, toMatchNext);
 
 					//If this branch didn't lead to a solution, remove part again and try matching using next part. 
 					if(s == null){

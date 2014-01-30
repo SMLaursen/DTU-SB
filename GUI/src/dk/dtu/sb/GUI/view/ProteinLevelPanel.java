@@ -7,7 +7,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 
-import dk.dtu.ls.library.models.SBGate;
+import dk.dtu.ls.library.SBGate;
 
 import javax.swing.JLabel;
 

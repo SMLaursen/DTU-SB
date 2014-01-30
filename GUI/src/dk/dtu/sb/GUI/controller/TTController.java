@@ -4,26 +4,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import com.github.qtstc.Formula;
 
+import dk.dtu.ls.library.ConcreteParts;
 import dk.dtu.ls.library.Library;
-import dk.dtu.ls.library.models.SBGate;
+import dk.dtu.ls.library.SBGate;
 import dk.dtu.sb.GUI.Model;
-import dk.dtu.sb.GUI.view.LoadSBMLPanel;
 import dk.dtu.sb.GUI.view.TruthTablePanel;
+import dk.dtu.techmap.AIG;
+import dk.dtu.techmap.TechnologyMapper;
 
 public class TTController implements PropertyChangeListener {
     
@@ -55,16 +53,16 @@ public class TTController implements PropertyChangeListener {
         
         view.btnMinimise.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String tt = view.truthTableRaw.getText();
-                try {
-                    Formula f = Formula.readCompleteTT(new StringReader(tt));
-                    f.reduceToPrimeImplicants();
-                    f.reducePrimeImplicantsToSubset();
-                    view.textAreaMinimised.setText(f.toString());
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
+                minimiseTT();
+            }
+        });
+        
+        view.btnFindDesigns.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String mini = minimiseTT();
+                TechnologyMapper techMap = new TechnologyMapper(new AIG(mini));
+                HashSet<SBGate> solution = techMap.start();
+                assert(solution != null);
             }
         });
         
@@ -75,6 +73,21 @@ public class TTController implements PropertyChangeListener {
                 }
             }
         });
+    }
+    
+    private String minimiseTT() {
+        String tt = view.truthTableRaw.getText(), mini = "";
+        try {
+            Formula f = Formula.readCompleteTT(new StringReader(tt));
+            f.reduceToPrimeImplicants();
+            f.reducePrimeImplicantsToSubset();
+            mini = f.toString();
+            view.textAreaMinimised.setText(mini);
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        return mini;
     }
     
     private void createNewTT(String input, String output) {

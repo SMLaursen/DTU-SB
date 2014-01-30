@@ -7,7 +7,7 @@ import org.junit.Test;
 import ch.qos.logback.classic.Level;
 import dk.dtu.ls.library.ConcreteParts;
 import dk.dtu.ls.library.Library;
-import dk.dtu.ls.library.models.SBGate;
+import dk.dtu.ls.library.SBGate;
 import dk.dtu.sb.Parameters;
 import dk.dtu.sb.Util;
 import dk.dtu.sb.outputformatter.GraphGUI;

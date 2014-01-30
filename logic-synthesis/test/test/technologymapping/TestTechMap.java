@@ -1,75 +1,90 @@
 package test.technologymapping;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.HashSet;
 
 import org.junit.Test;
 
+import dk.dtu.ls.library.ConcreteParts;
+import dk.dtu.ls.library.Library;
+import dk.dtu.ls.library.SBGate;
 import dk.dtu.techmap.AIG;
 import dk.dtu.techmap.TechnologyMapper;
 
 public class TestTechMap {
-	AIG primary = new AIG("O = (C') + (A B)");
+    AIG primary = new AIG("O = (C') + (A B)");
 
-	AIG part1 = new AIG("O = (I) + (C')","Part1");
-	AIG part2 = new AIG("I = (B A)","Part2");
-	AIG part3 = new AIG("I = (Q)","Part3");
-	AIG part4 = new AIG("O = (C') + (A B)","Part4");
-	AIG part5 = new AIG("Q = (A B)","Part5");
-	AIG part6 = new AIG("I = (A B) + (C' D)","Part6");
-	AIG part7 = new AIG("I = (Q B)","Part7");
-	AIG part8 = new AIG("Q = A","Part8");
-	//General purpose tests
-	
-	@Test
-	public void test1(){	
-		HashSet<AIG> library = new HashSet<AIG>();
-		
-		//Test that p1 and p5 cannot be a solution
-		library.add(part1);
-		library.add(part5);
-		TechnologyMapper techmap = new TechnologyMapper(primary);
-		HashSet<AIG> solution = techmap.start(library);
-		assertTrue(solution==null);
-		
-		//Test that p1 and p2 can be a solution
-		library.add(part2);
-		solution = techmap.start(library);
-		assertTrue(solution!=null);
-		
-		//Test that p1,p3 and p5 can be a solution. (ADVANCED : p3 has to bee mapped for "free")
-		library.add(part3);
-		library.remove(part2);
-		solution = techmap.start(library);
-		assertTrue(solution!=null);
-		
-		//Test that p4 can be a solution
-		library.add(part4);
-		library.remove(part1);
-		solution = techmap.start(library);
-		assertTrue(solution != null);
-		
-		//Test that the previous tries didn't cause any side-effects
-		library.remove(part3);
-		library.remove(part4);
-		library.add(part6);
-		solution = techmap.start(library);
-		assertTrue(solution == null);	
-	}
-	
-	//Advanced currently failing tests
-	@Test
-	public void test2(){	
-		HashSet<AIG> library = new HashSet<AIG>();
-		TechnologyMapper techmap = new TechnologyMapper(primary);
-		
-		library.add(part1);
-		library.add(part7);
-		library.add(part8);
-		HashSet<AIG> solution = techmap.start(library);
-		System.out.println(solution);
-	}
-	
-	
+    SBGate part1 = new SBGate(1, "O = (I) + (C')");
+    SBGate part2 = new SBGate(2, "I = (B A)");
+    SBGate part3 = new SBGate(3, "I = (Q)");
+    SBGate part4 = new SBGate(4, "O = (C') + (A B)");
+    SBGate part5 = new SBGate(5, "Q = (A B)");
+    SBGate part6 = new SBGate(6, "I = (A B) + (C' D)");
+    SBGate part7 = new SBGate(7, "I = (Q B)");
+    SBGate part8 = new SBGate(8, "Q = A");
+
+    // General purpose tests
+
+    @Test
+    public void test1() {
+        Library.clear();
+        
+        // Test that p1 and p5 cannot be a solution
+        Library.insert(part1);
+        Library.insert(part5);
+        TechnologyMapper techmap = new TechnologyMapper(primary);
+        HashSet<SBGate> solution = techmap.start();
+        assertNull(solution);
+
+        // Test that p1 and p2 can be a solution
+        Library.insert(part2);
+        solution = techmap.start();
+        assertNotNull(solution);
+
+        // Test that p1,p3 and p5 can be a solution. (ADVANCED : p3 has to bee
+        // mapped for "free")
+        Library.insert(part3);
+        Library.remove(part2);
+        solution = techmap.start();
+        assertNotNull(solution);
+
+        // Test that p4 can be a solution
+        Library.insert(part4);
+        Library.remove(part1);
+        solution = techmap.start();
+        assertNotNull(solution);
+
+        // Test that the previous tries didn't cause any side-effects
+        Library.remove(part3);
+        Library.remove(part4);
+        Library.insert(part6);
+        solution = techmap.start();
+        assertNull(solution);
+    }
+
+    // Advanced currently failing tests
+    @Test
+    public void test2() {
+        TechnologyMapper techmap = new TechnologyMapper(primary);
+
+        Library.clear();
+        Library.insert(part1);
+        Library.insert(part7);
+        Library.insert(part8);
+        HashSet<SBGate> solution = techmap.start();
+        System.out.println(solution);
+    }
+    
+    @Test
+    public void testConcreteParts() {
+        Library.clear();
+        ConcreteParts.insertParts();
+        AIG goal = new AIG("CI = (GFP' ) + (IPTG lacI )");
+        TechnologyMapper techmap = new TechnologyMapper(goal);
+        HashSet<SBGate> solution = techmap.start();
+        assertNotNull(solution);
+        System.out.println(solution);
+    }
+
 }

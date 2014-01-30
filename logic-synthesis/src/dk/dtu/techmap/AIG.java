@@ -147,6 +147,10 @@ public class AIG {
 		return output;
 	}
 	
+	public String getOutputProtein() {
+	    return output.getProtein();
+	}
+	
 	public boolean containsInputProtein(String protein){
 		return inMap.containsKey(protein);
 	}

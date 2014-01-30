@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import dk.dtu.ls.library.models.SBGate;
-
 public class Library {
 
     private static HashMap<String, List<SBGate>> parts = new HashMap<String, List<SBGate>>();
@@ -35,8 +33,15 @@ public class Library {
         parts.put(gate.outputProtein, gates);
     }
     
+    public static void remove(SBGate gate) {
+        if (parts.containsKey(gate.outputProtein)) {
+            List<SBGate> gates = parts.get(gate.outputProtein);
+            gates.remove(gate);
+        }
+    }
+    
     public static List<SBGate> getGatesWithOutput(String outputProtein) {
-        return parts.get(outputProtein);
+        return parts.containsKey(outputProtein) ? parts.get(outputProtein) : new ArrayList<SBGate>();
     }
     
     public static List<SBGate> getAllParts() {
