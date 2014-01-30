@@ -33,7 +33,7 @@ public class TestTechMap {
         Library.insert(part1);
         Library.insert(part5);
         TechnologyMapper techmap = new TechnologyMapper(primary);
-        HashSet<AIG> solution = techmap.start();
+        HashSet<SBGate> solution = techmap.start();
         assertTrue(solution == null);
 
         // Test that p1 and p2 can be a solution
@@ -71,7 +71,7 @@ public class TestTechMap {
         Library.insert(part1);
         Library.insert(part7);
         Library.insert(part8);
-        HashSet<AIG> solution = techmap.start();
+        HashSet<SBGate> solution = techmap.start();
         System.out.println(solution);
     }
 

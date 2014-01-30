@@ -22,10 +22,10 @@ public class TechnologyMapper {
 	 * @return
 	 * null : No mapping could be made
 	 * Set : The set of parts in the solution */
-	public HashSet<AIG> start(){
+	public HashSet<SBGate> start(){
 		HashMap<String, LogicGate> startingGate = new HashMap<String, LogicGate>();
 		startingGate.put(graph.getOutputGate().getProtein(), graph.getOutputGate());
-		HashSet<AIG> solution = new HashSet<AIG>();
+		HashSet<SBGate> solution = new HashSet<SBGate>();
 		return map(solution, startingGate);
 	}
 	
@@ -34,7 +34,7 @@ public class TechnologyMapper {
 	 * @return
 	 * null : no match could be found
 	 * Set  : the set of parts that make up the match*/
-	private HashSet<AIG> map(HashSet<AIG> selectedParts, HashMap<String,LogicGate> toMatch){
+	private HashSet<SBGate> map(HashSet<SBGate> selectedParts, HashMap<String,LogicGate> toMatch){
 		
 		//For each incomplete matching
 		for(String protein : toMatch.keySet()){
@@ -62,15 +62,15 @@ public class TechnologyMapper {
 				}//Entire graph has been matched! 
 				else if(toMatchNext.isEmpty()){
 					//Record score / Output solution
-					selectedParts.add(libPart);
+					selectedParts.add(sbGate);
 					return selectedParts;
 				}//Further matching should be conducted  
 				else {
 					//Add this to selected parts
-					selectedParts.add(libPart);			
+					selectedParts.add(sbGate);			
 
 					//Recursively match remainder
-					HashSet<AIG> s = map(selectedParts, toMatchNext);
+					HashSet<SBGate> s = map(selectedParts, toMatchNext);
 
 					//If this branch didn't lead to a solution, remove part again and try matching using next part. 
 					if(s == null){
