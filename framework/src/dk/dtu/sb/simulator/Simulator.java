@@ -185,6 +185,7 @@ public class Simulator {
      */
     public boolean stopSimulation() {
         boolean interrupted = false;
+        executor.shutdownNow();
         for (Future<?> future : futures) {
             if (!future.isDone()) {
                 future.cancel(true);
