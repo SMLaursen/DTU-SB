@@ -34,7 +34,7 @@ public class ConcreteParts {
                 array("aTc", "Ara"),
                 array(), 
                 "CI", 
-                "CI = (aTc' Ara ) + (aTc Ara' )", 
+                "CI = (aTc ) + (Ara )", 
                 1000
                 ));
         
@@ -50,7 +50,7 @@ public class ConcreteParts {
                 array("aTc", "Ara"),
                 array(), 
                 "CI", 
-                "CI = (aTc' Ara ) + (aTc Ara' )", 
+                "CI = (aTc ) + (Ara )", 
                 1000
                 ));
         

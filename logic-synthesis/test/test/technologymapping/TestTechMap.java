@@ -1,11 +1,12 @@
 package test.technologymapping;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.HashSet;
 
 import org.junit.Test;
 
+import dk.dtu.ls.library.ConcreteParts;
 import dk.dtu.ls.library.Library;
 import dk.dtu.ls.library.SBGate;
 import dk.dtu.techmap.AIG;
@@ -34,32 +35,32 @@ public class TestTechMap {
         Library.insert(part5);
         TechnologyMapper techmap = new TechnologyMapper(primary);
         HashSet<SBGate> solution = techmap.start();
-        assertTrue(solution == null);
+        assertNull(solution);
 
         // Test that p1 and p2 can be a solution
         Library.insert(part2);
         solution = techmap.start();
-        assertTrue(solution != null);
+        assertNotNull(solution);
 
         // Test that p1,p3 and p5 can be a solution. (ADVANCED : p3 has to bee
         // mapped for "free")
         Library.insert(part3);
         Library.remove(part2);
         solution = techmap.start();
-        assertTrue(solution != null);
+        assertNotNull(solution);
 
         // Test that p4 can be a solution
         Library.insert(part4);
         Library.remove(part1);
         solution = techmap.start();
-        assertTrue(solution != null);
+        assertNotNull(solution);
 
         // Test that the previous tries didn't cause any side-effects
         Library.remove(part3);
         Library.remove(part4);
         Library.insert(part6);
         solution = techmap.start();
-        assertTrue(solution == null);
+        assertNull(solution);
     }
 
     // Advanced currently failing tests
@@ -72,6 +73,16 @@ public class TestTechMap {
         Library.insert(part7);
         Library.insert(part8);
         HashSet<SBGate> solution = techmap.start();
+        System.out.println(solution);
+    }
+    
+    @Test
+    public void testConcreteParts() {
+        Library.clear();
+        ConcreteParts.insertParts();
+        TechnologyMapper techmap = new TechnologyMapper(new AIG("CI = (GFP' ) + (IPTG lacI )"));
+        HashSet<SBGate> solution = techmap.start();
+        assertNotNull(solution);
         System.out.println(solution);
     }
 

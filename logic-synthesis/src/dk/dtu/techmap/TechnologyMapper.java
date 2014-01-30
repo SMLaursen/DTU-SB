@@ -45,14 +45,14 @@ public class TechnologyMapper {
 			    AIG libPart = sbGate.getAIG();
 			    
 				//Ensure orthogonality
-				if(selectedParts.contains(libPart)){
+				if(selectedParts.contains(sbGate)){
 					continue;
 				}
 				
 //				//Ensure proteins match
-				if(!libPart.getOutputGate().getProtein().equals(protein)){
+				/*if(!libPart.getOutputGate().getProtein().equals(protein)){
 					continue;
-				}
+				}*/
 				
 				//Can this be libPart be matched?
 				HashMap<String, LogicGate> toMatchNext = isMatching(libPart.getOutputGate(), g);

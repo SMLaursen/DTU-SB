@@ -23,6 +23,7 @@ public class TruthTablePanel extends JPanel {
     public JList resultsList;
     private JLabel lblTheLastColumn;
     private JLabel lblRowsWithFalse;
+    public JButton btnFindDesigns;
 
     /**
      * Create the panel.
@@ -83,7 +84,7 @@ public class TruthTablePanel extends JPanel {
         btnMinimise = new JButton("Minimise");
         panel.add(btnMinimise);
         
-        JButton btnFindDesigns = new JButton("Find designs");
+        btnFindDesigns = new JButton("Find designs");
         panel.add(btnFindDesigns);
         
         textAreaMinimised = new JTextArea();
