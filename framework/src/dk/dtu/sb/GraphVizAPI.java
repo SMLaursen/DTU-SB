@@ -63,7 +63,7 @@ public class GraphVizAPI {
             DOT_PATH = "dot";
         }// Unix type system
         else if (System.getProperty("os.name").startsWith("Mac OS")) {
-            DOT_PATH = "/usr/local/bin/dot";
+            DOT_PATH = "/usr/local2/bin/dot";
         } else {
             DOT_PATH = "/usr/bin/dot";
         }
@@ -124,7 +124,7 @@ public class GraphVizAPI {
             if (dot != null) {
                 img_stream = get_img_stream(dot, type);
                 if (dot.delete() == false)
-                    System.err.println("Warning: " + dot.getAbsolutePath()
+                    Util.log.warn("Warning: " + dot.getAbsolutePath()
                             + " could not be deleted!");
                 return img_stream;
             }
@@ -203,18 +203,14 @@ public class GraphVizAPI {
                 in.close();
 
             if (img.delete() == false)
-                System.err.println("Warning: " + img.getAbsolutePath()
+                Util.log.warn("Warning: " + img.getAbsolutePath()
                         + " could not be deleted!");
         } catch (java.io.IOException ioe) {
-            System.err
-                    .println("Error:    in I/O processing of tempfile in dir "
+            Util.log.error("Error:    in I/O processing of tempfile in dir "
                             + GraphVizAPI.TEMP_DIR + "\n");
-            System.err.println("       or in calling external command");
-            ioe.printStackTrace();
+            Util.log.error("       or in calling external command");
         } catch (java.lang.InterruptedException ie) {
-            System.err
-                    .println("Error: the execution of the external program was interrupted");
-            ie.printStackTrace();
+            Util.log.error("Error: the execution of the external program was interrupted");
         }
 
         return img_stream;
@@ -238,8 +234,7 @@ public class GraphVizAPI {
             fout.write(str);
             fout.close();
         } catch (Exception e) {
-            System.err
-                    .println("Error: I/O error while writing the dot source to temp file!");
+            Util.log.error("Error: I/O error while writing the dot source to temp file!");
             return null;
         }
         return temp;
@@ -282,7 +277,7 @@ public class GraphVizAPI {
             }
             dis.close();
         } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
+            Util.log.error("Error: " + e.getMessage());
         }
 
         this.graph = sb;
