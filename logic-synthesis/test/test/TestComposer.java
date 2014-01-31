@@ -30,7 +30,7 @@ public class TestComposer {
         assertNotNull(result);
         assertEquals(3, result.inputProteins.size());
         assertEquals(1, result.intermediateProteins.size());
-        assertEquals("Ara", result.intermediateProteins.get(0));
+        assertEquals("Ara", result.intermediateProteins.iterator().next());
         assertEquals(9, result.getSPN().getSpeciess().size());
         
         result.getSPN().setInitialMarking("Ara", SBGate.LOW);

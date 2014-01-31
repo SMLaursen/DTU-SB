@@ -1,12 +1,12 @@
 package dk.dtu.ls.library;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class ConcreteParts {
     
-    public static ArrayList<String> array(String... protein) {
-        return new ArrayList<String>(Arrays.asList(protein));
+    public static HashSet<String> array(String... protein) {
+        return new HashSet<String>(Arrays.asList(protein));
     }
 
     public static void insertParts() {
@@ -42,9 +42,9 @@ public class ConcreteParts {
                 array("aTc", "Ara"),
                 array(), 
                 "CI", 
-//                "CI = (aTc ) + (Ara )", 
+                "CI = (aTc ) + (Ara )", 
 //                "CI = (aTc ) + (IPTG lacl )",
-                "CI = (aTc ) + (IPTG lacl )",
+//                "CI = (aTc ) + (IPTG lacl )",
                 1000
                 ));
         

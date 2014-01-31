@@ -2,6 +2,7 @@ package dk.dtu.ls.library;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -65,12 +66,12 @@ public class SBGate implements Comparable<SBGate> {
         return newGate;
     }
 
-    private static void composeIntermediate(List<String> inputProteins,
+    private static void composeIntermediate(Set<String> inputProteins,
             String outputProtein, SBGate newGate) {
         for (String inputProtein : inputProteins) {
             if (inputProtein.equals(outputProtein)) {
                 newGate.intermediateProteins.add(inputProtein);
-            } else {
+            } else if (!newGate.intermediateProteins.contains(inputProtein)) {
                 newGate.inputProteins.add(inputProtein);
             }
         }
@@ -86,7 +87,7 @@ public class SBGate implements Comparable<SBGate> {
             if (newGate.outputProteins.size() > 1) {
                 throw new RuntimeException("There was more than one output protein...");
             }
-            newGate.outputProtein = newGate.outputProteins.get(0);
+            newGate.outputProtein = newGate.outputProteins.iterator().next();
             return newGate;
         } else {
             return gates.get(0);
@@ -98,10 +99,10 @@ public class SBGate implements Comparable<SBGate> {
     public int repressors = 0;
     public int activators = 0;
 
-    public ArrayList<String> inputProteins = new ArrayList<String>();
-    public ArrayList<String> intermediateProteins = new ArrayList<String>();
+    public HashSet<String> inputProteins = new HashSet<String>();
+    public HashSet<String> intermediateProteins = new HashSet<String>();
     public String outputProtein = null;
-    public ArrayList<String> outputProteins = new ArrayList<String>();
+    public HashSet<String> outputProteins = new HashSet<String>();
 
     public String SOP;
 
@@ -127,7 +128,7 @@ public class SBGate implements Comparable<SBGate> {
     }
 
     public SBGate(int id, String sbmlFile, int repressors, int activators,
-            ArrayList<String> input, ArrayList<String> intm, String output,
+            HashSet<String> input, HashSet<String> intm, String output,
             String SOP, int stableTime) {
         this.id = id;
         this.sbmlFile = "library/" + sbmlFile;
