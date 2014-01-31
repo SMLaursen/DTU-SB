@@ -20,7 +20,8 @@ public class SBGate implements Comparable<SBGate> {
 
     public static SBGate compose(SBGate gate1, SBGate gate2) {
         SBGate newGate = new SBGate(gate1.hashCode() + gate2.hashCode(),
-                gate1.cost + gate2.cost);
+                gate1.repressors + gate2.repressors, gate1.activators
+                        + gate2.activators);
 
         StochasticPetriNet result = gate1.getSPN().clone();
         StochasticPetriNet spn2 = gate2.getSPN().clone();
@@ -37,11 +38,11 @@ public class SBGate implements Comparable<SBGate> {
         }
 
         newGate.setSPN(result);
-        
+
         // set intermediate
         newGate.intermediateProteins.addAll(gate1.intermediateProteins);
         newGate.intermediateProteins.addAll(gate2.intermediateProteins);
-        
+
         // connect input and output, and set intermediate
         composeIntermediate(gate1.inputProteins, gate2.outputProtein, newGate);
         composeIntermediate(gate2.inputProteins, gate1.outputProtein, newGate);
@@ -82,7 +83,8 @@ public class SBGate implements Comparable<SBGate> {
 
     public int id;
     public String sbmlFile;
-    public int cost;
+    public int repressors = 0;
+    public int activators = 0;
 
     public ArrayList<String> inputProteins = new ArrayList<String>();
     public ArrayList<String> intermediateProteins = new ArrayList<String>();
@@ -95,22 +97,29 @@ public class SBGate implements Comparable<SBGate> {
     private StochasticPetriNet spn = null;
     private AIG aig = null;
 
+    public SBGate(int id) {
+        this.id = id;
+    }
+    
     public SBGate(int id, String SOP) {
         this.id = id;
         this.SOP = SOP;
         this.outputProtein = getAIG().getOutputProtein();
     }
 
-    public SBGate(int id, int cost) {
+    public SBGate(int id, int repressors, int activators) {
         this.id = id;
-        this.cost = cost;
+        this.repressors = repressors;
+        this.activators = activators;
     }
 
-    public SBGate(int id, String sbmlFile, int cost, ArrayList<String> input,
-            ArrayList<String> intm, String output, String SOP, int stableTime) {
+    public SBGate(int id, String sbmlFile, int repressors, int activators,
+            ArrayList<String> input, ArrayList<String> intm, String output,
+            String SOP, int stableTime) {
         this.id = id;
         this.sbmlFile = "library/" + sbmlFile;
-        this.cost = cost;
+        this.repressors = repressors;
+        this.activators = activators;
         this.inputProteins = input;
         this.intermediateProteins = intm;
         this.outputProtein = output;
@@ -152,6 +161,17 @@ public class SBGate implements Comparable<SBGate> {
         return aig;
     }
 
+    public int getCost() {
+        int cost = 0;
+        if (repressors > 0) {
+            cost += Math.pow(2, 1 / repressors);
+        }
+        if (activators > 0) {
+            cost += Math.pow(2, 1 / activators);
+        }
+        return cost;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == null || other.getClass() != getClass()) {
@@ -162,9 +182,9 @@ public class SBGate implements Comparable<SBGate> {
 
     @Override
     public int compareTo(SBGate o) {
-        if (cost > o.cost) {
+        if (getCost() > o.getCost()) {
             return 1;
-        } else if (cost < o.cost) {
+        } else if (getCost() < o.getCost()) {
             return -1;
         }
         return 0;

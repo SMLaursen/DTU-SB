@@ -108,7 +108,7 @@ public class SBGateDetailsPanel extends JPanel {
     }
 
     public void setDetails(SBGate gate) {
-        lblCosttext.setText("" + gate.cost);
+        lblCosttext.setText("" + gate.getCost());
         lblInputtext.setText(gate.inputProteins.toString());
         lblInttext.setText(gate.intermediateProteins.toString());
         lblOuttext.setText(gate.outputProtein);
