@@ -13,9 +13,10 @@ public class TestLibrary {
 
     @Test
     public void testInsert() {
-        assertNull(Library.getGatesWithOutput("GFP"));
+        Library.clear();
+        assertTrue(Library.getGatesWithOutput("GFP").isEmpty());
         
-        Library.insert(new SBGate(0, "", 0, ConcreteParts.array(), ConcreteParts.array(), "GFP", "", 0));
+        Library.insert(new SBGate(0, "", 0, 0, ConcreteParts.array(), ConcreteParts.array(), "GFP", "", 0));
         
         assertNotNull(Library.getGatesWithOutput("GFP"));
         assertEquals(1, Library.getGatesWithOutput("GFP").size());
@@ -24,10 +25,10 @@ public class TestLibrary {
     @Test
     public void testInsertSorting() {
         Library.clear();
-        assertNull(Library.getGatesWithOutput("GFP"));
+        assertTrue(Library.getGatesWithOutput("GFP").isEmpty());
         
-        Library.insert(new SBGate(0, "", 1, ConcreteParts.array(), ConcreteParts.array(), "GFP", "", 0));
-        Library.insert(new SBGate(1, "", 0, ConcreteParts.array(), ConcreteParts.array(), "GFP", "", 0));
+        Library.insert(new SBGate(0, "", 1, 0, ConcreteParts.array(), ConcreteParts.array(), "GFP", "", 0));
+        Library.insert(new SBGate(1, "", 0, 0, ConcreteParts.array(), ConcreteParts.array(), "GFP", "", 0));
         
         assertNotNull(Library.getGatesWithOutput("GFP"));
         assertEquals(2, Library.getGatesWithOutput("GFP").size());
@@ -37,7 +38,8 @@ public class TestLibrary {
     
     @Test
     public void testConcreteParts() {
-        assertNull(Library.getGatesWithOutput("CI"));
+        Library.clear();
+        assertTrue(Library.getGatesWithOutput("CI").isEmpty());
         
         ConcreteParts.insertParts();
         
@@ -50,7 +52,8 @@ public class TestLibrary {
     
     @Test
     public void testConcretePartsContent() {
-        assertNull(Library.getGatesWithOutput("CI"));
+        Library.clear();
+        assertTrue(Library.getGatesWithOutput("CI").isEmpty());
         
         ConcreteParts.insertParts();
         

@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 @SuppressWarnings("serial")

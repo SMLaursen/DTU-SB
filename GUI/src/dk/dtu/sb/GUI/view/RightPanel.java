@@ -75,7 +75,7 @@ public class RightPanel extends JPanel {
         gbc_parametersPanel.gridy = 2;
         add(parametersPanel, gbc_parametersPanel);
         
-        lblProteinConcentrations = new JLabel("Initial protein concentrations");
+        lblProteinConcentrations = new JLabel("Initial species concentrations");
         lblProteinConcentrations.setAlignmentY(Component.TOP_ALIGNMENT);
         lblProteinConcentrations.setFont(new Font("Lucida Grande", Font.BOLD, 13));
         GridBagConstraints gbc_lbl = new GridBagConstraints();

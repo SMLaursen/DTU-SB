@@ -43,16 +43,26 @@ public class CenterTabsController implements PropertyChangeListener {
             
             (new SwingWorker<Boolean, Boolean>() {
                 String type = "png";
+                byte[] graphStream;
                 protected Boolean doInBackground() throws Exception {
                     GraphVizAPI gv = new GraphVizAPI();
                     gv.addln(model.getSPN().toGraphviz());
                     File out = new File(GraphVizAPI.OUT_PATH + "out." + type);
-                    gv.writeGraphToFile(gv.getGraph(gv.getDotSource(), type), out);
+                    graphStream = gv.getGraph(gv.getDotSource(), type);
+                    if (graphStream != null) {
+                        gv.writeGraphToFile(graphStream, out);
+                    }
                     return true;
                 }
 
                 protected void done() {
-                    view.graph.setImage(GraphVizAPI.OUT_PATH + "out." + type);
+                    if (graphStream != null) {
+                        view.graph.setImage(GraphVizAPI.OUT_PATH + "out." + type);
+                    } else {
+                        view.graph.removeAll();
+                        view.graph.add(new JLabel("GraphViz library (used for processing of the Dot-format) is not properly installed..."));
+                        view.graph.repaint();
+                    }
                 }
             }).execute();            
         }

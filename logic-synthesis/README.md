@@ -1,11 +1,6 @@
+# DISCLAIMER: This project is only a proof-of-concept!
 
-# Extension: Logic Synthesis
-
-
-
-## Debugging
-
-
+This means the overall structure can be questionable.
 
 # Dependencies
 

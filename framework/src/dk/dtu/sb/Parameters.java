@@ -40,7 +40,7 @@ public class Parameters {
     /**
      * See {@link #getSimIterations()}.
      */
-    public static final int PARAM_SIM_ITERATIONS_DEFAULT = 1;
+    public static final int PARAM_SIM_ITERATIONS_DEFAULT = 5;
     private static final String PARAM_SIM_ITERATIONS = "simulation.iterations";
 
     /**
@@ -59,7 +59,7 @@ public class Parameters {
     /**
      * See {@link #getSimStoptime()}.
      */
-    public static final int PARAM_SIM_STOPTIME_DEFAULT = 1000;
+    public static final int PARAM_SIM_STOPTIME_DEFAULT = 5000;
     private static final String PARAM_SIM_STOPTIME = "simulation.stoptime";
     
     /**
