@@ -13,9 +13,10 @@ import com.github.qtstc.Formula;
 import dk.dtu.techmap.AIG;
 
 public class testAIG {
-	@Test
+	@Test //Parsing and simple structures that easily translates to 2AIG 
     public void testSimple() throws IOException {
-        Formula f = Formula.read(new BufferedReader(new FileReader("test/test/aig/simple.txt")));
+        
+		Formula f = Formula.read(new BufferedReader(new FileReader("test/test/aig/simple.txt")));
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
         
@@ -28,17 +29,20 @@ public class testAIG {
         		   g1.treeToString().equals("O = (Not(And(Not(And(A()B()))C())))") ||
         		   g1.treeToString().equals("O = (Not(And(C()Not(And(B()A())))))") ||
         		   g1.treeToString().equals("O = (Not(And(C()Not(And(A()B())))))"));
-    }
-	
-	@Test
-    public void testDifficult() throws IOException {
-        Formula f = Formula.read(new BufferedReader(new FileReader("test/test/aig/input.txt")));
+ 
+        f = Formula.read(new BufferedReader(new FileReader("test/test/aig/input.txt")));
         f.reduceToPrimeImplicants();
         f.reducePrimeImplicantsToSubset();
-        AIG g = new AIG(f.toString());   
+        g1 = new AIG(f.toString());   
         System.out.println(f);
-       
+	}
+	
+	@Test //More advanced test that need to translate from 3-AIG -> 2-AIG first
+    public void testDifficult() throws IOException {
+		AIG g = new AIG("O = (A B C) + (D') + (E)");
+		System.out.println(g.treeToString());
     }
+	
 	
 	
 	

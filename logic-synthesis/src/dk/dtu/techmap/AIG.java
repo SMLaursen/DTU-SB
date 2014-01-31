@@ -2,33 +2,32 @@ package dk.dtu.techmap;
 
 import java.util.HashMap;
 
+import dk.dtu.sb.Util;
+
 /** Represents And-Inverter-Graph */
 public class AIG {
 	String name;
-	
+
 	private OutputGate output;
-	
+
 	//Map with inputs, this map is emptied as matches are found
 	private HashMap<String,InputGate> inMap = new HashMap<String,InputGate>();
 
-	//Indicates if the graph has been succesfully converted to AIG
-	public boolean isAIG = false;
 
 	public AIG(String formula){
 		output = parseFormula(formula);
-		convertToAIG(output);
+		convertTo2AIG(output);
 		name = output.subTreeToString();
 	}
 	public AIG(String formula, String name){
 		output = parseFormula(formula);
-		convertToAIG(output);
+		convertTo2AIG(output);
 		this.name = name;
 	}
-	
-	/** Parses the String representation of Formula f into a graph of (2 input) AND, OR and NOT 
-	 * @throws Exception */
+
+	/** Parses the String representation of Formula f into a graph of (N input) AND, OR and NOT */
 	private OutputGate parseFormula(String text){
-		
+
 		//Get index of equals
 		int index = text.indexOf("=");
 
@@ -41,10 +40,8 @@ public class AIG {
 		OutputGate output = new OutputGate(out);
 		//Figure out whether to put a OR-gate
 		LogicGate topGate;
-		if(terms.length > 2){
-			//TODO : Support this
-			throw new RuntimeException("This version only supports 2 terms per formula");
-		} else if (terms.length == 2){
+
+		if (terms.length > 1){
 			topGate = new OrGate();
 			output.addChild(topGate);
 		} else {
@@ -55,10 +52,7 @@ public class AIG {
 			String[] term = s.trim().split("[ ]");
 			//Figure out whether to put AND-gates
 			LogicGate midGate;
-			if(term.length > 2){
-				//TODO : Support this
-				throw new RuntimeException("This version only supports 2 literals pr. term");
-			} else if (term.length == 2) {
+			if (term.length > 1) {
 				//Add and gates
 				midGate = new AndGate();
 				topGate.addChild(midGate);
@@ -73,7 +67,7 @@ public class AIG {
 				if(!inMap.containsKey(literal)){
 					inMap.put(literal, new InputGate(literal));
 				}else {
-					System.out.println("Warning : complete orthogonality is not preserved");
+					Util.log.warn("Complete orthogonality is not preserved");
 				}	
 				//Connect to InputGates - possibly with a NotGate
 				InputGate input = inMap.get(literal);
@@ -92,8 +86,10 @@ public class AIG {
 		return output;
 	}
 
-	/**Converts the CNF graph to AIG-representation*/
-	private LogicGate convertToAIG(LogicGate curr){
+	/**Converts the N-CNF graph to a single 2-AIG-representation.
+	 * Many different representation can exists.*/
+	private void convertTo2AIG(LogicGate curr){
+
 		if(curr instanceof OrGate){
 			LogicGate curr_temp = new AndGate();
 			LogicGate prev_temp = curr.out;
@@ -131,35 +127,67 @@ public class AIG {
 				}
 			}
 			curr = curr_temp;
+			//Call on self (Converts 
+			convertTo2AIG(curr);
+
+		} else if(curr instanceof AndGate && curr.in.size() > 2){
+			int noOfChildren = curr.in.size();
+
+			//Convert N-AND gates to 2-AND gates
+			if(noOfChildren==3){
+				//Replace by two And-Gates
+				LogicGate curr_temp1 = new AndGate();
+				LogicGate curr_temp2 = new AndGate();
+
+				Object[] children = curr.in.toArray();
+
+				curr_temp1.out = curr.out;
+				curr_temp1.in.add((LogicGate) children[0]);
+				curr_temp1.in.add(curr_temp2);
+
+				curr_temp2.out = curr_temp1;
+				curr_temp2.in.add((LogicGate) children[1]);
+				curr_temp2.in.add((LogicGate) children[2]);
+
+				LogicGate curr_parent = curr.out;
+				curr_parent.removeChild(curr);
+				curr_parent.addChild(curr_temp1);
+				convertTo2AIG(curr_temp1);
+			} else {
+				Util.log.error("No more than 3 input supported");
+				throw new RuntimeException("Error : No more than 3 input supported");
+			}
+
+		} else {
+			//Recursively traverse remaining
+			for(LogicGate child : curr.in){
+				convertTo2AIG(child);
+			}
 		}
-		//Recursively traverse remaining
-		for(LogicGate child : curr.in){
-			convertToAIG(child);
-		}
-		isAIG = true;
-		return null;
+
+
 	}
-	
+
 	public String toString(){
 		return name;
 	}
 	public OutputGate getOutputGate(){
 		return output;
 	}
-	
+
 	public String getOutputProtein() {
-	    return output.getProtein();
+		return output.getProtein();
 	}
-	
+
 	public boolean containsInputProtein(String protein){
 		return inMap.containsKey(protein);
 	}
-//	/** Returns a copy of the tree rooting from g*/
-//	public LogicGate CopyTree(OutputGate g){
-//		LogicGate copy = new OutputGate(g.protein);
-//		//TODO
-//		return copy;
-//	}
+	//	/** Returns a copy of the tree rooting from g*/
+	//	public LogicGate CopyTree(OutputGate g){
+	//		LogicGate copy = new OutputGate(g.protein);
+	//		//TODO
+	//		return copy;
+	//	}
 	/**When the entire graph has been mapped, the inMap is empty.*/
 	public boolean isMapped(){
 		return inMap.isEmpty();

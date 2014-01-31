@@ -36,39 +36,44 @@ public class TestTechMap {
         Library.insert(part5);
         TechnologyMapper techmap = new TechnologyMapper(primary);
         HashSet<SBGate> solution = techmap.start();
-        assertTrue(solution.isEmpty());
         System.out.println(solution);
+        assertTrue(solution.isEmpty());
+        
 
         // Test that p1 and p2 can be a solution
         Library.insert(part2);
         solution = techmap.start();
-        assertTrue(solution.contains(part1) && solution.contains(part2));
         System.out.println(solution);
+        assertTrue(solution.contains(part1) && solution.contains(part2));
+        
         
         // Test that p1,p3 and p5 can be a solution. (ADVANCED : p3 has to bee
         // mapped for "free")
         Library.insert(part3);
         Library.remove(part2);
         solution = techmap.start();
+        System.out.println(solution);
         assertTrue(solution.contains(part1) 
         		&& solution.contains(part3)
         		&& solution.contains(part5));
-        System.out.println(solution);
+        
         
         // Test that p4 (itself) can be a solution
         Library.insert(part4);
         Library.remove(part1);
         solution = techmap.start();
-        assertTrue(solution.contains(part4));
         System.out.println(solution);
+        assertTrue(solution.contains(part4));
+        
         
         // Test that the previous tries didn't cause any side-effects
         Library.remove(part3);
         Library.remove(part4);
         Library.insert(part6);
         solution = techmap.start();
-        assertTrue(solution.isEmpty());
         System.out.println(solution);
+        assertTrue(solution.isEmpty());
+        
         
         //test, that recursively "translates input nodes with one level of indirection
         Library.clear();
@@ -76,18 +81,19 @@ public class TestTechMap {
         Library.insert(part7);
         Library.insert(part8);
         solution = techmap.start();
+        System.out.println(solution);
         assertTrue(solution.contains(part1) 
         		&& solution.contains(part7)
         		&& solution.contains(part8));
-        System.out.println(solution);
+        
     }
     
     // A bit more advanced.
     @Test
     public void test2(){
     	AIG secondary = new AIG("O = (A B) + (C D)");
-        SBGate part11 = new SBGate(11, "O = (Q) + (U)");
-        SBGate part12 = new SBGate(12, "Q = (A B)");
+        SBGate part11 = new SBGate(11, "O = (U) + (Q)");
+        SBGate part12 = new SBGate(12, "Q = (B A)");
         SBGate part13 = new SBGate(13, "U = (C D)");
         SBGate part14 = new SBGate(14, "U = (B C)");
         SBGate part15 = new SBGate(15, "Z = (A B) + (U)");
@@ -135,8 +141,7 @@ public class TestTechMap {
         assertTrue(solution.contains(part13) &&
      		   	   solution.contains(part17) &&
      		   	   solution.contains(part16) &&
-     		       solution.contains(part12));
-        
+     		       solution.contains(part12));        
     }
     
     
