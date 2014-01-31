@@ -43,6 +43,7 @@ public class Model {
     public int currentLoadedModel = 0;
     public String outputProtein;
     public ArrayList<String> inputProteins;
+    public List<SBGate> newDesignsFromTT;
 
     public Model() {
         propChangeFirer = new SwingPropertyChangeSupport(this);
@@ -80,6 +81,14 @@ public class Model {
                 sbmlFilename = null;
             }
         }).execute();
+    }
+
+    public void loadNewSBGate(SBGate gate) {
+        spn = gate.getSPN();
+        currentLoadedModel = CURRENT_MODEL_LIBRARY;
+        inputProteins = new ArrayList<String>(gate.inputProteins);
+        outputProtein = new String(gate.outputProtein);
+        propChangeFirer.firePropertyChange(EVENT_SBML_FILE_LOADED, "", "new");
     }
 
     public void setInitialMarkings(Map<String, Integer> markings) {
@@ -147,8 +156,8 @@ public class Model {
                         "new");
                 simulationNo++;
             } else if (simulator.isTimedOut()) {
-                propChangeFirer
-                .firePropertyChange(EVENT_STOP_SIMULATION, "", "new");
+                propChangeFirer.firePropertyChange(EVENT_STOP_SIMULATION, "",
+                        "new");
             }
         }
     }

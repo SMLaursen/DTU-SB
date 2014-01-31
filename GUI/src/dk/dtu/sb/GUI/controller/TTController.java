@@ -6,12 +6,16 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.github.qtstc.Formula;
 
@@ -22,19 +26,19 @@ import dk.dtu.techmap.AIG;
 import dk.dtu.techmap.TechnologyMapper;
 
 public class TTController implements PropertyChangeListener {
-    
+
     private TruthTablePanel view;
     private Model model;
 
     public TTController(TruthTablePanel view, Model model) {
         this.model = model;
         this.model.addListener(this);
-        
+
         this.view = view;
-        
+
         setUpViewEvents();
     }
-    
+
     private void setUpViewEvents() {
         view.btnAddTruthTable.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -48,31 +52,67 @@ public class TTController implements PropertyChangeListener {
                 createNewTT(input.getText(), output.getText());
             }
         });
-        
+
         view.btnMinimise.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 minimiseTT();
             }
         });
-        
-        view.btnFindDesigns.addActionListener(new ActionListener() {
+
+        view.btnFindFromTT.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String mini = minimiseTT();
-                TechnologyMapper techMap = new TechnologyMapper(new AIG(mini));
-                HashSet<SBGate> solution = techMap.start();
-                assert(solution != null);
+                view.populateResultsList(findDesigns(mini));
             }
         });
         
+        view.btnFindFromSop.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                view.populateResultsList(findDesigns(view.textAreaMinimised.getText()));
+            }
+        });
+
         view.btnLoadSelectedDesign.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                if (view.resultsList.getSelectedIndex() != -1) {
-                    
+                int index = view.resultsList.getSelectedIndex();
+                if (index != -1) {
+                    model.loadNewSBGate(model.newDesignsFromTT.get(index));
+                }
+            }
+        });
+
+        view.resultsList.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent arg0) {
+                int index = view.resultsList.getSelectedIndex();
+                if (index != -1) {
+                    view.sbGateDetailsPanel.setDetails(model.newDesignsFromTT.get(index));
+                    view.btnLoadSelectedDesign.setEnabled(true);
                 }
             }
         });
     }
     
+    private List<SBGate> findDesigns(String SOP) {
+        TechnologyMapper techMap = new TechnologyMapper(new AIG(SOP));
+        HashSet<SBGate> solution = techMap.start();
+        ArrayList<SBGate> result = new ArrayList<SBGate>();
+        
+        for (SBGate gate : solution) {
+            gate.sbmlFile = "../logic-synthesis/" + gate.sbmlFile;
+        }
+        
+        if (!solution.isEmpty()) {
+            SBGate newGate = SBGate.compose(solution);
+            newGate.SOP = SOP;
+            result.add(newGate);
+        } else {
+            JOptionPane.showMessageDialog(null, "No designs could be found.");
+        }       
+        
+        model.newDesignsFromTT = result;
+        return result;
+    }
+
     private String minimiseTT() {
         String tt = view.truthTableRaw.getText(), mini = "";
         try {
@@ -87,7 +127,7 @@ public class TTController implements PropertyChangeListener {
         }
         return mini;
     }
-    
+
     private void createNewTT(String input, String output) {
         String[] inputs = input.trim().replace(" ", "").split(",");
         String tt = "";
@@ -112,10 +152,10 @@ public class TTController implements PropertyChangeListener {
 
         return entries;
     }
-    
+
     @Override
     public void propertyChange(PropertyChangeEvent arg0) {
-        
+
     }
 
 }

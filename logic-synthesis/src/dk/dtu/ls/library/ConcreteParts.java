@@ -84,7 +84,7 @@ public class ConcreteParts {
                 array("GFP"),
                 array(), 
                 "aTc", 
-                "aTc = (GFP )", 
+                "aTc = (GFP' )", 
                 1000
                 ));
         

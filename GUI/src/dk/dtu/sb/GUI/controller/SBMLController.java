@@ -68,7 +68,8 @@ public class SBMLController implements PropertyChangeListener {
             public void valueChanged(ListSelectionEvent e) {
                 int index = view.list.getSelectedIndex();
                 if (index != -1) {
-                    view.setDetails(model.library.get(index));
+                    view.sbGateDetailsPanel.setDetails(model.library.get(index));
+                    view.btnLoadLibrary.setEnabled(true);
                 }
             }
         });
