@@ -63,7 +63,7 @@ public class GraphVizAPI {
             DOT_PATH = "dot";
         }// Unix type system
         else if (System.getProperty("os.name").startsWith("Mac OS")) {
-            DOT_PATH = "/usr/local2/bin/dot";
+            DOT_PATH = "/usr/local/bin/dot";
         } else {
             DOT_PATH = "/usr/bin/dot";
         }
