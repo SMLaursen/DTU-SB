@@ -13,19 +13,19 @@ public class TechnologyMapper {
 	public TechnologyMapper(AIG g){
 		//Ensure AIG has been correctly defined.
 		assert(g.getOutputGate() instanceof OutputGate);
-		assert(g.isAIG);
+
 		//Add top-level node
 		graph = g;
 	}
 
 	/** Starts mapping.
 	 * @return
-	 * null : No mapping could be made
-	 * Set : The set of parts in the solution */
+	 * The set of parts in the solution. Empty for no solution. */
 	public HashSet<SBGate> start(){
 		HashMap<String, LogicGate> startingGate = new HashMap<String, LogicGate>();
 		startingGate.put(graph.getOutputGate().getProtein(), graph.getOutputGate());
 		HashSet<SBGate> solution = new HashSet<SBGate>();
+		System.out.println(graph.treeToString());
 		return map(solution, startingGate);
 	}
 
@@ -35,9 +35,11 @@ public class TechnologyMapper {
 	 * empty : no match could be found
 	 * Set  : the set of parts that make up the match*/
 	private HashSet<SBGate> map(HashSet<SBGate> selectedParts, HashMap<String,LogicGate> toMatch){
-
+	
+		//Make a copy of the currently selected parts
 		HashSet<SBGate> allSelectedParts = new HashSet<SBGate>();
 		allSelectedParts.addAll(selectedParts);
+		
 		//For each incomplete matching
 		for(String protein : toMatch.keySet()){
 			LogicGate g = toMatch.get(protein);
@@ -46,18 +48,17 @@ public class TechnologyMapper {
 			//Try to match it using any part from library with matching proteins
 			for(SBGate sbGate : Library.getGatesWithOutput(protein)){
 				AIG libPart = sbGate.getAIG();
-
-				//Ensure orthogonality
+				
+				//If we've already used that part once.
 				if(allSelectedParts.contains(sbGate)){
 					continue;
 				}
-			
 				//TODO Ensure complete orthogonality by checking all intermediate proteins
-
+				
 				//Can this be libPart be matched?
 				HashMap<String, LogicGate> toMatchNext = isMatching(libPart.getOutputGate(), g);
-				
-				//Part didn't match. skip this part.
+				System.out.println(libPart+"  "+toMatchNext);
+				//Part didn't match. skip this part and try a new.
 				if(toMatchNext==null){
 					continue;
 				}//Entire sub graph has been matched! 
@@ -71,57 +72,58 @@ public class TechnologyMapper {
 					//Add this to selected parts
 					allSelectedParts.add(sbGate);			
 
-					//Recursively match remainder
-					HashSet<SBGate> s = map(allSelectedParts, toMatchNext);
+					//Recursively match remainder using remaining parts
+					HashSet<SBGate> remainder = map(allSelectedParts, toMatchNext);
 
-					//If this branch didn't lead to a solution, remove part again and try matching using next part. 
-					if(s.isEmpty()){
+					//If this branch didn't lead to a solution, remove part again (So that it may be reused later)
+					//and try matching using next part. 
+					if(remainder.isEmpty()){
 						allSelectedParts.remove(libPart);
 						continue;
 					} else {
-						allSelectedParts.addAll(s);
+						allSelectedParts.addAll(remainder);
 						foundSubSolution = true;
 						break;
 					}					
 				}
 			}
-			//If gate could not be matched
+			//If gate could not be matched - return empty set (i.e. no match possible)
 			if(!foundSubSolution){
 				allSelectedParts.clear();
 				return allSelectedParts;
 			}
 		
 		}
-
 		return allSelectedParts;
-
 	}
 
-	/** Checks whether 'other' matches the subtree at 'atPos' 
+	/** Checks whether 'otherPart' matches thisPart at the subtree 'thisPartPos' 
 	 * @return
 	 * null : incompatible library part.
 	 * empty map : compatible library part that can cover the entire remaining AIG. 
 	 * non-empty map : compatible library part - but further matching is necessary. 
 	 * */
-	public HashMap<String, LogicGate> isMatching(LogicGate other, LogicGate atPos){
+	public HashMap<String, LogicGate> isMatching(LogicGate otherPart, LogicGate thisPartPos){
 	
-		if(other instanceof AndGate && atPos instanceof AndGate){
-
+		if(otherPart instanceof AndGate && thisPartPos instanceof AndGate){
 			//Map for storing intersections
 			HashMap<String, LogicGate> mergedMatches = new HashMap<String, LogicGate>();
 
 			//Sanity Checks
-			assert(other.in.size() == 2);
-			assert(atPos.in.size() == 2);
+			assert(otherPart.in.size() == 2);
+			assert(thisPartPos.in.size() == 2);
 
-			LogicGate thisChild1 = (LogicGate) atPos.in.toArray()[0];
-			LogicGate thisChild2 = (LogicGate) atPos.in.toArray()[1];
-			LogicGate otherChild1 = (LogicGate) other.in.toArray()[0];
-			LogicGate otherChild2 = (LogicGate) other.in.toArray()[1];
+			LogicGate thisChild1 = (LogicGate) thisPartPos.in.toArray()[0];
+			LogicGate thisChild2 = (LogicGate) thisPartPos.in.toArray()[1];
+			LogicGate otherChild1 = (LogicGate) otherPart.in.toArray()[0];
+			LogicGate otherChild2 = (LogicGate) otherPart.in.toArray()[1];
 
 			HashMap<String, LogicGate> nextMap1 = new HashMap<String, LogicGate>();
 			HashMap<String, LogicGate> nextMap2 = new HashMap<String, LogicGate>();
 
+			//TODO there might be cases where both combinations can be true. 
+			//Will that be a problem?
+			boolean go = false;
 			//Try combination 1:
 			nextMap1 = isMatching(otherChild1,thisChild1);
 			if(nextMap1 != null){
@@ -129,6 +131,7 @@ public class TechnologyMapper {
 				if(nextMap2 != null){
 					mergedMatches.putAll(nextMap1);
 					mergedMatches.putAll(nextMap2);
+//					go = true;
 					return mergedMatches;
 				}
 			}
@@ -139,27 +142,35 @@ public class TechnologyMapper {
 				if(nextMap2 != null){
 					mergedMatches.putAll(nextMap1);
 					mergedMatches.putAll(nextMap2);
+//					go = true;
 					return mergedMatches;
 				}
 			}
+//			if(go){
+//				System.out.println(mergedMatches);
+//				return mergedMatches;
+//			}
 			//No matches has been found
 			return null;
 
-		}//TODO Some problems can occur here! 
-		else if(other instanceof NotGate && atPos instanceof NotGate){
+			
+		}//TODO Some problems can occur here near the input gates if inverted! 
+		else if(otherPart instanceof NotGate && thisPartPos instanceof NotGate){
 			//Sanity checks
-			assert(other.in.size() == 1);
-			assert(atPos.in.size() == 1);
+			assert(otherPart.in.size() == 1);
+			assert(thisPartPos.in.size() == 1);
 			//Recurse on both children
-			LogicGate childOther = (LogicGate) other.in.toArray()[0];
-			LogicGate childThis = (LogicGate) atPos.in.toArray()[0];
+			LogicGate childOther = (LogicGate) otherPart.in.toArray()[0];
+			LogicGate childThis = (LogicGate) thisPartPos.in.toArray()[0];
 			return isMatching(childOther, childThis);
 
-		} else if(other instanceof InputGate){
+			
+		} else if(otherPart instanceof InputGate){
 			HashMap<String, LogicGate> nextMatches = new HashMap<String, LogicGate>();
-			if(atPos instanceof InputGate && graph.containsInputProtein(((InputGate) other).getProtein())){
-				//If proteins match - and are specified in the inMap of the AIG
-				if(((InputGate) other).getProtein().equals(((InputGate) atPos).getProtein())){
+			//If type signature match and protein are specified in the inMap of the AIG
+			if(thisPartPos instanceof InputGate && graph.containsInputProtein(((InputGate) otherPart).getProtein())){
+				//Ensure proteins really match
+				if(((InputGate) otherPart).getProtein().equals(((InputGate) thisPartPos).getProtein())){
 					//nextMatches should be empty here
 					assert(nextMatches.isEmpty());
 					return nextMatches;
@@ -169,23 +180,26 @@ public class TechnologyMapper {
 					return null;
 				}
 			}else{
-				//Continue from this node using other's protein 
-				nextMatches.put(((InputGate) other).getProtein(), atPos);
+				//Continue matching from thisPartPos node using other's protein 
+				nextMatches.put(((InputGate) otherPart).getProtein(), thisPartPos);
 				return nextMatches;
 			}
-		} else if(other instanceof OutputGate){
+			
+			
+		} else if(otherPart instanceof OutputGate){
 			//Sanity check
-			assert(other.in.size() == 1);
-			//Proceed to next node
-			LogicGate childOther = (LogicGate) other.in.toArray()[0];
-			LogicGate childThis = atPos;
+			assert(otherPart.in.size() == 1);
+			//Just proceed to next node "ignoring" the outputgate
+			LogicGate childOther = (LogicGate) otherPart.in.toArray()[0];
+			LogicGate childThis = thisPartPos;
 			//If also a OutputGate (Only happens on the first match)
-			if(atPos instanceof OutputGate){
-				assert(atPos.in.size() == 1);
-				childThis = (LogicGate) atPos.in.toArray()[0];
+			if(thisPartPos instanceof OutputGate){
+				assert(thisPartPos.in.size() == 1);
+				childThis = (LogicGate) thisPartPos.in.toArray()[0];
 			}
 			return isMatching(childOther, childThis);
-
+			
+			
 		} else {
 			return null;
 		}
