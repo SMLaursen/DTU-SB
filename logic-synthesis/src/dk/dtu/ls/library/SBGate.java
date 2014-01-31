@@ -3,7 +3,6 @@ package dk.dtu.ls.library;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -178,10 +177,10 @@ public class SBGate implements Comparable<SBGate> {
     public int getCost() {
         int cost = 0;
         if (repressors > 0) {
-            cost += Math.pow(2, 1 / repressors);
+            cost += Math.pow(2, repressors);
         }
         if (activators > 0) {
-            cost += Math.pow(2, 1 / activators);
+            cost += Math.pow(2, activators);
         }
         return cost;
     }
