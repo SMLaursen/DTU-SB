@@ -132,5 +132,22 @@ public class ConcreteParts {
                 "aTc = (GFP )", 
                 500
                 ));
+        
+        /** --------------------------------------------------------------------
+         * or with not
+         * Steady at ~500s
+         * 2 promoters
+         */
+        Library.insert(new SBGate(
+                8, 
+                "8_or_not.xml", 
+                1, 
+                1, 
+                array("GFP", "Ara"),
+                array(), 
+                "aTc", 
+                "aTc = (GFP' Ara )", 
+                500
+                ));
     }
 }
