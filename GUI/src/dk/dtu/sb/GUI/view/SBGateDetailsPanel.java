@@ -74,7 +74,7 @@ public class SBGateDetailsPanel extends JPanel {
         lblCosttext.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
         add(lblCosttext, "2, 12");
 
-        JLabel lblInputProteins = new JLabel("Input proteins");
+        JLabel lblInputProteins = new JLabel("Input species");
         lblInputProteins.setFont(new Font("Lucida Grande", Font.BOLD, 12));
         add(lblInputProteins, "2, 14");
 
@@ -82,7 +82,7 @@ public class SBGateDetailsPanel extends JPanel {
         lblInputtext.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
         add(lblInputtext, "2, 16");
 
-        JLabel lblIntermediateProteins = new JLabel("Intermediate proteins");
+        JLabel lblIntermediateProteins = new JLabel("Intermediate species");
         lblIntermediateProteins
                 .setFont(new Font("Lucida Grande", Font.BOLD, 12));
         add(lblIntermediateProteins, "2, 18");
@@ -91,7 +91,7 @@ public class SBGateDetailsPanel extends JPanel {
         lblInttext.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
         add(lblInttext, "2, 20");
 
-        JLabel lblOutputProteins = new JLabel("Output protein");
+        JLabel lblOutputProteins = new JLabel("Output species");
         lblOutputProteins.setFont(new Font("Lucida Grande", Font.BOLD, 12));
         add(lblOutputProteins, "2, 22");
 
