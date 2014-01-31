@@ -36,30 +36,39 @@ public class TechnologyMapper {
 	 * empty : no match could be found
 	 * Set  : the set of parts that make up the match*/
 	private HashSet<SBGate> map(HashSet<SBGate> selectedParts, HashMap<String,LogicGate> toMatch){
-	
+
 		//Make a copy of the currently selected parts
 		HashSet<SBGate> allSelectedParts = new HashSet<SBGate>();
 		allSelectedParts.addAll(selectedParts);
-		
+
+		//Figure out all the proteins already in use (To ensure orthogonality)
+		HashSet<String> allUsedProteins = new HashSet<String>();		
+
 		//For each incomplete matching
 		for(String protein : toMatch.keySet()){
 			LogicGate g = toMatch.get(protein);
 			Boolean foundSubSolution = false; 
-			
+		
 			//Try to match it using any part from library with matching proteins
 			for(SBGate sbGate : Library.getGatesWithOutput(protein)){
 				AIG libPart = sbGate.getAIG();
 				
-				//If we've already used that part once.
-				if(allSelectedParts.contains(sbGate)){
+				//Add all currently used proteins
+				allUsedProteins.clear();
+				for(SBGate s : allSelectedParts){
+					allUsedProteins.addAll(s.intermediateProteins);
+					allUsedProteins.addAll(s.inputProteins);
+				}	
+				//Ensure orthogonality
+				if(allSelectedParts.contains(sbGate) ||
+				   isOverLapping(sbGate.inputProteins,allUsedProteins) ||
+				   isOverLapping(sbGate.intermediateProteins,allUsedProteins))
+				   {
 					continue;
 				}
-				//TODO Ensure complete orthogonality by checking all intermediate proteins
-				
 				//Can this be libPart be matched?
-			
 				for(HashMap<String, LogicGate> toMatchNext : isMatching(libPart.getOutputGate(), g)){
-//					System.out.println(libPart+"  "+toMatchNext);
+					//					System.out.println(libPart+"  "+toMatchNext);
 					//Part didn't match. skip this part and try a new.
 					if(toMatchNext==null){
 						continue;
@@ -95,9 +104,19 @@ public class TechnologyMapper {
 				allSelectedParts.clear();
 				return allSelectedParts;
 			}
-		
+
 		}
 		return allSelectedParts;
+	}
+
+	//Checks whether set a and b overlaps
+	private boolean isOverLapping(HashSet<String> a, HashSet<String> b){
+		for(String s : a){
+			if(b.contains(s)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/** Checks whether 'otherPart' matches thisPart at the subtree 'thisPartPos' 
@@ -108,12 +127,12 @@ public class TechnologyMapper {
 	 * if list-map is non-empty further matching necessary. 
 	 * */
 	public LinkedList<HashMap<String, LogicGate>> isMatching(LogicGate otherPart, LogicGate thisPartPos){
-	
+
 		if(otherPart instanceof AndGate && thisPartPos instanceof AndGate){
 			//Map for storing intersections
-						
+
 			LinkedList<HashMap<String,LogicGate>> returnList = new LinkedList<HashMap<String,LogicGate>>();
-			
+
 			//Sanity Checks
 			assert(otherPart.in.size() == 2);
 			assert(thisPartPos.in.size() == 2);
@@ -135,7 +154,7 @@ public class TechnologyMapper {
 					returnList.add(mergedMatches);
 				}
 			}
-			
+
 			//Try all permutations of combination 1:
 			for(HashMap<String, LogicGate> nextMap1 : isMatching(otherChild1,thisChild2)){
 				for(HashMap<String, LogicGate> nextMap2 : isMatching(otherChild2,thisChild1)){
@@ -145,10 +164,10 @@ public class TechnologyMapper {
 					returnList.add(mergedMatches);
 				}
 			}
-		
+
 			//No matches has been found
 			return returnList;
-			
+
 		}//TODO Some problems can occur here near the input gates if inverted! 
 		else if(otherPart instanceof NotGate && thisPartPos instanceof NotGate){
 			//Sanity checks
@@ -159,7 +178,7 @@ public class TechnologyMapper {
 			LogicGate childThis = (LogicGate) thisPartPos.in.toArray()[0];
 			return isMatching(childOther, childThis);
 
-			
+
 		} else if(otherPart instanceof InputGate){
 			LinkedList<HashMap<String, LogicGate>> set = new LinkedList<HashMap<String, LogicGate>>();
 			HashMap<String, LogicGate> nextMatches = new HashMap<String, LogicGate>();
@@ -176,8 +195,8 @@ public class TechnologyMapper {
 				set.add(nextMatches);
 			}
 			return set;
-			
-			
+
+
 		} else if(otherPart instanceof OutputGate){
 			//Sanity check
 			assert(otherPart.in.size() == 1);
@@ -190,8 +209,8 @@ public class TechnologyMapper {
 				childThis = (LogicGate) thisPartPos.in.toArray()[0];
 			}
 			return isMatching(childOther, childThis);
-			
-			
+
+
 		} else {
 			return new LinkedList<HashMap<String,LogicGate>>();
 		}

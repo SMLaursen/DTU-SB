@@ -95,7 +95,7 @@ public class TestTechMap {
         SBGate part11 = new SBGate(11, "O = (U) + (Q)");
         SBGate part12 = new SBGate(12, "Q = (B A)");
         SBGate part13 = new SBGate(13, "U = (C D)");
-        SBGate part14 = new SBGate(14, "U = (B C)");
+        SBGate part14 = new SBGate(14, "U = (C B)");
         SBGate part15 = new SBGate(15, "Z = (A B) + (U)");
         SBGate part16 = new SBGate(16, "O = Z");
         SBGate part17 = new SBGate(17, "Z = (Q) + (U)");
@@ -167,8 +167,9 @@ public class TestTechMap {
         System.out.println(goal.treeToString());
         TechnologyMapper techmap = new TechnologyMapper(goal);
         HashSet<SBGate> solution = techmap.start();
-        assertFalse(solution.isEmpty());
         System.out.println(solution);
+        assertFalse(solution.isEmpty());
+      
     }
 
 }
