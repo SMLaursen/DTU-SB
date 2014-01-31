@@ -47,11 +47,19 @@ public class SBGate implements Comparable<SBGate> {
         composeIntermediate(gate1.inputProteins, gate2.outputProtein, newGate);
         composeIntermediate(gate2.inputProteins, gate1.outputProtein, newGate);
 
-        // find new output
-        if (newGate.intermediateProteins.contains(gate1.outputProtein)) {
-            newGate.outputProtein = gate2.outputProtein;
-        } else {
-            newGate.outputProtein = gate1.outputProtein;
+        // set new output
+        if (gate1.outputProtein != null) {
+            newGate.outputProteins.add(gate1.outputProtein);
+        }
+        if (gate2.outputProtein != null) {
+            newGate.outputProteins.add(gate2.outputProtein);
+        }
+        newGate.outputProteins.addAll(gate1.outputProteins);
+        newGate.outputProteins.addAll(gate2.outputProteins);
+        for (String intermediateProtein : newGate.intermediateProteins) {
+            if (newGate.outputProteins.contains(intermediateProtein)) {
+                newGate.outputProteins.remove(intermediateProtein);
+            }
         }
 
         return newGate;
@@ -75,6 +83,10 @@ public class SBGate implements Comparable<SBGate> {
             for (int i = 2; i < gates.size(); i++) {
                 newGate = SBGate.compose(newGate, gates.get(i));
             }
+            if (newGate.outputProteins.size() > 1) {
+                throw new RuntimeException("There was more than one output protein...");
+            }
+            newGate.outputProtein = newGate.outputProteins.get(0);
             return newGate;
         } else {
             return gates.get(0);
@@ -88,7 +100,8 @@ public class SBGate implements Comparable<SBGate> {
 
     public ArrayList<String> inputProteins = new ArrayList<String>();
     public ArrayList<String> intermediateProteins = new ArrayList<String>();
-    public String outputProtein = new String();
+    public String outputProtein = null;
+    public ArrayList<String> outputProteins = new ArrayList<String>();
 
     public String SOP;
 
