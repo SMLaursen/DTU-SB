@@ -145,8 +145,8 @@ public class ConcreteParts {
                 1, 
                 array("GFP", "Ara"),
                 array(), 
-                "aTc", 
-                "aTc = (GFP' Ara )", 
+                "CI", 
+                "CI = (GFP') + (Ara)", 
                 500
                 ));
     }

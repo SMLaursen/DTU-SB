@@ -6,7 +6,7 @@
     </listOfCompartments>
     <listOfSpecies>
       <species id="mRNA" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
-      <species id="aTc" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="CI" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
       <species id="Pro" compartment="compartment" initialAmount="1" hasOnlySubstanceUnits="true"/>
       <species id="Pro_GFP" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
       <species id="GFP" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
@@ -47,7 +47,7 @@
       </reaction>
       <reaction id="translation" reversible="false">
         <listOfProducts>
-          <speciesReference species="aTc"/>
+          <speciesReference species="CI"/>
         </listOfProducts>
         <listOfModifiers>
           <modifierSpeciesReference species="mRNA"/>
@@ -62,16 +62,16 @@
           </math>
         </kineticLaw>
       </reaction>
-      <reaction id="decay_aTc" reversible="false">
+      <reaction id="decay_CI" reversible="false">
         <listOfReactants>
-          <speciesReference species="aTc"/>
+          <speciesReference species="CI"/>
         </listOfReactants>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
               <cn> 0.012 </cn>
-              <ci> aTc </ci>
+              <ci> CI </ci>
             </apply>
           </math>
         </kineticLaw>
