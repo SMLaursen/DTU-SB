@@ -23,9 +23,9 @@ public class SBGate implements Comparable<SBGate> {
                 gate1.repressors + gate2.repressors, gate1.activators
                         + gate2.activators);
 
+        // compose SPN
         StochasticPetriNet result = gate1.getSPN().clone();
         StochasticPetriNet spn2 = gate2.getSPN().clone();
-
         for (Species species : spn2.getSpeciess().values()) {
             result.addSpecies(species);
         }
@@ -36,16 +36,11 @@ public class SBGate implements Comparable<SBGate> {
         for (Reaction reaction : spn2.getReactions().values()) {
             result.addReaction(reaction);
         }
-
         newGate.setSPN(result);
 
         // set intermediate
         newGate.intermediateProteins.addAll(gate1.intermediateProteins);
         newGate.intermediateProteins.addAll(gate2.intermediateProteins);
-
-        // connect input and output, and set intermediate
-        composeIntermediate(gate1.inputProteins, gate2.outputProtein, newGate);
-        composeIntermediate(gate2.inputProteins, gate1.outputProtein, newGate);
 
         // set new output
         if (gate1.outputProtein != null) {
@@ -56,20 +51,20 @@ public class SBGate implements Comparable<SBGate> {
         }
         newGate.outputProteins.addAll(gate1.outputProteins);
         newGate.outputProteins.addAll(gate2.outputProteins);
-        for (String intermediateProtein : newGate.intermediateProteins) {
-            if (newGate.outputProteins.contains(intermediateProtein)) {
-                newGate.outputProteins.remove(intermediateProtein);
-            }
-        }
+
+        // connect input and output, and set intermediate
+        connectIO(gate1.inputProteins, newGate);
+        connectIO(gate2.inputProteins, newGate);
 
         return newGate;
     }
 
-    private static void composeIntermediate(Set<String> inputProteins,
-            String outputProtein, SBGate newGate) {
+    private static void connectIO(Set<String> inputProteins,
+            SBGate newGate) {
         for (String inputProtein : inputProteins) {
-            if (inputProtein.equals(outputProtein)) {
+            if (newGate.outputProteins.contains(inputProtein)) {
                 newGate.intermediateProteins.add(inputProtein);
+                newGate.outputProteins.remove(inputProtein);
             } else if (!newGate.intermediateProteins.contains(inputProtein)) {
                 newGate.inputProteins.add(inputProtein);
             }
@@ -84,7 +79,8 @@ public class SBGate implements Comparable<SBGate> {
                 newGate = SBGate.compose(newGate, gates.get(i));
             }
             if (newGate.outputProteins.size() > 1) {
-                throw new RuntimeException("There was more than one output protein...");
+                throw new RuntimeException(
+                        "There was more than one output protein...");
             }
             newGate.outputProtein = newGate.outputProteins.iterator().next();
             return newGate;
@@ -113,7 +109,7 @@ public class SBGate implements Comparable<SBGate> {
     public SBGate(int id) {
         this.id = id;
     }
-    
+
     public SBGate(int id, String SOP) {
         this.id = id;
         this.SOP = SOP;
