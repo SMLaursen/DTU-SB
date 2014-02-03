@@ -10,6 +10,7 @@ import dk.dtu.sb.Util;
 
 public class TechnologyMapper {
 	private AIG graph;
+	public HashSet<HashSet<SBGate>> solutions = new HashSet<HashSet<SBGate>>();
 
 	/**Sets up the technologymapper using g to be matched */
 	public TechnologyMapper(AIG g){
@@ -95,6 +96,8 @@ public class TechnologyMapper {
 						} else {
 							allSelectedParts.addAll(remainder);
 							foundSubSolution = true;
+							solutions.add((HashSet<SBGate>) allSelectedParts.clone());
+							allSelectedParts.clear();
 							break;
 						}					
 					}

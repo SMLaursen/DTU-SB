@@ -45,9 +45,9 @@ public class TTController implements PropertyChangeListener {
                 JTextField input = new JTextField();
                 JTextField output = new JTextField();
                 final JComponent[] inputs = new JComponent[] {
-                        new JLabel("Input proteins (seperate by comma)"),
-                        input, new JLabel("Output protein"), output, };
-                JOptionPane.showMessageDialog(null, inputs, "Add proteins",
+                        new JLabel("Inputs (seperate by comma)"),
+                        input, new JLabel("Output"), output, };
+                JOptionPane.showMessageDialog(null, inputs, "Add",
                         JOptionPane.PLAIN_MESSAGE);
                 createNewTT(input.getText(), output.getText());
             }
@@ -94,17 +94,21 @@ public class TTController implements PropertyChangeListener {
     
     private List<SBGate> findDesigns(String SOP) {
         TechnologyMapper techMap = new TechnologyMapper(new AIG(SOP));
-        HashSet<SBGate> solution = techMap.start();
+        techMap.start();
         ArrayList<SBGate> result = new ArrayList<SBGate>();
         
-        for (SBGate gate : solution) {
-            gate.sbmlFile = "../logic-synthesis/" + gate.sbmlFile;
+        for (HashSet<SBGate> solution : techMap.solutions) {
+            for (SBGate gate : solution) {
+                gate.sbmlFile = "../logic-synthesis/" + gate.sbmlFile;
+            }
         }
         
-        if (!solution.isEmpty()) {
-            SBGate newGate = SBGate.compose(solution);
-            newGate.SOP = SOP;
-            result.add(newGate);
+        if (!techMap.solutions.isEmpty()) {
+            for (HashSet<SBGate> solution : techMap.solutions) {
+                SBGate newGate = SBGate.compose(solution);
+                newGate.SOP = SOP;
+                result.add(newGate);
+            }
         } else {
             JOptionPane.showMessageDialog(null, "No designs could be found.");
         }       

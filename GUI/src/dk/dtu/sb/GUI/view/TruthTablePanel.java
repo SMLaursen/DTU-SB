@@ -141,7 +141,7 @@ public class TruthTablePanel extends JPanel {
     public void populateResultsList(List<SBGate> gates) {
         DefaultListModel model = new DefaultListModel();
         for (int i = 1; i <= gates.size(); i++) {
-            model.addElement("Design " + i++);
+            model.addElement("Design " + i);
         }
         resultsList.setModel(model);
     }
