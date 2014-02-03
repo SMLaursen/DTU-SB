@@ -40,7 +40,7 @@ public class Parameters {
     /**
      * See {@link #getSimIterations()}.
      */
-    public static final int PARAM_SIM_ITERATIONS_DEFAULT = 5;
+    public static final int PARAM_SIM_ITERATIONS_DEFAULT = 4;
     private static final String PARAM_SIM_ITERATIONS = "simulation.iterations";
 
     /**

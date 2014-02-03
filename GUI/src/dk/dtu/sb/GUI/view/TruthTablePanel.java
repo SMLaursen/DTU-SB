@@ -69,7 +69,7 @@ public class TruthTablePanel extends JPanel {
 
         truthTableRaw = new JTextArea();
         truthTableRaw.setFont(new Font("Lucida Console", Font.PLAIN, 13));
-        truthTableRaw.setText("GFP IPTG lacI CI\n1001\n1011\n1101\n0111\n1000\n1010\n1100\n1111");
+        truthTableRaw.setText("GFP IPTG lacI CI\n0001\n0011\n0101\n0111\n1000\n1010\n1100\n1111\n");
         GridBagConstraints gbc_truthTableRaw = new GridBagConstraints();
         gbc_truthTableRaw.fill = GridBagConstraints.BOTH;
         gbc_truthTableRaw.insets = new Insets(0, 0, 5, 0);
