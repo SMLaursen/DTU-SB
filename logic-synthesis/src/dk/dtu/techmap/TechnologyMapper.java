@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import dk.dtu.ls.library.Library;
 import dk.dtu.ls.library.SBGate;
+import dk.dtu.sb.Util;
 
 public class TechnologyMapper {
 	private AIG graph;
@@ -26,7 +27,7 @@ public class TechnologyMapper {
 		HashMap<String, LogicGate> startingGate = new HashMap<String, LogicGate>();
 		startingGate.put(graph.getOutputGate().getProtein(), graph.getOutputGate());
 		HashSet<SBGate> solution = new HashSet<SBGate>();
-		System.out.println(graph.treeToString());
+		Util.log.debug(graph.treeToString());
 		return map(solution, startingGate);
 	}
 
