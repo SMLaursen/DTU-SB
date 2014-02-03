@@ -4,10 +4,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class LogicGate {
+
+    protected static final String TYPE_AND = "And";
+    protected static final String TYPE_OR = "Or";
+    protected static final String TYPE_NOT = "Not";
+    protected static final String TYPE_IN = "In";
+    protected static final String TYPE_OUT = "Out";
+
     protected Set<LogicGate> in;
     protected LogicGate out;
     private static int idCounter = 0;
     protected int myId;
+
+    protected String type;
 
     protected LogicGate() {
         in = new HashSet<LogicGate>();
@@ -27,21 +36,35 @@ public abstract class LogicGate {
      * root
      */
     public String subTreeToString() {
-        String s = this.toString();
-        // Except the last InputGates
-        if (in != null) {
-            s += "(";
-            for (LogicGate g : in) {
-                s += g.subTreeToString();
-            }
+        StringBuffer output = new StringBuffer();
+        output.append("(");
+        for (LogicGate gate : in) {
+            output.append(gate.toString());
         }
-        return s + ")";
+        output.append(")");
+        return output.toString();
     }
 
-    // Enforce overriding of toString()
-    public abstract String toString();
+    @Override
+    public String toString() {
+        StringBuffer output = new StringBuffer();
+        if (this.type.equals(TYPE_OUT)) {
+            output.append(((OutputGate) this).getProtein());
+            output.append(" = ");
+            output.append(subTreeToString());
+        } else if (this.type.equals(TYPE_IN)) {
+            output.append(((InputGate) this).getProtein());
+            output.append("()");
+        } else {
+            output.append(this.type);
+            output.append(subTreeToString());
+        }
+        return output.toString();
+    }
 
-    /** Removes the child object */
+    /**
+     * Removes the child object
+     */
     protected void removeChild(LogicGate g) {
         in.remove(g);
         g.out = null;
@@ -55,30 +78,21 @@ public abstract class LogicGate {
 class AndGate extends LogicGate {
     public AndGate() {
         super();
-    }
-
-    public String toString() {
-        return "And";
+        this.type = TYPE_AND;
     }
 }
 
 class OrGate extends LogicGate {
     public OrGate() {
         super();
-    }
-
-    public String toString() {
-        return "Or";
+        this.type = TYPE_OR;
     }
 }
 
 class NotGate extends LogicGate {
     public NotGate() {
         super();
-    }
-
-    public String toString() {
-        return "Not";
+        this.type = TYPE_NOT;
     }
 }
 
@@ -89,13 +103,10 @@ class InputGate extends LogicGate {
         out = null;
         // Do net initialize in!
         this.protein = protein;
+        this.type = TYPE_IN;
     }
 
     public String getProtein() {
-        return protein;
-    }
-
-    public String toString() {
         return protein;
     }
 }
@@ -106,13 +117,10 @@ class OutputGate extends LogicGate {
     public OutputGate(String protein) {
         super();
         this.protein = protein;
+        this.type = TYPE_OUT;
     }
 
     public String getProtein() {
         return protein;
-    }
-
-    public String toString() {
-        return protein + " = ";
     }
 }
