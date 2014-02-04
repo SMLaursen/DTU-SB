@@ -79,8 +79,8 @@ public class TechnologyMapper {
 						//Record score / Output solution
 						allSelectedParts.add(sbGate);
 						foundSubSolution = true;
-						solutions.add((HashSet<SBGate>) allSelectedParts.clone());
-                        allSelectedParts.clear();
+						//solutions.add((HashSet<SBGate>) allSelectedParts.clone());
+                        //allSelectedParts.clear();
 						break;
 					}//Further matching should be conducted  
 					else {
