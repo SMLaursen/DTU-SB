@@ -35,14 +35,15 @@ public class TestTechMap {
         Library.insert(part1);
         Library.insert(part5);
         TechnologyMapper techmap = new TechnologyMapper(primary);
-        HashSet<SBGate> solution = techmap.start();
-        System.out.println(solution);
-        assertTrue(solution.isEmpty());
+        techmap.start();
+        HashSet<SBGate> solution;
+        assertTrue(techmap.getSolutions().isEmpty());
         
 
         // Test that p1 and p2 can be a solution
         Library.insert(part2);
-        solution = techmap.start();
+        techmap.start();
+        solution = techmap.getSolutions().get(0);
         System.out.println(solution);
         assertTrue(solution.contains(part1) && solution.contains(part2));
         
@@ -51,7 +52,8 @@ public class TestTechMap {
         // mapped for "free")
         Library.insert(part3);
         Library.remove(part2);
-        solution = techmap.start();
+        techmap.start();
+        solution = techmap.getSolutions().get(0);
         System.out.println(solution);
         assertTrue(solution.contains(part1) 
         		&& solution.contains(part3)
@@ -61,7 +63,8 @@ public class TestTechMap {
         // Test that p4 (itself) can be a solution
         Library.insert(part4);
         Library.remove(part1);
-        solution = techmap.start();
+        techmap.start();
+        solution = techmap.getSolutions().get(0);
         System.out.println(solution);
         assertTrue(solution.contains(part4));
         
@@ -70,9 +73,9 @@ public class TestTechMap {
         Library.remove(part3);
         Library.remove(part4);
         Library.insert(part6);
-        solution = techmap.start();
+        techmap.start();
         System.out.println(solution);
-        assertTrue(solution.isEmpty());
+        assertTrue(techmap.getSolutions().isEmpty());
         
         
         //test, that recursively "translates input nodes with one level of indirection
@@ -80,7 +83,8 @@ public class TestTechMap {
         Library.insert(part1);
         Library.insert(part7);
         Library.insert(part8);
-        solution = techmap.start();
+        techmap.start();
+        solution = techmap.getSolutions().get(0);
         System.out.println(solution);
         assertTrue(solution.contains(part1) 
         		&& solution.contains(part7)
@@ -107,7 +111,8 @@ public class TestTechMap {
         Library.insert(part12);
         Library.insert(part13);
         Library.insert(part14);
-        HashSet<SBGate> solution = techmap.start();
+        techmap.start();
+        HashSet<SBGate> solution = techmap.getSolutions().get(0);
         System.out.println(solution);
         assertTrue(solution.contains(part11) 
         		&& solution.contains(part12)
@@ -118,13 +123,14 @@ public class TestTechMap {
         Library.clear();
         Library.insert(part15);
         Library.insert(part13);
-        solution = techmap.start();
-        assertTrue(solution.isEmpty());
+        techmap.start();
+        assertTrue(techmap.getSolutions().isEmpty());
         
         
         //Check output can be substitued as well
         Library.insert(part16);
-        solution = techmap.start();
+        techmap.start();
+        solution = techmap.getSolutions().get(0);
         System.out.println(solution);
         assertTrue(solution.contains(part13) &&
         		   solution.contains(part15) &&
@@ -136,7 +142,8 @@ public class TestTechMap {
         Library.insert(part17);
         Library.insert(part12);
         Library.insert(part16);
-        solution = techmap.start();
+        techmap.start();
+        solution = techmap.getSolutions().get(0);
         System.out.println(solution);
         assertTrue(solution.contains(part13) &&
      		   	   solution.contains(part17) &&
@@ -153,10 +160,11 @@ public class TestTechMap {
         Library.insert(part7);
         Library.insert(part9);
         Library.insert(part10);
-        HashSet<SBGate> solution = techmap.start();
-        System.out.println(solution);
+        techmap.start();
+        //HashSet<SBGate> solution = techmap.getSolutions().get(0);
+        //System.out.println(solution);
         //Currently failing
-        assertFalse(solution.isEmpty());
+        assertFalse(techmap.getSolutions().isEmpty());
     }
     
     @Test
@@ -166,7 +174,8 @@ public class TestTechMap {
         AIG goal = new AIG("CI = (GFP) + (IPTG lacI)");
         System.out.println(goal.treeToString());
         TechnologyMapper techmap = new TechnologyMapper(goal);
-        HashSet<SBGate> solution = techmap.start();
+        techmap.start();
+        HashSet<SBGate> solution = techmap.getSolutions().get(0);
         System.out.println(solution);
         assertFalse(solution.isEmpty());
       

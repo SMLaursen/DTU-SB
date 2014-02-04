@@ -1,5 +1,6 @@
 package dk.dtu.techmap;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -10,7 +11,7 @@ import dk.dtu.sb.Util;
 
 public class TechnologyMapper {
 	private AIG graph;
-	public HashSet<HashSet<SBGate>> solutions = new HashSet<HashSet<SBGate>>();
+	private HashSet<HashSet<SBGate>> solutions = new HashSet<HashSet<SBGate>>();
 
 	/**Sets up the technologymapper using g to be matched */
 	public TechnologyMapper(AIG g){
@@ -24,12 +25,17 @@ public class TechnologyMapper {
 	/** Starts mapping.
 	 * @return
 	 * The set of parts in the solution. Empty for no solution. */
-	public HashSet<SBGate> start(){
+	public void start(){
+	    solutions.clear();
 		HashMap<String, LogicGate> startingGate = new HashMap<String, LogicGate>();
 		startingGate.put(graph.getOutputGate().getProtein(), graph.getOutputGate());
 		HashSet<SBGate> solution = new HashSet<SBGate>();
 		Util.log.debug(graph.treeToString());
-		return map(solution, startingGate);
+		map(solution, startingGate, true);
+	}
+	
+	public ArrayList<HashSet<SBGate>> getSolutions() {
+	    return new ArrayList<HashSet<SBGate>>(solutions);
 	}
 
 	/** Maps using the library of {@link AIG}'s
@@ -37,7 +43,7 @@ public class TechnologyMapper {
 	 * @return
 	 * empty : no match could be found
 	 * Set  : the set of parts that make up the match*/
-	private HashSet<SBGate> map(HashSet<SBGate> selectedParts, HashMap<String,LogicGate> toMatch){
+	private HashSet<SBGate> map(HashSet<SBGate> selectedParts, HashMap<String,LogicGate> toMatch, boolean root){
 
 		//Make a copy of the currently selected parts
 		HashSet<SBGate> allSelectedParts = new HashSet<SBGate>();
@@ -79,8 +85,10 @@ public class TechnologyMapper {
 						//Record score / Output solution
 						allSelectedParts.add(sbGate);
 						foundSubSolution = true;
-						//solutions.add((HashSet<SBGate>) allSelectedParts.clone());
-                        //allSelectedParts.clear();
+						if (root) {
+						    solutions.add((HashSet<SBGate>) allSelectedParts.clone());
+						    allSelectedParts.remove(sbGate);
+						}
 						break;
 					}//Further matching should be conducted  
 					else {
@@ -88,18 +96,19 @@ public class TechnologyMapper {
 						allSelectedParts.add(sbGate);			
 
 						//Recursively match remainder using remaining parts
-						HashSet<SBGate> remainder = map(allSelectedParts, toMatchNext);
+						HashSet<SBGate> remainder = map(allSelectedParts, toMatchNext, false);
 
 						//If this branch didn't lead to a solution, remove part again (So that it may be reused later)
 						//and try matching using next part. 
 						if(remainder.isEmpty()){
-							allSelectedParts.remove(libPart);
+							allSelectedParts.remove(sbGate);
 							continue;
 						} else {
 							allSelectedParts.addAll(remainder);
 							foundSubSolution = true;
 							solutions.add((HashSet<SBGate>) allSelectedParts.clone());
-							allSelectedParts.clear();
+							//allSelectedParts.clear();
+							allSelectedParts.removeAll(remainder);
 							break;
 						}					
 					}
