@@ -1,12 +1,12 @@
 package test.technologymapping;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 
 import org.junit.Test;
 
-import dk.dtu.ls.library.ConcreteParts;
 import dk.dtu.ls.library.Library;
 import dk.dtu.ls.library.SBGate;
 import dk.dtu.techmap.AIG;
@@ -169,8 +169,7 @@ public class TestTechMap {
     
     @Test
     public void testConcreteParts() {
-        Library.clear();
-        ConcreteParts.insertParts();
+        Library.loadLibrary();
         AIG goal = new AIG("CI = (GFP) + (IPTG lacI)");
         System.out.println(goal.treeToString());
         TechnologyMapper techmap = new TechnologyMapper(goal);

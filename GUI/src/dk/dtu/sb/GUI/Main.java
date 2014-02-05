@@ -7,7 +7,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-import dk.dtu.ls.library.ConcreteParts;
 import dk.dtu.sb.GUI.controller.CenterTabsController;
 import dk.dtu.sb.GUI.controller.ConsoleController;
 import dk.dtu.sb.GUI.controller.ParametersController;
@@ -70,9 +69,8 @@ public class Main {
         RightPanel rightPanel = new RightPanel();
         frame.getContentPane().add(rightPanel, BorderLayout.EAST);
         
-        ConcreteParts.insertParts();
-        
         Model model = new Model();
+        model.loadLibrary();
                         
         new ParametersController(rightPanel, model);
         new SBMLController(leftPanel.sbmlPanel, model);

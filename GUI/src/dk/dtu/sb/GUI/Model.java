@@ -36,7 +36,7 @@ public class Model {
 
     // properties
     public Parameters parameters = new Parameters();
-    public final List<SBGate> library = Library.getAllParts();
+    public List<SBGate> library;
     private StochasticPetriNet spn = new StochasticPetriNet();
     private SimulationResult simData;
     public int simulationNo = 1;
@@ -51,6 +51,11 @@ public class Model {
 
     public void addListener(PropertyChangeListener prop) {
         propChangeFirer.addPropertyChangeListener(prop);
+    }
+    
+    public void loadLibrary() {
+        Library.loadLibrary();
+        library = Library.getAllParts();
     }
 
     public void setSBML(String fileName, int currentModel) {

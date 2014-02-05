@@ -1,10 +1,11 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import dk.dtu.ls.library.ConcreteParts;
 import dk.dtu.ls.library.Library;
 import dk.dtu.ls.library.SBGate;
 import dk.dtu.sb.spn.StochasticPetriNet;
@@ -16,7 +17,7 @@ public class TestLibrary {
         Library.clear();
         assertTrue(Library.getGatesWithOutput("GFP").isEmpty());
         
-        Library.insert(new SBGate(0, "", 0, 0, ConcreteParts.array(), ConcreteParts.array(), "GFP", "", 0));
+        Library.insert(new SBGate(0, "", 0, 0, Library.array(), Library.array(), "GFP", "", 0));
         
         assertNotNull(Library.getGatesWithOutput("GFP"));
         assertEquals(1, Library.getGatesWithOutput("GFP").size());
@@ -27,8 +28,8 @@ public class TestLibrary {
         Library.clear();
         assertTrue(Library.getGatesWithOutput("GFP").isEmpty());
         
-        Library.insert(new SBGate(0, "", 1, 0, ConcreteParts.array(), ConcreteParts.array(), "GFP", "", 0));
-        Library.insert(new SBGate(1, "", 0, 0, ConcreteParts.array(), ConcreteParts.array(), "GFP", "", 0));
+        Library.insert(new SBGate(0, "", 1, 0, Library.array(), Library.array(), "GFP", "", 0));
+        Library.insert(new SBGate(1, "", 0, 0, Library.array(), Library.array(), "GFP", "", 0));
         
         assertNotNull(Library.getGatesWithOutput("GFP"));
         assertEquals(2, Library.getGatesWithOutput("GFP").size());
@@ -41,10 +42,10 @@ public class TestLibrary {
         Library.clear();
         assertTrue(Library.getGatesWithOutput("CI").isEmpty());
         
-        ConcreteParts.insertParts();
+        Library.loadLibrary();
         
         assertNotNull(Library.getGatesWithOutput("CI"));
-        assertEquals(2, Library.getGatesWithOutput("CI").size());
+        assertEquals(3, Library.getGatesWithOutput("CI").size());
         
         StochasticPetriNet spn = Library.getGatesWithOutput("CI").get(0).getSPN();
         assertNotNull(spn.getSpecies("aTc"));
@@ -55,10 +56,10 @@ public class TestLibrary {
         Library.clear();
         assertTrue(Library.getGatesWithOutput("CI").isEmpty());
         
-        ConcreteParts.insertParts();
+        Library.loadLibrary();
         
         assertNotNull(Library.getGatesWithOutput("CI"));
-        assertEquals(2, Library.getGatesWithOutput("CI").size());
+        assertEquals(3, Library.getGatesWithOutput("CI").size());
         
         SBGate gate = Library.getGatesWithOutput("CI").get(0);
         

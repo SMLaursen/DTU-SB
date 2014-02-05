@@ -1,9 +1,13 @@
 package dk.dtu.ls.library;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Set;
 
 import dk.dtu.sb.Util;
@@ -57,7 +61,7 @@ public class SBGate implements Comparable<SBGate> {
             HashSet<String> input, HashSet<String> intm, String output,
             String SOP, int stableTime) {
         this.id = id;
-        this.sbmlFile = "library/" + sbmlFile;
+        this.sbmlFile = "library/sbml/" + sbmlFile;
         this.repressors = repressors;
         this.activators = activators;
         this.inputProteins = input;
@@ -205,5 +209,41 @@ public class SBGate implements Comparable<SBGate> {
         } else {
             return gates.get(0);
         }
+    }
+    
+    public static SBGate loadFromProperties(String filename) {
+        SBGate gate = null;
+        Properties props = new Properties();
+        
+        try {
+            props.load(new FileInputStream(filename));
+            gate = new SBGate(Integer.parseInt(props.getProperty(Library.KEY_ID)));
+            gate.sbmlFile = "library/sbml/" + props.getProperty(Library.KEY_SBML_FILE);
+            gate.repressors = Integer.parseInt(props.getProperty(Library.KEY_REPRESSORS));
+            gate.activators = Integer.parseInt(props.getProperty(Library.KEY_ACTIVATORS));
+            String input = props.getProperty(Library.KEY_INPUT).trim();
+            if (input.equals("")) {
+                gate.inputProteins = new HashSet<String>();
+            } else {
+                gate.inputProteins = new HashSet<String>(Arrays.asList(input.split(",")));
+            }
+            String intermediate = props.getProperty(Library.KEY_INTERMEDIATE).trim();
+            if (intermediate.equals("")) {
+                gate.intermediateProteins = new HashSet<String>();
+            } else {
+                gate.intermediateProteins = new HashSet<String>(Arrays.asList(intermediate.split(",")));
+            }
+            gate.outputProtein = props.getProperty(Library.KEY_OUTPUT);
+            gate.SOP = props.getProperty(Library.KEY_SOP);;
+            gate.stableStateTime = Integer.parseInt(props.getProperty(Library.KEY_STEADY));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            Util.log.error("", e);
+        }   
+        
+        return gate;
     }
 }

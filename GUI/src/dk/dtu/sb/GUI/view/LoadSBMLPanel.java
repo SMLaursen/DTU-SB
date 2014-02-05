@@ -18,13 +18,15 @@ import com.jgoodies.forms.layout.RowSpec;
 @SuppressWarnings("serial")
 public class LoadSBMLPanel extends JPanel {
     
-    public JButton btnLoadFromSbml, btnLoadLibrary;
+    public JButton btnLoadFromSbml, btnLoadLibrary, btnReloadLibrary;
         
     public JList list;
     public SBGateDetailsPanel sbGateDetailsPanel;
     
     public LoadSBMLPanel() {
         setLayout(new FormLayout(new ColumnSpec[] {
+                FormFactory.RELATED_GAP_COLSPEC,
+                ColumnSpec.decode("default:grow"),
                 FormFactory.RELATED_GAP_COLSPEC,
                 ColumnSpec.decode("default:grow"),
                 FormFactory.RELATED_GAP_COLSPEC,},
@@ -42,22 +44,25 @@ public class LoadSBMLPanel extends JPanel {
                 FormFactory.RELATED_GAP_ROWSPEC,}));
         
         btnLoadFromSbml = new JButton("Load from SBML");
-        add(btnLoadFromSbml, "2, 2");
+        add(btnLoadFromSbml, "2, 2, 3, 1");
         
         JLabel lblLibrary = new JLabel("Library");
         lblLibrary.setFont(new Font("Lucida Grande", Font.BOLD, 13));
         add(lblLibrary, "2, 4");
         
+        btnReloadLibrary = new JButton("Reload Library");
+        add(btnReloadLibrary, "4, 4, right, default");
+        
         list = new JList();
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        add(list, "2, 6, fill, fill");
+        add(list, "2, 6, 3, 1, fill, fill");
         
         btnLoadLibrary = new JButton("Load Library Part");
         btnLoadLibrary.setEnabled(false);
-        add(btnLoadLibrary, "2, 8");
+        add(btnLoadLibrary, "2, 8, 3, 1");
         
         sbGateDetailsPanel = new SBGateDetailsPanel();
-        add(sbGateDetailsPanel, "2, 10, fill, fill");
+        add(sbGateDetailsPanel, "2, 10, 3, 1, fill, fill");
     }   
     
     public void populateLibrary(List<String> parts) {

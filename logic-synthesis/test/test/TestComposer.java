@@ -1,11 +1,11 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
 import ch.qos.logback.classic.Level;
-import dk.dtu.ls.library.ConcreteParts;
 import dk.dtu.ls.library.Library;
 import dk.dtu.ls.library.SBGate;
 import dk.dtu.sb.Parameters;
@@ -17,7 +17,7 @@ public class TestComposer {
 
     @Test
     public void testCompose() {
-        ConcreteParts.insertParts();
+        Library.loadLibrary();
         SBGate or = Library.getById(1);
         assertNotNull(or.getSPN());
         assertEquals(5, or.getSPN().getSpeciess().size());
