@@ -222,16 +222,16 @@ public class SBGate implements Comparable<SBGate> {
             gate.repressors = Integer.parseInt(props.getProperty(Library.KEY_REPRESSORS));
             gate.activators = Integer.parseInt(props.getProperty(Library.KEY_ACTIVATORS));
             String input = props.getProperty(Library.KEY_INPUT).trim();
-            if (input.equals("")) {
-                gate.inputProteins = new HashSet<String>();
-            } else {
-                gate.inputProteins = new HashSet<String>(Arrays.asList(input.split(",")));
+            if (!input.equals("")) {
+                for (String protein : input.split(",")) {
+                    gate.inputProteins.add(protein.trim());
+                }
             }
             String intermediate = props.getProperty(Library.KEY_INTERMEDIATE).trim();
-            if (intermediate.equals("")) {
-                gate.intermediateProteins = new HashSet<String>();
-            } else {
-                gate.intermediateProteins = new HashSet<String>(Arrays.asList(intermediate.split(",")));
+            if (!intermediate.equals("")) {
+                for (String protein : intermediate.split(",")) {
+                    gate.intermediateProteins.add(protein.trim());
+                }
             }
             gate.outputProtein = props.getProperty(Library.KEY_OUTPUT);
             gate.SOP = props.getProperty(Library.KEY_SOP);;

@@ -30,16 +30,20 @@ public class Library {
         parts.clear();
     }
 
-    public static void loadLibrary() {
+    public static void loadLibrary(String path) {
         clear();
 
-        File folder = new File("library");
+        File folder = new File(path + "library");
         
         for (File file : folder.listFiles()) {
             if (file.isFile() && file.getName().endsWith(".properties")) {
                 Library.insert(SBGate.loadFromProperties(file.getAbsolutePath()));
             }
         }
+    }
+    
+    public static void loadLibrary() {
+        loadLibrary("");
     }
 
     public static SBGate getById(int id) {

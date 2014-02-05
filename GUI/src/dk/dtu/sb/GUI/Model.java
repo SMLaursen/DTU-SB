@@ -54,7 +54,13 @@ public class Model {
     }
     
     public void loadLibrary() {
-        Library.loadLibrary();
+        String path;
+        if(Model.class.getResource("Model.class").toString().startsWith("jar")){
+            path = "";
+        } else {
+            path = "../logic-synthesis/";
+        }
+        Library.loadLibrary(path);
         library = Library.getAllParts();
     }
 
