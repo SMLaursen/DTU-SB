@@ -59,7 +59,13 @@ public class SBMLController implements PropertyChangeListener {
                 SBGate gate = model.library.get(view.list.getSelectedIndex());
                 model.outputProtein = gate.outputProtein;
                 model.inputProteins = new ArrayList<String>(gate.inputProteins);
-                model.setSBML("../logic-synthesis/" + gate.sbmlFile, Model.CURRENT_MODEL_LIBRARY);
+                String path;
+                if(TTController.class.getResource("TTController.class").toString().startsWith("jar")){
+                	path = "";
+                } else {
+                	path = "../logic-synthesis/";
+                }
+                model.setSBML(path + gate.sbmlFile, Model.CURRENT_MODEL_LIBRARY);
             }
         });
         

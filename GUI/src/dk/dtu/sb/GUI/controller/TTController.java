@@ -20,6 +20,7 @@ import javax.swing.event.ListSelectionListener;
 import com.github.qtstc.Formula;
 
 import dk.dtu.ls.library.SBGate;
+import dk.dtu.sb.Util;
 import dk.dtu.sb.GUI.Model;
 import dk.dtu.sb.GUI.view.TruthTablePanel;
 import dk.dtu.techmap.AIG;
@@ -97,9 +98,15 @@ public class TTController implements PropertyChangeListener {
         techMap.start();
         ArrayList<SBGate> result = new ArrayList<SBGate>();
         
+        String path;
+        if(TTController.class.getResource("TTController.class").toString().startsWith("jar")){
+        	path = "";
+        } else {
+        	path = "../logic-synthesis/";
+        }
         for (HashSet<SBGate> solution : techMap.getSolutions()) {
             for (SBGate gate : solution) {
-                gate.sbmlFile = "../logic-synthesis/" + gate.sbmlFile;
+                gate.sbmlFile = path + gate.sbmlFile;
             }
         }
         
