@@ -97,14 +97,14 @@ public class TTController implements PropertyChangeListener {
         techMap.start();
         ArrayList<SBGate> result = new ArrayList<SBGate>();
         
-        for (HashSet<SBGate> solution : techMap.solutions) {
+        for (HashSet<SBGate> solution : techMap.getSolutions()) {
             for (SBGate gate : solution) {
                 gate.sbmlFile = "../logic-synthesis/" + gate.sbmlFile;
             }
         }
         
-        if (!techMap.solutions.isEmpty()) {
-            for (HashSet<SBGate> solution : techMap.solutions) {
+        if (!techMap.getSolutions().isEmpty()) {
+            for (HashSet<SBGate> solution : techMap.getSolutions()) {
                 SBGate newGate = SBGate.compose(solution);
                 newGate.SOP = SOP;
                 result.add(newGate);
