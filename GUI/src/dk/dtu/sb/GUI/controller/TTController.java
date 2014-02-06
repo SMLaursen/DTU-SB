@@ -8,12 +8,12 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -46,8 +46,8 @@ public class TTController implements PropertyChangeListener {
                 JTextField input = new JTextField();
                 JTextField output = new JTextField();
                 final JComponent[] inputs = new JComponent[] {
-                        new JLabel("Inputs (seperate by comma)"),
-                        input, new JLabel("Output"), output, };
+                        new JLabel("Inputs (seperate by comma)"), input,
+                        new JLabel("Output"), output, };
                 JOptionPane.showMessageDialog(null, inputs, "Add",
                         JOptionPane.PLAIN_MESSAGE);
                 createNewTT(input.getText(), output.getText());
@@ -63,13 +63,16 @@ public class TTController implements PropertyChangeListener {
         view.btnFindFromTT.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String mini = minimiseTT();
-                view.populateResultsList(findDesigns(mini));
+                // view.populateResultsList(findDesigns(mini));
+                findDesigns(mini);
             }
         });
-        
+
         view.btnFindFromSop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                view.populateResultsList(findDesigns(view.textAreaMinimised.getText()));
+                // view.populateResultsList(findDesigns(view.textAreaMinimised
+                // .getText()));
+                findDesigns(view.textAreaMinimised.getText());
             }
         });
 
@@ -86,42 +89,74 @@ public class TTController implements PropertyChangeListener {
             public void valueChanged(ListSelectionEvent arg0) {
                 int index = view.resultsList.getSelectedIndex();
                 if (index != -1) {
-                    view.sbGateDetailsPanel.setDetails(model.newDesignsFromTT.get(index));
+                    view.sbGateDetailsPanel.setDetails(model.newDesignsFromTT
+                            .get(index));
                     view.btnLoadSelectedDesign.setEnabled(true);
                 }
             }
         });
     }
-    
-    private List<SBGate> findDesigns(String SOP) {
-        TechnologyMapper techMap = new TechnologyMapper(new AIG(SOP));
-        techMap.start();
-        ArrayList<SBGate> result = new ArrayList<SBGate>();
-        
-        String path;
-        if(TTController.class.getResource("TTController.class").toString().startsWith("jar")){
-        	path = "";
-        } else {
-        	path = "../logic-synthesis/";
-        }
-        for (HashSet<SBGate> solution : techMap.getSolutions()) {
-            for (SBGate gate : solution) {
-                gate.sbmlFile = path + gate.sbmlFile;
+
+    private void findDesigns(final String SOP) {        
+        (new SwingWorker<Boolean, Boolean>() {
+            protected Boolean doInBackground() throws Exception {
+                Util.log.info("Finding designs based on SOP: " + SOP);
+                TechnologyMapper techMap = new TechnologyMapper(new AIG(SOP));
+                techMap.start();
+                Util.log.info(techMap.getSolutions().size() + " designs found.");
+                ArrayList<SBGate> result = new ArrayList<SBGate>();
+                Util.log.info("Loading designs.");
+                String path;
+                if (TTController.class.getResource("TTController.class")
+                        .toString().startsWith("jar")) {
+                    path = "";
+                } else {
+                    path = "../logic-synthesis/";
+                }
+                for (HashSet<SBGate> solution : techMap.getSolutions()) {
+                    for (SBGate gate : solution) {
+                        gate.sbmlFile = path + gate.sbmlFile;
+                    }
+                }
+
+                for (HashSet<SBGate> solution : techMap.getSolutions()) {
+                    SBGate newGate = SBGate.compose(solution);
+                    newGate.SOP = SOP;
+                    result.add(newGate);
+                }
+
+                model.newDesignsFromTT = result;
+                return true;
             }
-        }
-        
-        if (!techMap.getSolutions().isEmpty()) {
-            for (HashSet<SBGate> solution : techMap.getSolutions()) {
-                SBGate newGate = SBGate.compose(solution);
-                newGate.SOP = SOP;
-                result.add(newGate);
+
+            protected void done() {
+                if (model.newDesignsFromTT.isEmpty()) {
+                    JOptionPane.showMessageDialog(null,
+                            "No designs could be found.");
+                } else {
+                    view.populateResultsList(model.newDesignsFromTT);
+                }
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "No designs could be found.");
-        }       
-        
-        model.newDesignsFromTT = result;
-        return result;
+        }).execute();
+        /*
+         * TechnologyMapper techMap = new TechnologyMapper(new AIG(SOP));
+         * techMap.start(); ArrayList<SBGate> result = new ArrayList<SBGate>();
+         * 
+         * String path; if
+         * (TTController.class.getResource("TTController.class").toString()
+         * .startsWith("jar")) { path = ""; } else { path =
+         * "../logic-synthesis/"; } for (HashSet<SBGate> solution :
+         * techMap.getSolutions()) { for (SBGate gate : solution) {
+         * gate.sbmlFile = path + gate.sbmlFile; } }
+         * 
+         * if (!techMap.getSolutions().isEmpty()) { for (HashSet<SBGate>
+         * solution : techMap.getSolutions()) { SBGate newGate =
+         * SBGate.compose(solution); newGate.SOP = SOP; result.add(newGate); } }
+         * else { JOptionPane.showMessageDialog(null,
+         * "No designs could be found."); }
+         * 
+         * model.newDesignsFromTT = result; return result;
+         */
     }
 
     private String minimiseTT() {
@@ -133,7 +168,6 @@ public class TTController implements PropertyChangeListener {
             mini = f.toString();
             view.textAreaMinimised.setText(mini);
         } catch (IOException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
         return mini;

@@ -106,6 +106,9 @@ public class RightPanel extends JPanel {
         for (Entry<String, Integer> entry : concentrations.entrySet()) {
             proteinPanel.add(new ProteinLevelPanel(entry.getKey(), entry.getValue()));
         }
+        proteinPanel.invalidate();
+        proteinPanel.validate();
+        proteinPanel.repaint();
     }
     
     public Map<String, Integer> getInitialConcentrations() {

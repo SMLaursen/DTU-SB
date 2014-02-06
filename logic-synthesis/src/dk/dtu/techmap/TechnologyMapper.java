@@ -43,7 +43,8 @@ public class TechnologyMapper {
 	 * @return
 	 * empty : no match could be found
 	 * Set  : the set of parts that make up the match*/
-	private HashSet<SBGate> map(HashSet<SBGate> selectedParts, HashMap<String,LogicGate> toMatch, boolean root){
+	@SuppressWarnings("unchecked")
+    private HashSet<SBGate> map(HashSet<SBGate> selectedParts, HashMap<String,LogicGate> toMatch, boolean root){
 
 		//Make a copy of the currently selected parts
 		HashSet<SBGate> allSelectedParts = new HashSet<SBGate>();
