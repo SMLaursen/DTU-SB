@@ -167,6 +167,31 @@ public class TestTechMap {
         assertFalse(techmap.getSolutions().isEmpty());
     }
     
+    //Tests 3-input gates - will often fail!
+    @Test
+    public void test4(){
+    	AIG formula = new AIG("A = (B C) + (E F) +(D)");
+    	TechnologyMapper techmap = new TechnologyMapper(formula);
+    	
+    	//Check that it can match it self
+    	Library.clear();
+    	SBGate part1 = new SBGate(1,"A = (B C) + (D) + (F E)");
+    	Library.insert(part1);
+    	techmap.start();
+    	HashSet<SBGate> solution = techmap.getSolutions().get(0);
+    	assertTrue(solution.contains(part1));
+    	
+//    	Library.clear();
+//    	SBGate part2 = new SBGate(2,"A = (F E) + (B C) + (D)");
+////    	SBGate part3 = new SBGate(3,"U = D");
+//    	Library.insert(part2);
+////    	Library.insert(part3);
+//    	techmap.start();
+//    	solution = techmap.getSolutions().get(0);
+////    	assertTrue(solution.contains(part2) && solution.contains(part3));
+    
+    }
+    
     @Test
     public void testConcreteParts() {
         Library.loadLibrary();

@@ -20,8 +20,8 @@ public class AIG {
 
     public AIG(String formula, String name) {
         output = parseFormula(formula);
-        Util.log.debug("Before Convert2AIG: " + output.subTreeToString());
-        convert2AIG(output);
+        Util.log.debug("Before ConvertTo2AIG: " + output.subTreeToString());
+        convertTo2AIG(output);
         Util.log.debug("AIG: " + output.subTreeToString());
         this.name = (name == null) ? output.subTreeToString() : name;
     }
@@ -93,9 +93,9 @@ public class AIG {
 
     /**
      * Converts the N-CNF graph to a single 2-AIG-representation. Many different
-     * representation can exists.
+     * representation can exists which are not currently handled properply.
      */
-    private void convert2AIG(LogicGate curr) {
+    private void convertTo2AIG(LogicGate curr) {
 
         if (curr instanceof OrGate) {
             LogicGate curr_temp = new AndGate();
@@ -135,7 +135,7 @@ public class AIG {
             }
             curr = curr_temp;
             // Call on self (Converts
-            convert2AIG(curr);
+            convertTo2AIG(curr);
 
         } else if (curr instanceof AndGate && curr.in.size() > 2) {
             int noOfChildren = curr.in.size();
@@ -159,7 +159,7 @@ public class AIG {
                 LogicGate curr_parent = curr.out;
                 curr_parent.removeChild(curr);
                 curr_parent.addChild(curr_temp1);
-                convert2AIG(curr_temp1);
+                convertTo2AIG(curr_temp1);
             } else {
                 Util.log.error("No more than 3 input supported");
                 throw new RuntimeException(
@@ -168,7 +168,7 @@ public class AIG {
         } else {
             // Recursively traverse remaining
             for (LogicGate child : curr.in) {
-                convert2AIG(child);
+                convertTo2AIG(child);
             }
         }
 
