@@ -1,4 +1,5 @@
-# DISCLAIMER: This project is only a proof-of-concept!
+
+# DISCLAIMER: This project is only a prototype!
 
 This means the overall structure can be questionable.
 
