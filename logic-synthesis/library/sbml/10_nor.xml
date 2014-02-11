@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model>
+    <listOfCompartments>
+      <compartment id="compartment" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="LacI" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="TetR" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="P" compartment="compartment" initialAmount="1" hasOnlySubstanceUnits="true"/>
+      <species id="mRNA" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="GFP" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="LacI_Rep" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="TetR_Rep" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="tc" reversible="false">
+        <listOfProducts>
+          <speciesReference species="mRNA"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="P"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.1 </cn>
+              <ci> P </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay_mRNA" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mRNA"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.01 </cn>
+              <ci> mRNA </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="tl" reversible="false">
+        <listOfProducts>
+          <speciesReference species="GFP"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="mRNA"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.1 </cn>
+              <ci> mRNA </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay_GFP" reversible="false">
+        <listOfReactants>
+          <speciesReference species="GFP"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.01 </cn>
+              <ci> GFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="_trans_4" reversible="false">
+        <listOfReactants>
+          <speciesReference species="P"/>
+          <speciesReference species="LacI"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="LacI_Rep"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> P </ci>
+              <ci> LacI </ci>
+              <cn> 0.01 </cn>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="_trans_5" reversible="false">
+        <listOfReactants>
+          <speciesReference species="P"/>
+          <speciesReference species="TetR"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="TetR_Rep"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> P </ci>
+              <ci> TetR </ci>
+              <cn> 0.01 </cn>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="_trans_6" reversible="false">
+        <listOfReactants>
+          <speciesReference species="LacI_Rep"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="LacI"/>
+          <speciesReference species="P"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> LacI_Rep </ci>
+              <cn> 0.0001 </cn>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="_trans_7" reversible="false">
+        <listOfReactants>
+          <speciesReference species="TetR_Rep"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="TetR"/>
+          <speciesReference species="P"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TetR_Rep </ci>
+              <cn> 0.0001 </cn>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

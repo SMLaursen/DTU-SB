@@ -144,7 +144,7 @@ public class TechnologyMapper {
 	 * */
 	public LinkedList<HashMap<String, LogicGate>> isMatching(LogicGate otherPart, LogicGate thisPartPos){
 
-		if(otherPart instanceof AndGate && thisPartPos instanceof AndGate){
+ 		if(otherPart instanceof AndGate && thisPartPos instanceof AndGate){
 			//Map for storing intersections
 
 			LinkedList<HashMap<String,LogicGate>> returnList = new LinkedList<HashMap<String,LogicGate>>();
