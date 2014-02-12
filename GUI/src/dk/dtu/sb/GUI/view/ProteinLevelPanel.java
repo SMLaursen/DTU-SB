@@ -17,6 +17,7 @@ import javax.swing.JSpinner;
 import javax.swing.JRadioButton;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.SpinnerNumberModel;
 
 @SuppressWarnings("serial")
 public class ProteinLevelPanel extends JPanel {
@@ -50,6 +51,7 @@ public class ProteinLevelPanel extends JPanel {
         add(lblProtein, "2, 2");
         
         levelSpinner = new JSpinner();
+        levelSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(10)));
         levelSpinner.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
         add(levelSpinner, "2, 4, fill, default");
         
