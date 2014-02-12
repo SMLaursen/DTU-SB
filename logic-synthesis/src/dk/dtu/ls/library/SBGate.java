@@ -135,7 +135,7 @@ public class SBGate implements Comparable<SBGate> {
 
     @Override
     public String toString() {
-        return "part_" + id;
+        return "Part_" + id + " (" + SOP + ")";
     }
 
     public static SBGate compose(SBGate gate1, SBGate gate2) {

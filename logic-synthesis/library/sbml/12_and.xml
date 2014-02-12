@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
+  <model>
+    <listOfCompartments>
+      <compartment id="compartment" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="Pro" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="TetR" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="IPTG" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="Ara" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="mRNA_Ara" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="IPTG_lacI_p" reversible="false">
+        <listOfReactants>
+          <speciesReference species="TetR" stoichiometry="100"/>
+          <speciesReference species="IPTG" stoichiometry="100"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Pro"/>
+          <speciesReference species="TetR" stoichiometry="100"/>
+          <speciesReference species="IPTG" stoichiometry="100"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.0001 </cn>
+              <ci> IPTG </ci>
+              <ci> TetR </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="tc_Ara" reversible="false">
+        <listOfReactants>
+          <speciesReference species="Pro"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mRNA_Ara"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.012 </cn>
+              <ci> Pro </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="tl_Ara" reversible="false">
+        <listOfProducts>
+          <speciesReference species="Ara"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="mRNA_Ara"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.009 </cn>
+              <ci> mRNA_Ara </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay_mRNA_Ara" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mRNA_Ara"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.01 </cn>
+              <ci> mRNA_Ara </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="decay_Ara" reversible="false">
+        <listOfReactants>
+          <speciesReference species="Ara"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <cn> 0.008 </cn>
+              <ci> Ara </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

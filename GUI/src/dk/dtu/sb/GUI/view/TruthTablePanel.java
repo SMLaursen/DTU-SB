@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,8 +65,9 @@ public class TruthTablePanel extends JPanel {
         add(btnAddTruthTable, gbc_btnAddTruthTable);
 
         ArrayList<String> titles = new ArrayList<String>();
-        titles.add("Examples...");
         titles.addAll(examples.keySet());
+        Collections.sort(titles);
+        titles.add(0, "Examples...");
         comboBoxExamples = new JComboBox(titles.toArray());
         GridBagConstraints gbc_comboBoxExamples = new GridBagConstraints();
         gbc_comboBoxExamples.insets = new Insets(0, 0, 5, 0);
@@ -202,7 +204,8 @@ public class TruthTablePanel extends JPanel {
     HashMap<String, String> examples = new HashMap<String, String>();
 
     private void createExamples() {
-        examples.put("Default, ", "GFP IPTG lacI CI\n0001\n0011\n0101\n0111\n1000\n1010\n1100\n1111\n");
+        examples.put("Example 1, weak input", "GFP IPTG lacI CI\n0001\n0011\n0101\n0111\n1000\n1010\n1100\n1111\n");
+        examples.put("Example 2, strong input", "GFP IPTG TetR CI\n0001\n0011\n0101\n0111\n1000\n1010\n1100\n1111\n");
         examples.put("NOR, YFP = (Ara' aTc')", "Ara aTc YFP\n001\n010\n100\n110");
     }
 
