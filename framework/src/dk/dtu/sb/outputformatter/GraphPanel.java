@@ -29,8 +29,10 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import dk.dtu.sb.data.PlotPoint;
 import dk.dtu.sb.data.SimulationResult;
+
 import java.awt.Color;
 
+@SuppressWarnings("serial")
 public class GraphPanel extends JPanel {
 
     String outputProtein = null;

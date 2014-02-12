@@ -24,7 +24,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import dk.dtu.sb.data.SimulationResult;
-import dk.dtu.sb.outputformatter.GraphPanel;
 
 @SuppressWarnings("serial")
 public class SimulationPanel extends JPanel {
@@ -67,10 +66,9 @@ public class SimulationPanel extends JPanel {
         pnlTab.add(btnClose, gbc);
 
         tabs.setTabComponentAt(index, pnlTab);
-        tabs.setComponentAt(index, new GraphPanel(data, outputProtein));
+        tabs.setComponentAt(index, new SimulationTabPanel(data, outputProtein));
 
         btnClose.addActionListener(new MyCloseActionHandler(title));
-
     }
 
     public void selectTab(String title) {

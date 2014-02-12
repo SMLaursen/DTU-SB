@@ -1,7 +1,6 @@
 package dk.dtu.sb.parser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
