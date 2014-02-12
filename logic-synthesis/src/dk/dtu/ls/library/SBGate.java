@@ -25,6 +25,7 @@ public class SBGate implements Comparable<SBGate> {
     public String sbmlFile;
     public int repressors = 0;
     public int activators = 0;
+    public String description = "";
 
     public HashSet<String> inputProteins = new HashSet<String>();
     public HashSet<String> intermediateProteins = new HashSet<String>();
@@ -58,7 +59,7 @@ public class SBGate implements Comparable<SBGate> {
 
     public SBGate(int id, String sbmlFile, int repressors, int activators,
             HashSet<String> input, HashSet<String> intm, String output,
-            String SOP, int stableTime) {
+            String SOP, int stableTime, String description) {
         this.id = id;
         this.sbmlFile = "library/sbml/" + sbmlFile;
         this.repressors = repressors;
@@ -68,6 +69,7 @@ public class SBGate implements Comparable<SBGate> {
         this.outputProtein = output;
         this.SOP = SOP;
         this.stableStateTime = stableTime;
+        this.description = description;
     }
 
     public StochasticPetriNet getSPN() {
@@ -235,6 +237,9 @@ public class SBGate implements Comparable<SBGate> {
             gate.outputProtein = props.getProperty(Library.KEY_OUTPUT);
             gate.SOP = props.getProperty(Library.KEY_SOP);;
             gate.stableStateTime = Integer.parseInt(props.getProperty(Library.KEY_STEADY));
+            if (props.containsKey(Library.KEY_DESCRIPTION)) {
+                gate.description = props.getProperty(Library.KEY_DESCRIPTION);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

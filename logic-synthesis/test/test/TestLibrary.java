@@ -17,7 +17,7 @@ public class TestLibrary {
         Library.clear();
         assertTrue(Library.getGatesWithOutput("GFP").isEmpty());
         
-        Library.insert(new SBGate(0, "", 0, 0, Library.array(), Library.array(), "GFP", "", 0));
+        Library.insert(new SBGate(0, "", 0, 0, Library.array(), Library.array(), "GFP", "", 0, ""));
         
         assertNotNull(Library.getGatesWithOutput("GFP"));
         assertEquals(1, Library.getGatesWithOutput("GFP").size());
@@ -28,8 +28,8 @@ public class TestLibrary {
         Library.clear();
         assertTrue(Library.getGatesWithOutput("GFP").isEmpty());
         
-        Library.insert(new SBGate(0, "", 1, 0, Library.array(), Library.array(), "GFP", "", 0));
-        Library.insert(new SBGate(1, "", 0, 0, Library.array(), Library.array(), "GFP", "", 0));
+        Library.insert(new SBGate(0, "", 1, 0, Library.array(), Library.array(), "GFP", "", 0, ""));
+        Library.insert(new SBGate(1, "", 0, 0, Library.array(), Library.array(), "GFP", "", 0, ""));
         
         assertNotNull(Library.getGatesWithOutput("GFP"));
         assertEquals(2, Library.getGatesWithOutput("GFP").size());

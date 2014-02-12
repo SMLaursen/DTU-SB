@@ -13,16 +13,20 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
 import dk.dtu.ls.library.SBGate;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import java.awt.Dimension;
 
 @SuppressWarnings("serial")
 public class SBGateDetailsPanel extends JPanel {
 
-    private JLabel lblIdtext, lblSoptext, lblCosttext, lblInputtext,
+    private JLabel lblSoptext, lblCosttext, lblInputtext,
             lblInttext, lblOuttext;
     private JLabel lblSop;
     private JLabel lblName;
     private JLabel lblComposedOfPart;
     private JPanel panelComposedOf;
+    private JTextArea textAreaIdDescText;
 
     /**
      * Create the panel.
@@ -63,13 +67,16 @@ public class SBGateDetailsPanel extends JPanel {
                 FormFactory.RELATED_GAP_ROWSPEC,
                 RowSpec.decode("default:grow"),}));
 
-        lblName = new JLabel("ID");
+        lblName = new JLabel("ID and description");
         lblName.setFont(new Font("Lucida Grande", Font.BOLD, 12));
         add(lblName, "2, 2");
-
-        lblIdtext = new JLabel("name-text");
-        lblIdtext.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-        add(lblIdtext, "2, 4");
+        
+        textAreaIdDescText = new JTextArea();
+        textAreaIdDescText.setMinimumSize(new Dimension(0, 10));
+        textAreaIdDescText.setBackground(UIManager.getColor("Label.background"));
+        textAreaIdDescText.setEditable(false);
+        textAreaIdDescText.setLineWrap(true);
+        add(textAreaIdDescText, "2, 4, fill, top");
 
         lblSop = new JLabel("SoP");
         lblSop.setFont(new Font("Lucida Grande", Font.BOLD, 12));
@@ -117,7 +124,6 @@ public class SBGateDetailsPanel extends JPanel {
         lblInttext.setText("");
         lblOuttext.setText("");
         lblSoptext.setText("");
-        lblIdtext.setText("");
         
         lblComposedOfPart = new JLabel("Composed of Part IDs");
         lblComposedOfPart.setVisible(false);
@@ -138,12 +144,12 @@ public class SBGateDetailsPanel extends JPanel {
         lblOuttext.setText(gate.outputProtein);
         if (gate.isLibraryPart) {
             lblSoptext.setText(gate.SOP);
-            lblIdtext.setText("" + gate.id);
+            textAreaIdDescText.setText(gate.id + ": " + gate.description);
         } else {
             lblName.setVisible(false);
-            lblIdtext.setVisible(false);
+            textAreaIdDescText.setVisible(false);
             lblSop.setVisible(false);
-            lblSop.setVisible(false);
+            lblSoptext.setVisible(false);
             if (gate.composedOf != null) {
                 panelComposedOf.removeAll();
                 for (SBGate gatePart : gate.composedOf) {

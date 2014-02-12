@@ -19,6 +19,7 @@ public class Library {
     public static final String KEY_OUTPUT = "OUTPUT";
     public static final String KEY_SOP = "SOP";
     public static final String KEY_STEADY = "STEADY";
+    public static final String KEY_DESCRIPTION = "DESCRIPTION";
 
     private static HashMap<String, List<SBGate>> parts = new HashMap<String, List<SBGate>>();
     
