@@ -153,7 +153,7 @@ public class ParametersController implements PropertyChangeListener {
             parametersPanel.simButton.setEnabled(true);
             HashMap<String, Integer> markings = new HashMap<String, Integer>(
                     model.getSPN().getInitialMarkings());
-            if (model.currentLoadedModel == Model.CURRENT_MODEL_LIBRARY) {
+            if (model.currentLoadedModelType == Model.CURRENT_MODEL_LIBRARY) {
                 markings = new HashMap<String, Integer>();
                 for (String protein : model.getSPN().getInitialMarkings()
                         .keySet()) {

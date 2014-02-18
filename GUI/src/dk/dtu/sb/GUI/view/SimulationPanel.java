@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import dk.dtu.ls.library.SBGate;
 import dk.dtu.sb.data.SimulationResult;
 
 @SuppressWarnings("serial")
@@ -38,15 +39,13 @@ public class SimulationPanel extends JPanel {
 
         tabs = new JTabbedPane(JTabbedPane.TOP);
         add(tabs);
-
     }
 
     public void addTab(String title, Component panel) {
         tabs.addTab(title, panel);
     }
 
-    public void updateTab(String title, SimulationResult data,
-            String outputProtein) {
+    public void updateTab(String title, SimulationResult data, String outputProtein, SBGate gate) {
         int index = tabs.indexOfTab(title);
 
         JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -66,7 +65,7 @@ public class SimulationPanel extends JPanel {
         pnlTab.add(btnClose, gbc);
 
         tabs.setTabComponentAt(index, pnlTab);
-        tabs.setComponentAt(index, new SimulationTabPanel(data, outputProtein));
+        tabs.setComponentAt(index, new SimulationTabPanel(data, outputProtein, gate));
 
         btnClose.addActionListener(new MyCloseActionHandler(title));
     }

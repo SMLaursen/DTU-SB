@@ -70,6 +70,7 @@ public class SBMLController implements PropertyChangeListener {
                 	path = "../logic-synthesis/";
                 }
                 model.setSBML(path + gate.sbmlFile, Model.CURRENT_MODEL_LIBRARY);
+                model.currentLoadedSBGate = gate;
             }
         });
 

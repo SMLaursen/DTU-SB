@@ -40,7 +40,8 @@ public class Model {
     private StochasticPetriNet spn = new StochasticPetriNet();
     private SimulationResult simData;
     public int simulationNo = 1;
-    public int currentLoadedModel = 0;
+    public int currentLoadedModelType = 0;
+    public SBGate currentLoadedSBGate = null;
     public String outputProtein;
     public ArrayList<String> inputProteins;
     public List<SBGate> newDesignsFromTT;
@@ -65,7 +66,7 @@ public class Model {
     }
 
     public void setSBML(String fileName, int currentModel) {
-        this.currentLoadedModel = currentModel;
+        this.currentLoadedModelType = currentModel;
         this.sbmlFilename = fileName;
         (new SwingWorker<Boolean, Boolean>() {
 
@@ -76,10 +77,8 @@ public class Model {
                     parser.readFile(sbmlFilename);
                     spn = parser.parse();
                 } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 return true;
@@ -95,8 +94,9 @@ public class Model {
     }
 
     public void loadNewSBGate(SBGate gate) {
+        currentLoadedSBGate = gate;
         spn = gate.getSPN();
-        currentLoadedModel = CURRENT_MODEL_LIBRARY;
+        currentLoadedModelType = CURRENT_MODEL_LIBRARY;
         inputProteins = new ArrayList<String>(gate.inputProteins);
         outputProtein = new String(gate.outputProtein);
         propChangeFirer.firePropertyChange(EVENT_SBML_FILE_LOADED, "", "new");
