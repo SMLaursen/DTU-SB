@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sbml xmlns="http://www.sbml.org/sbml/level2/version3" level="2" version="3">
-  <model>
+  <model id="neg_feedback_2_spstochpn">
     <listOfCompartments>
       <compartment id="compartment" size="1"/>
     </listOfCompartments>
     <listOfSpecies>
       <species id="mRNA" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
-      <species id="aTc" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
-      <species id="Pro" compartment="compartment" initialAmount="1" hasOnlySubstanceUnits="true"/>
-      <species id="Pro_GFP" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
-      <species id="GFP" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="lacI" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
+      <species id="Plac" compartment="compartment" initialAmount="1" hasOnlySubstanceUnits="true"/>
+      <species id="Plac_lacI" compartment="compartment" initialAmount="0" hasOnlySubstanceUnits="true"/>
     </listOfSpecies>
     <listOfReactions>
       <reaction id="transcription" reversible="false">
@@ -17,14 +16,14 @@
           <speciesReference species="mRNA"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="Pro"/>
+          <modifierSpeciesReference species="Plac"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn> 0.45 </cn>
-              <ci> Pro </ci>
+              <cn> 0.5 </cn>
+              <ci> Plac </ci>
             </apply>
           </math>
         </kineticLaw>
@@ -37,7 +36,7 @@
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn> 0.006 </cn>
+              <cn> 0.0058 </cn>
               <ci> mRNA </ci>
             </apply>
           </math>
@@ -45,7 +44,7 @@
       </reaction>
       <reaction id="translation" reversible="false">
         <listOfProducts>
-          <speciesReference species="aTc"/>
+          <speciesReference species="lacI"/>
         </listOfProducts>
         <listOfModifiers>
           <modifierSpeciesReference species="mRNA"/>
@@ -54,64 +53,59 @@
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn> 0.15 </cn>
+              <cn> 0.167 </cn>
               <ci> mRNA </ci>
             </apply>
           </math>
         </kineticLaw>
       </reaction>
-      <reaction id="decay_aTc" reversible="false">
+      <reaction id="decay_lacI" reversible="false">
         <listOfReactants>
-          <speciesReference species="aTc"/>
+          <speciesReference species="lacI"/>
         </listOfReactants>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn> 0.14 </cn>
-              <ci> aTc </ci>
+              <cn> 0.0012 </cn>
+              <ci> lacI </ci>
             </apply>
           </math>
         </kineticLaw>
       </reaction>
       <reaction id="regulation" reversible="false">
         <listOfReactants>
-          <speciesReference species="Pro"/>
-          <speciesReference species="GFP"/>
+          <speciesReference species="Plac"/>
+          <speciesReference species="lacI"/>
         </listOfReactants>
         <listOfProducts>
-          <speciesReference species="Pro_GFP"/>
+          <speciesReference species="Plac_lacI"/>
         </listOfProducts>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
               <cn type="integer"> 1 </cn>
-              <ci> Pro </ci>
-              <ci> GFP </ci>
-              <cn type="integer"> 10000 </cn>
+              <ci> Plac </ci>
+              <ci> lacI </ci>
             </apply>
           </math>
         </kineticLaw>
       </reaction>
       <reaction id="unbinds" reversible="false">
         <listOfReactants>
-          <speciesReference species="Pro_GFP"/>
+          <speciesReference species="Plac_lacI"/>
         </listOfReactants>
         <listOfProducts>
-          <speciesReference species="Pro"/>
-          <speciesReference species="GFP"/>
+          <speciesReference species="Plac"/>
+          <speciesReference species="lacI"/>
         </listOfProducts>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
-              <divide/>
-              <apply>
-                <times/>
-                <cn type="integer"> 9 </cn>
-                <ci> Pro_GFP </ci>
-              </apply>
-              <cn type="integer"> 10000 </cn>
+              <times/>
+              <cn type="integer"> 9 </cn>
+              <ci> Plac_lacI </ci>
             </apply>
           </math>
         </kineticLaw>
@@ -121,7 +115,7 @@
           <speciesReference species="mRNA"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="Pro_GFP"/>
+          <modifierSpeciesReference species="Plac_lacI"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -131,9 +125,9 @@
               <apply>
                 <power/>
                 <cn type="integer"> 10 </cn>
-                <cn type="integer"> -7 </cn>
+                <cn type="integer"> -4 </cn>
               </apply>
-              <ci> Pro_GFP </ci>
+              <ci> Plac_lacI </ci>
             </apply>
           </math>
         </kineticLaw>
