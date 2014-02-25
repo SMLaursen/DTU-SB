@@ -206,6 +206,7 @@ public class TruthTablePanel extends JPanel {
     private void createExamples() {
         examples.put("Example 1, weak input", "GFP IPTG lacI CI\n0001\n0011\n0101\n0111\n1000\n1010\n1100\n1111\n");
         examples.put("Example 2, strong input", "GFP IPTG TetR CI\n0001\n0011\n0101\n0111\n1000\n1010\n1100\n1111\n");
+        examples.put("CI = (GFP' Ara)", "GFP Ara CI\n001\n011\n100\n111");
         examples.put("NOR, YFP = (Ara' aTc')", "Ara aTc YFP\n001\n010\n100\n110");
     }
 

@@ -20,8 +20,8 @@ import java.awt.Dimension;
 @SuppressWarnings("serial")
 public class SBGateDetailsPanel extends JPanel {
 
-    private JLabel lblSoptext, lblCosttext, lblInputtext,
-            lblInttext, lblOuttext;
+    private JLabel lblSoptext, lblCosttext, lblInputtext, lblInttext,
+            lblOuttext;
     private JLabel lblSop;
     private JLabel lblName;
     private JLabel lblComposedOfPart;
@@ -34,46 +34,33 @@ public class SBGateDetailsPanel extends JPanel {
     public SBGateDetailsPanel() {
         setLayout(new FormLayout(new ColumnSpec[] {
                 FormFactory.RELATED_GAP_COLSPEC,
-                ColumnSpec.decode("min(50dlu;default):grow"),},
-            new RowSpec[] {
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC,
-                FormFactory.DEFAULT_ROWSPEC,
+                ColumnSpec.decode("min(50dlu;default):grow"), }, new RowSpec[] {
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
                 FormFactory.RELATED_GAP_ROWSPEC,
                 RowSpec.decode("default:grow"),
                 FormFactory.RELATED_GAP_ROWSPEC,
-                RowSpec.decode("default:grow"),}));
+                RowSpec.decode("default:grow"), }));
 
         lblName = new JLabel("ID and description");
         lblName.setFont(new Font("Lucida Grande", Font.BOLD, 12));
         add(lblName, "2, 2");
-        
+
         textAreaIdDescText = new JTextArea();
         textAreaIdDescText.setMinimumSize(new Dimension(0, 10));
-        textAreaIdDescText.setBackground(UIManager.getColor("Label.background"));
+        textAreaIdDescText
+                .setBackground(UIManager.getColor("Label.background"));
         textAreaIdDescText.setEditable(false);
         textAreaIdDescText.setLineWrap(true);
         add(textAreaIdDescText, "2, 4, fill, top");
@@ -124,16 +111,16 @@ public class SBGateDetailsPanel extends JPanel {
         lblInttext.setText("");
         lblOuttext.setText("");
         lblSoptext.setText("");
-        
+
         lblComposedOfPart = new JLabel("Composed of Part IDs");
         lblComposedOfPart.setVisible(false);
         lblComposedOfPart.setFont(new Font("Lucida Grande", Font.BOLD, 12));
         add(lblComposedOfPart, "2, 26");
-        
+
         panelComposedOf = new JPanel();
         panelComposedOf.setVisible(false);
         add(panelComposedOf, "2, 28, left, top");
-        
+
         ToolTipManager.sharedInstance().setInitialDelay(0);
     }
 
@@ -142,25 +129,34 @@ public class SBGateDetailsPanel extends JPanel {
         lblInputtext.setText(gate.inputProteins.toString());
         lblInttext.setText(gate.intermediateProteins.toString());
         lblOuttext.setText(gate.outputProtein);
-        if (gate.isLibraryPart) {
+        if (gate.isLibraryPart || gate.composedOf == null) {
             lblSoptext.setText(gate.SOP);
             textAreaIdDescText.setText(gate.id + ": " + gate.description);
+            lblName.setVisible(true);
+            textAreaIdDescText.setVisible(true);
+            lblSop.setVisible(true);
+            lblSoptext.setVisible(true);
+            
+            panelComposedOf.removeAll();
+            lblComposedOfPart.setVisible(false);
+            panelComposedOf.setVisible(false);
         } else {
             lblName.setVisible(false);
             textAreaIdDescText.setVisible(false);
             lblSop.setVisible(false);
             lblSoptext.setVisible(false);
-            if (gate.composedOf != null) {
-                panelComposedOf.removeAll();
-                for (SBGate gatePart : gate.composedOf) {
-                    JLabel part = new JLabel("Part " + gatePart.id + ";");
-                    part.setForeground(Color.BLUE);
-                    part.setToolTipText("SoP: " + gatePart.SOP + ", Cost: " + gatePart.getCost());
-                    panelComposedOf.add(part);
-                }
-                lblComposedOfPart.setVisible(true);
-                panelComposedOf.setVisible(true);
+            
+            panelComposedOf.removeAll();
+            for (SBGate gatePart : gate.composedOf) {
+                JLabel part = new JLabel("Part " + gatePart.id + ";");
+                part.setForeground(Color.BLUE);
+                part.setToolTipText("SoP: " + gatePart.SOP + ", Cost: "
+                        + gatePart.getCost());
+                panelComposedOf.add(part);
             }
+            lblComposedOfPart.setVisible(true);
+            panelComposedOf.setVisible(true);
+
         }
     }
 
