@@ -18,6 +18,7 @@ import java.awt.event.MouseListener;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -45,7 +46,7 @@ public class SimulationPanel extends JPanel {
         tabs.addTab(title, panel);
     }
 
-    public void updateTab(String title, SimulationResult data, String outputProtein, SBGate gate) {
+    public void updateTab(String title, SimulationResult data, String outputProtein, SBGate gate, JFileChooser fileChooser) {
         int index = tabs.indexOfTab(title);
 
         JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -65,7 +66,7 @@ public class SimulationPanel extends JPanel {
         pnlTab.add(btnClose, gbc);
 
         tabs.setTabComponentAt(index, pnlTab);
-        tabs.setComponentAt(index, new SimulationTabPanel(data, outputProtein, gate));
+        tabs.setComponentAt(index, new SimulationTabPanel(data, outputProtein, gate, fileChooser));
 
         btnClose.addActionListener(new MyCloseActionHandler(title));
     }

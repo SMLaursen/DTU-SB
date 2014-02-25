@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
 import javax.swing.event.SwingPropertyChangeSupport;
 
@@ -33,6 +34,7 @@ public class Model {
     private static SwingPropertyChangeSupport propChangeFirer;
     private String sbmlFilename;
     private SimulationWorker simWorker;
+    public final JFileChooser fileChooser = new JFileChooser();
 
     // properties
     public Parameters parameters = new Parameters();

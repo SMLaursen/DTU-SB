@@ -20,8 +20,6 @@ public class SBMLController implements PropertyChangeListener {
     private LoadSBMLPanel view;
     private Model model;
 
-    private final JFileChooser fileChooser = new JFileChooser();
-
     public SBMLController(LoadSBMLPanel view, Model model) {
         this.model = model;
         this.model.addListener(this);
@@ -46,9 +44,10 @@ public class SBMLController implements PropertyChangeListener {
         view.btnLoadFromSbml.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                int returnVal = fileChooser.showOpenDialog(view);
+                int returnVal = model.fileChooser.showOpenDialog(view);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
+                    File file = model.fileChooser.getSelectedFile();
+                    model.fileChooser.setCurrentDirectory(file);
                     model.outputProtein = null;
                     model.inputProteins = null;
                     model.setSBML(file.getAbsolutePath(),

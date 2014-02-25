@@ -26,12 +26,11 @@ import java.awt.Font;
 public class SimulationTabPanel extends JPanel {
     
     private final SimulationResult simData;
-    private final JFileChooser fileChooser = new JFileChooser();
 
     /**
      * Create the panel.
      */
-    public SimulationTabPanel(SimulationResult data, String outputProtein, SBGate gate) {
+    public SimulationTabPanel(SimulationResult data, String outputProtein, SBGate gate, final JFileChooser fileChooser) {
         this.simData = data;
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[] { 0, 0 };
@@ -76,6 +75,7 @@ public class SimulationTabPanel extends JPanel {
                 int returnVal = fileChooser.showSaveDialog(panel);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
+                    fileChooser.setCurrentDirectory(file);
                     Util.log.info("Exporting to: " + file.getAbsolutePath());
                     Parameters params = new Parameters();
                     params.setOutputFilename(file.getAbsolutePath());

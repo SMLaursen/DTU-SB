@@ -22,8 +22,6 @@ public class ParametersController implements PropertyChangeListener {
     private ParametersPanel parametersPanel;
     private Model model;
 
-    private final JFileChooser fileChooser = new JFileChooser();
-
     public ParametersController(RightPanel rightPanel, Model model) {
         this.model = model;
         this.model.addListener(this);
@@ -105,9 +103,10 @@ public class ParametersController implements PropertyChangeListener {
         rightPanel.loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                int returnVal = fileChooser.showOpenDialog(rightPanel);
+                int returnVal = model.fileChooser.showOpenDialog(rightPanel);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
+                    File file = model.fileChooser.getSelectedFile();
+                    model.fileChooser.setCurrentDirectory(file);
                     model.parameters = new Parameters(file.getAbsolutePath());
                     setupView();
                 }
@@ -117,9 +116,10 @@ public class ParametersController implements PropertyChangeListener {
         rightPanel.saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                int returnVal = fileChooser.showSaveDialog(rightPanel);
+                int returnVal = model.fileChooser.showSaveDialog(rightPanel);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
+                    File file = model.fileChooser.getSelectedFile();
+                    model.fileChooser.setCurrentDirectory(file);
                     model.parameters.saveAsFile(file.getAbsolutePath());
                 }
             }
