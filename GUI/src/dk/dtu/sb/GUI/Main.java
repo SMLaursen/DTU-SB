@@ -21,8 +21,8 @@ public class Main {
 
     private JFrame frame;
     
-    private static final int HEIGHT = 600;
-    private static final int WIDTH = 1000;
+    private static final int HEIGHT = 755;
+    private static final int WIDTH = 1100;
 
     /**
      * Launch the application.
