@@ -24,7 +24,7 @@
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn> 0.3 </cn>
+              <cn> 0.1 </cn>
               <ci> P_act </ci>
             </apply>
           </math>
@@ -41,7 +41,7 @@
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn> 0.04 </cn>
+              <cn> 0.1 </cn>
               <ci> mRNA_CI </ci>
             </apply>
           </math>
@@ -55,7 +55,7 @@
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn> 0.01 </cn>
+              <cn> 0.001 </cn>
               <ci> mRNA_CI </ci>
             </apply>
           </math>
@@ -69,7 +69,7 @@
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn> 0.01 </cn>
+              <cn> 0.1 </cn>
               <ci> CI </ci>
             </apply>
           </math>
@@ -126,7 +126,7 @@
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
               <times/>
-              <cn> 0.1 </cn>
+              <cn> 0.0009 </cn>
               <ci> P_act </ci>
             </apply>
           </math>
