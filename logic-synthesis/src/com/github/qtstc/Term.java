@@ -165,7 +165,7 @@ public class Term {
                 t.add((byte) False);
             } else if (c == '1') {
                 t.add((byte) True);
-            }
+            } 
             prevC = c;
             c = reader.read();
         }

@@ -7,6 +7,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 import javax.swing.JComponent;
@@ -124,6 +125,8 @@ public class TTController implements PropertyChangeListener {
                     newGate.SOP = SOP;
                     result.add(newGate);
                 }
+                //Sort list
+                Collections.sort(result);
 
                 model.newDesignsFromTT = result;
                 return true;
