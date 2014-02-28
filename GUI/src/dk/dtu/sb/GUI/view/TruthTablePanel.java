@@ -45,8 +45,7 @@ public class TruthTablePanel extends JPanel {
 
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[] { 250, 324, 0 };
-        gridBagLayout.rowHeights = new int[] { 29, 0, 0, 144, 29, 58, 0, 27,
-                77, 0, 0 };
+        gridBagLayout.rowHeights = new int[] { 29, 0, 0, 124, 0, 30, 0, 0, 77, 0, 0};
         gridBagLayout.columnWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
         gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0, 0.0, 4.9E-324 };
@@ -99,7 +98,7 @@ public class TruthTablePanel extends JPanel {
         truthTableRaw = new JTextArea();
         truthTableRaw.setFont(new Font("Lucida Console", Font.PLAIN, 13));
         truthTableRaw
-                .setText("GFP IPTG lacI CI\n0001\n0011\n0101\n0111\n1000\n1010\n1100\n1111\n");
+                .setText("GFP IPTG lacI CI\n000 1\n001 1\n010 1\n011 1\n100 0\n101 0\n110 0\n111 1\n");
         GridBagConstraints gbc_truthTableRaw = new GridBagConstraints();
         gbc_truthTableRaw.gridwidth = 2;
         gbc_truthTableRaw.fill = GridBagConstraints.BOTH;
@@ -204,10 +203,10 @@ public class TruthTablePanel extends JPanel {
     HashMap<String, String> examples = new HashMap<String, String>();
 
     private void createExamples() {
-        examples.put("Example 1, weak input", "GFP IPTG lacI CI\n0001\n0011\n0101\n0111\n1000\n1010\n1100\n1111\n");
-        examples.put("Example 2, strong input", "GFP IPTG TetR CI\n0001\n0011\n0101\n0111\n1000\n1010\n1100\n1111\n");
-        examples.put("CI = (GFP' Ara)", "GFP Ara CI\n001\n011\n100\n111");
-        examples.put("NOR, YFP = (Ara' aTc')", "Ara aTc YFP\n001\n010\n100\n110");
+        examples.put("Example 1, weak input", "GFP IPTG lacI CI\n000 1\n001 1\n010 1\n011 1\n100 0\n101 0\n110 0\n111 1\n");
+        examples.put("Example 2, strong input", "GFP IPTG TetR CI\n000 1\n001 1\n010 1\n011 1\n100 0\n101 0\n110 0\n111 1\n");
+        examples.put("CI = (GFP' Ara)", "GFP Ara CI\n00 1\n01 1\n10 0\n11 1");
+        examples.put("NOR, YFP = (Ara' aTc')", "Ara aTc YFP\n00 1\n01 0\n10 0\n11 0");
     }
 
 }
