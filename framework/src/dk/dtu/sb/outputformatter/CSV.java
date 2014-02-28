@@ -48,7 +48,11 @@ public class CSV extends AbstractOutputFormatter {
         for (PlotPoint plot : data.getPlotPoints()) {
             writeToFile("" + plot.getTime());
             for (int i = 0; i < header.size(); i++) {
-                writeToFile(delimiter + plot.getMarkings().get(header.get(i)));
+                float marking = plot.getMarkings().get(header.get(i));
+                if (Float.isNaN(marking)) {
+                    marking = 0;
+                }
+                writeToFile(delimiter + marking);
             }
             writeToFile("\n");
         }
