@@ -107,7 +107,7 @@ public class SBGate implements Comparable<SBGate> {
     }
 
     public int getCost() {
-        int cost = inputProteins.size() + intermediateProteins.size();
+        int cost = intermediateProteins.size();
         if (repressors > 0) {
             cost += Math.pow(2, repressors);
         }
