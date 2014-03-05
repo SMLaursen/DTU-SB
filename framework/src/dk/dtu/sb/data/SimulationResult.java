@@ -63,7 +63,7 @@ public class SimulationResult {
             // Put values in buckets
             double bucketSize = params.getSimStoptime() / params.getOutputStepCount();
 
-            for (double time = bucketSize; time < params.getSimStoptime(); time += bucketSize) {
+            for (double time = 0; time < params.getSimStoptime(); time += bucketSize) {
                 // Bucket sizes reset
                 bucketCount.clear();
                 bucketCount.putAll(emptyBucketCount);
