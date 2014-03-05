@@ -71,6 +71,19 @@ public class SBGate implements Comparable<SBGate> {
         this.stableStateTime = stableTime;
         this.description = description;
     }
+    
+    public SBGate(SBGate copyGate) {
+        this.id = copyGate.id;
+        this.sbmlFile = copyGate.sbmlFile;
+        this.repressors = copyGate.repressors;
+        this.activators = copyGate.activators;
+        this.inputProteins = copyGate.inputProteins;
+        this.intermediateProteins = copyGate.intermediateProteins;
+        this.outputProtein = copyGate.outputProtein;
+        this.SOP = copyGate.SOP;
+        this.stableStateTime = copyGate.stableStateTime;
+        this.description = copyGate.description;
+    }
 
     public StochasticPetriNet getSPN() {
         if (spn == null) {
