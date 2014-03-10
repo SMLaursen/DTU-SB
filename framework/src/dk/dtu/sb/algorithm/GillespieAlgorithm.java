@@ -90,9 +90,7 @@ public class GillespieAlgorithm extends Algorithm {
     }
     
     /**
-     * a_0 = SUM a_i forall i in SPN. Stores each propensity value in {@link propensities} for reuse.
-     * 
-     * @return
+     * a_0 = SUM a_i forall i in SPN. Stores each propensity value in {@link Algorithm#propensities} for reuse.
      */
     protected double calculate_a0() {
         double a_0 = 0;

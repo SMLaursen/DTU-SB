@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * 
+ * Representing a stochastic petri net.
  */
 public class StochasticPetriNet {
 
@@ -42,7 +42,6 @@ public class StochasticPetriNet {
      * Removes and returns the reaction with the given name
      * 
      * @param reactionId
-     * @return
      */
     public Reaction removeReaction(String reactionId) {
         return reactions.remove(reactionId);
@@ -51,7 +50,6 @@ public class StochasticPetriNet {
     /**
      * 
      * @param reactionId
-     * @return
      */
     public Reaction getReaction(String reactionId) {
         return reactions.get(reactionId);
@@ -59,7 +57,6 @@ public class StochasticPetriNet {
 
     /**
      * 
-     * @return
      */
     public Map<String, Reaction> getReactions() {
         return reactions;
@@ -90,7 +87,6 @@ public class StochasticPetriNet {
     /**
      * 
      * @param speciesId
-     * @return
      */
     public int getInitialMarking(String speciesId) {
         return initialMarkings.get(speciesId);
@@ -98,7 +94,6 @@ public class StochasticPetriNet {
 
     /**
      * 
-     * @return
      */
     public Map<String, Integer> getInitialMarkings() {
         return initialMarkings;

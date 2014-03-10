@@ -19,7 +19,7 @@ public class Reaction {
     private Map<String, Integer> reactants = new HashMap<String, Integer>();
     private Map<String, Integer> products = new HashMap<String, Integer>();
     private List<String> modifiers = new ArrayList<String>();
-    
+
     /**
      * Constructs a reaction.
      * 
@@ -29,7 +29,7 @@ public class Reaction {
     public Reaction(String id) {
         this(id, id, null);
     }
-    
+
     /**
      * Constructs a reaction.
      * 
@@ -144,7 +144,7 @@ public class Reaction {
     }
 
     /**
-     * Adds a modifier for this reaction. 
+     * Adds a modifier for this reaction.
      * 
      * @param speciesId
      *            An identifier for an instance of the Species-class found in
@@ -219,9 +219,9 @@ public class Reaction {
      * Helper, decides whether this reaction can be fired with the given
      * marking.
      * 
-     * @param reaction
-     *            See {@link Reaction}.
-     * @return true if the markings enables this reaction, else false.
+     * @param markings
+     *            The current markings.
+     * @return True if the markings enables this reaction, else false.
      */
     public boolean canReact(Map<String, Integer> markings) {
         int multiplicity, oldMarking;
@@ -234,15 +234,17 @@ public class Reaction {
         }
         return true;
     }
-    
+
     /**
-     * Calculates the propensity based on the currenMarkings. 
+     * Calculates the propensity based on the currenMarkings.
      * 
      * @param currentMarkings
-     * @param rateMode type of kinetic function to use. 
+     * @param rateMode
+     *            type of kinetic function to use.
      * @return Calculated propensity
      */
-    public double calculatePropensity(HashMap<String,Integer> currentMarkings,int rateMode) {
+    public double calculatePropensity(HashMap<String, Integer> currentMarkings,
+            int rateMode) {
         double h = 1.0;
         switch (rateMode) {
         case Parameters.PARAM_SIM_RATE_MODE_CUSTOM:
@@ -254,10 +256,10 @@ public class Reaction {
             break;
         case Parameters.PARAM_SIM_RATE_MODE_CONSTANT:
         default:
-            for (Entry<String, Integer> reactant : getReactants()
-                    .entrySet()) {
-                //h *= Util.binom(currentMarkings.get(reactant.getKey()),reactant.getValue());
-                h*=currentMarkings.get(reactant.getKey());
+            for (Entry<String, Integer> reactant : getReactants().entrySet()) {
+                // h *=
+                // Util.binom(currentMarkings.get(reactant.getKey()),reactant.getValue());
+                h *= currentMarkings.get(reactant.getKey());
             }
             h *= getRate(currentMarkings);
             break;

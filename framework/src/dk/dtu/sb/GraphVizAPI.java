@@ -33,6 +33,9 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 
+/**
+ * A third-party implementation an API for using the GraphViz library.
+ */
 public class GraphVizAPI {
     /**
      * The dir. where temporary files will be created.

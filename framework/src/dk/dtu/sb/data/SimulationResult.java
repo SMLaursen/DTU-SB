@@ -3,7 +3,6 @@ package dk.dtu.sb.data;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import dk.dtu.sb.Parameters;
@@ -18,7 +17,7 @@ public class SimulationResult {
     private Parameters params;
 
     /**
-     * See {@link #SimulationResult(List, Parameters)}.
+     * See {@link #SimulationResult(Collection, Parameters)}.
      */
     public SimulationResult(Collection<AlgorithmResult> algorithmResults) {
         this(algorithmResults, new Parameters());

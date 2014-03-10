@@ -33,6 +33,9 @@ import dk.dtu.sb.data.SimulationResult;
 import java.awt.Color;
 
 @SuppressWarnings("serial")
+/**
+ * A Java Swing panel used to create a GUI showing simulation results.
+ */
 public class GraphPanel extends JPanel {
 
     String outputProtein = null;

@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Small CLI for creating a {@link Parameters}-object.
+ */
 public class ParametersCreator {
 
     /**

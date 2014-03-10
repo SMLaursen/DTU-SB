@@ -1,12 +1,11 @@
 package dk.dtu.sb.spn;
 
 /**
- * 
+ * Representing a species with an ID and name.
  */
 public class Species {
 
-    private String id;
-    
+    private String id;    
     private String name;
     
     /**
@@ -29,7 +28,6 @@ public class Species {
     
     /**
      * 
-     * @return
      */
     public String getId() {
         return id;
