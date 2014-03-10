@@ -2,7 +2,7 @@
 
 Added/changed/removed features are listed below, grouped by version number.
 
-## v0.1
+## v1.0
 
 Initial version.
 

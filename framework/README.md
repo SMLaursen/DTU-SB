@@ -35,11 +35,14 @@ If not the Ant target `jarBundle` will create an executable JAR file `DTU-SB.bun
 	
 ### Example
 
-The example in `/example` is a simulation of a negative feedback device. Run the example with the command (from the root, i.e. from `/framework`):
+One example in `/example` is a simulation of a negative feedback device. Run the example with the command (from the root, i.e. from `/framework`):
 
     $ java -Xmx2g -jar DTU-SB.bundle.jar -prop example/neg_feedback.properties -d
     
 The simulation parameters can be found in the file [`neg_feedback.properties`](example/neg_feedback.properties).
+
+Alternatively download the `Logic-Synthesis.zip` file mentioned [here](https://bitbucket.org/jboysen/dtu-sb) 
+and use the GUI.
 
 ##API
 

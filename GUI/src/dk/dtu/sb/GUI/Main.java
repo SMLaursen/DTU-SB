@@ -60,6 +60,8 @@ public class Main {
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
         
+        frame.setTitle("DTU-SB Framework v1.0");
+        
         LeftPanel leftPanel = new LeftPanel();
         frame.getContentPane().add(leftPanel, BorderLayout.WEST);
         
