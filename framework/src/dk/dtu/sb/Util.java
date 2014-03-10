@@ -1,5 +1,6 @@
 package dk.dtu.sb;
 
+import java.lang.management.ManagementFactory;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -64,6 +65,18 @@ public class Util {
             markings.put(productEntry.getKey(), oldMarking + multiplicity);
         }
     }
-    
+
+    /**
+     * Checks if the heap-size is large enough. The simulation can be quite
+     * demanding.
+     * 
+     * @param megaBytes
+     *            The minimum MB - recommended is at least 1GB.
+     * @return Whether the heap size is less than the specified MB.
+     */
+    public static boolean isHeapSizeLessThan(long megaBytes) {
+        return (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage()
+                .getMax() + (30L * 1024L * 1024L)) < (megaBytes * 1024L * 1024L);
+    }
 
 }

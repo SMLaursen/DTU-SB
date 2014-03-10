@@ -7,6 +7,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
+import dk.dtu.sb.Util;
 import dk.dtu.sb.GUI.controller.CenterTabsController;
 import dk.dtu.sb.GUI.controller.ConsoleController;
 import dk.dtu.sb.GUI.controller.ParametersController;
@@ -80,6 +81,11 @@ public class Main {
         new CenterTabsController(centerPanel.topPanel, model);
         new SimulationController(centerPanel.topPanel.simulation, model);
         new TTController(leftPanel.truthTablePanel, model);
+        
+        if (Util.isHeapSizeLessThan(1024L)) {
+            Util.log.warn("Your heap-size is smaller than 1GB.");
+            Util.log.warn("We recommend you run this program again with the JVM VM argument: -Xmx1G");
+        }
     }
 
 }

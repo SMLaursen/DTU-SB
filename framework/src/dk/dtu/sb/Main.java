@@ -3,16 +3,21 @@ package dk.dtu.sb;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
+import ch.qos.logback.classic.Level;
 import dk.dtu.sb.compiler.Compiler;
 import dk.dtu.sb.outputformatter.AbstractOutputFormatter;
 import dk.dtu.sb.outputformatter.GraphGUI;
 import dk.dtu.sb.parser.AbstractParser;
 import dk.dtu.sb.parser.SBMLParser;
 import dk.dtu.sb.simulator.Simulator;
-
-import org.apache.commons.cli.*;
-
-import ch.qos.logback.classic.Level;
 
 /**
  * Main-class used for CLI-usage of the framework.
@@ -44,6 +49,12 @@ public class Main {
      */
     public static void main(String[] args) {
         Util.log.setLevel(Level.INFO);
+
+        if (Util.isHeapSizeLessThan(1024L)) {
+            Util.log.warn("Your heap-size is smaller than 1GB. ");
+            Util.log.warn("We recommend you run this program again with the JVM VM argument: -Xmx1G");
+        }
+
         setupCli(args);
     }
 
@@ -146,7 +157,7 @@ public class Main {
                 params = new Parameters(line.getOptionValue(OPT_PROP));
             } else if (line.hasOption(OPT_FILE_SHORT)) {
                 params = new Parameters();
-                params.setInputFilename(line.getOptionValue(OPT_FILE_SHORT));                
+                params.setInputFilename(line.getOptionValue(OPT_FILE_SHORT));
             } else {
                 Util.log.info("You have to provide either a properties file as input or specify a file as input.");
             }
@@ -158,8 +169,6 @@ public class Main {
             }
         }
     }
-
-    
 
     /**
      * Set up the the tool chain required for simulation and run the simulation
@@ -173,7 +182,8 @@ public class Main {
         String filename = params.getInputFilename();
         try {
             // instantiate parser specified in parameters file
-            AbstractParser abstractParser = getParser(params.getInputParserClassName());
+            AbstractParser abstractParser = getParser(params
+                    .getInputParserClassName());
             abstractParser.readFile(filename);
 
             // instantiate compiler
@@ -189,10 +199,13 @@ public class Main {
                 GraphGUI gui = new GraphGUI();
                 gui.process(simulator.getOutput(), params);
             }
-            
+
             // run output formatter
-            if (!(params.getOutputResultGUI() && params.getOutputFormatterClassName().equals(Parameters.PARAM_OUT_FORMATTER_CLASS_DEFAULT))) {
-                AbstractOutputFormatter outputFormatter = getOutputFormatter(params.getOutputFormatterClassName());
+            if (!(params.getOutputResultGUI() && params
+                    .getOutputFormatterClassName().equals(
+                            Parameters.PARAM_OUT_FORMATTER_CLASS_DEFAULT))) {
+                AbstractOutputFormatter outputFormatter = getOutputFormatter(params
+                        .getOutputFormatterClassName());
                 outputFormatter.process(simulator.getOutput(), params);
             }
         } catch (FileNotFoundException e) {
@@ -215,7 +228,8 @@ public class Main {
     private static AbstractParser getParser(String className) {
         try {
             Class<?> parserClass = Class.forName(className);
-            AbstractParser abstractParser = (AbstractParser) parserClass.newInstance();
+            AbstractParser abstractParser = (AbstractParser) parserClass
+                    .newInstance();
 
             Util.log.debug("Parser class: " + className);
 
@@ -228,11 +242,12 @@ public class Main {
         }
         return new SBMLParser();
     }
-    
+
     private static AbstractOutputFormatter getOutputFormatter(String className) {
         try {
             Class<?> outputFormatterClass = Class.forName(className);
-            AbstractOutputFormatter outputFormatter = (AbstractOutputFormatter) outputFormatterClass.newInstance();
+            AbstractOutputFormatter outputFormatter = (AbstractOutputFormatter) outputFormatterClass
+                    .newInstance();
 
             Util.log.debug("Output formatter class: " + className);
 
