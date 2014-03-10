@@ -29,13 +29,12 @@ Alternatively the respective Ant targets of the folders can be used.
 Further information for usage of the framework can be found on the [framework main page](https://bitbucket.org/jboysen/dtu-sb/src/master/framework/).
 
 For usage of the Logic Synthesis: Go to the [Downloads](https://bitbucket.org/jboysen/dtu-sb/downloads) tab 
-and download the file `Logic-Synthesis.zip`, which contains a pre-compiled JAR-file and required library files. The JAR-file can
-be executed out-of-the-box, and synthesising new genetic devices can be done by choosing Truth-Table on the left. Though
+and download the file `DTU-SB-GUI.zip`, which contains a pre-compiled JAR-file and required library files. The JAR-file can
+be executed out-of-the-box, and synthesising new genetic devices can be done by choosing "Truth Table" on the left. Though
 to ensure that enough memory is available to the simulator, the following execution will raise the memory limit to 2GB:
 
-    $ java -Xmx2g -jar Logic-Synthesis.jar
+    $ java -Xmx2g -jar DTU-SB-GUI.jar
     
 Note that the library-files located in the `library`-folder *must* be on the same path-level as the JAR-file itself.
 
-Under all circumstances we **strongly** recommend to download the JAR-file mentioned above (also for
-pure simulation purposes), as it is a lot easier to work with than the CLI.
+### Under all circumstances we strongly recommend to download the JAR-file mentioned above (also for pure simulation purposes), as it is a lot easier to work with than the CLI.
